@@ -7,9 +7,12 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
-import Projects from "./pages/Projects";
+import Journey from "./pages/Journey";
+import ProjectDetail from "./pages/ProjectDetail";
+import Work from "./pages/Work";
 
 function Router() {
   const [location] = useLocation();
@@ -18,8 +21,18 @@ function Router() {
     <AnimatePresence mode="wait">
       <Switch key={location}>
         <Route path="/" component={Home} />
-        <Route path="/projects" component={Projects} />
+        <Route path="/work" component={Work} />
+        <Route path="/work/:slug" component={ProjectDetail} />
+        <Route path="/about" component={About} />
+        <Route path="/journey" component={Journey} />
         <Route path="/contact" component={Contact} />
+        {/* Legacy route redirect */}
+        <Route path="/projects">
+          {() => {
+            window.location.replace("/work");
+            return null;
+          }}
+        </Route>
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>

@@ -5,7 +5,7 @@
 
 /* ═══════════════════════════════════════════════════
    DESIGN SYSTEM: "Forged Monolith"
-   Dark Forge Industrial Neumorphism
+   Dark Forge Industrial Neumorphism + Refined Light
    Bridged from MLS Dashboard → PTA Portfolio
    ═══════════════════════════════════════════════════ */
 
@@ -60,7 +60,8 @@
 /* ═══════════════════════════════════════════════════
    DARK THEME (default — Forged Monolith)
    ═══════════════════════════════════════════════════ */
-:root {
+:root,
+[data-theme="dark"] {
   --radius: 0.75rem;
   --background: oklch(0.13 0.01 280);
   --foreground: oklch(0.92 0.005 280);
@@ -120,6 +121,11 @@
   --nav-bg: rgba(18, 18, 32, 0.92);
   --page-bg: #121220;
 
+  /* Semantic text tokens */
+  --heading-color: #ffffff;
+  --text-secondary: #e2e8f0;
+  --text-muted: rgba(255, 255, 255, 0.6);
+
   /* Text glow */
   --text-glow-cyan:
     0 0 10px rgba(0, 212, 255, 0.4), 0 0 20px rgba(0, 212, 255, 0.15);
@@ -139,6 +145,105 @@
 
   /* Noise texture */
   --noise-opacity: 0.03;
+
+  /* Scrollbar */
+  --scrollbar-track: #161625;
+  --scrollbar-thumb: #333350;
+  --scrollbar-thumb-hover: #444468;
+}
+
+/* ═══════════════════════════════════════════════════
+   LIGHT THEME — Refined Neumorphic
+   ═══════════════════════════════════════════════════ */
+[data-theme="light"] {
+  --radius: 0.75rem;
+  --background: #f0f0f3;
+  --foreground: #2d3748;
+  --card: #e0e5ec;
+  --card-foreground: #2d3748;
+  --popover: #e8ecf1;
+  --popover-foreground: #2d3748;
+  --primary: #0099cc;
+  --primary-foreground: #ffffff;
+  --secondary: #d1d9e6;
+  --secondary-foreground: #4a5568;
+  --muted: #d1d9e6;
+  --muted-foreground: #718096;
+  --accent: #d1d9e6;
+  --accent-foreground: #2d3748;
+  --destructive: #e53e3e;
+  --destructive-foreground: #ffffff;
+  --border: #c8d0dc;
+  --input: #d1d9e6;
+  --ring: #0099cc;
+  --chart-1: #0099cc;
+  --chart-2: #e6952e;
+  --chart-3: #00a67d;
+  --chart-4: #e05555;
+  --chart-5: #7c5cbf;
+  --sidebar: #e4e8ed;
+  --sidebar-foreground: #4a5568;
+  --sidebar-primary: #0099cc;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #d1d9e6;
+  --sidebar-accent-foreground: #2d3748;
+  --sidebar-border: #c8d0dc;
+  --sidebar-ring: #0099cc;
+
+  /* Semantic accent tokens */
+  --cyan: #0099cc;
+  --amber: #e6952e;
+  --emerald: #00a67d;
+  --coral: #e05555;
+  --surface: #e0e5ec;
+  --surface-raised: #e8ecf1;
+  --surface-sunken: #d6dbe3;
+
+  /* Neumorphic shadow tokens — light on light */
+  --neu-shadow-dark: rgba(163, 177, 198, 0.6);
+  --neu-shadow-light: rgba(255, 255, 255, 0.8);
+  --neu-shadow-dark-strong: rgba(163, 177, 198, 0.7);
+  --neu-shadow-light-strong: rgba(255, 255, 255, 0.9);
+  --neu-inset-highlight: rgba(255, 255, 255, 0.5);
+  --neu-bg-flat: #e0e5ec;
+  --neu-bg-raised: #e8ecf1;
+  --neu-bg-pressed: #d6dbe3;
+  --neu-bg-concave-from: #d6dbe3;
+  --neu-bg-concave-to: #e4e8ef;
+
+  /* Nav & page */
+  --nav-bg: rgba(228, 232, 237, 0.92);
+  --page-bg: #f0f0f3;
+
+  /* Semantic text tokens */
+  --heading-color: #1a202c;
+  --text-secondary: #2d3748;
+  --text-muted: #718096;
+
+  /* Text glow — subtle in light mode */
+  --text-glow-cyan:
+    0 0 8px rgba(0, 153, 204, 0.2), 0 0 16px rgba(0, 153, 204, 0.08);
+  --text-glow-amber:
+    0 0 8px rgba(230, 149, 46, 0.2), 0 0 16px rgba(230, 149, 46, 0.08);
+
+  /* Glassmorphism tokens */
+  --glass-bg: rgba(228, 232, 237, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px rgba(163, 177, 198, 0.3), 0 2px 8px rgba(163, 177, 198, 0.2);
+  --glass-blur: 20px;
+  --glass-text: #2d3748;
+  --glass-text-muted: #718096;
+  --glass-highlight:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 0 0.5px rgba(255, 255, 255, 0.4);
+
+  /* Noise texture */
+  --noise-opacity: 0.015;
+
+  /* Scrollbar */
+  --scrollbar-track: #e0e5ec;
+  --scrollbar-thumb: #b8c2cc;
+  --scrollbar-thumb-hover: #a0aab4;
 }
 
 @layer base {
@@ -149,6 +254,7 @@
     @apply bg-background text-foreground;
     font-family: "Space Grotesk", system-ui, sans-serif;
     background-color: var(--page-bg);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -198,6 +304,9 @@
   box-shadow:
     6px 6px 12px var(--neu-shadow-dark),
     -6px -6px 12px var(--neu-shadow-light);
+  transition:
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease;
 }
 
 .neu-raised {
@@ -208,7 +317,8 @@
     inset 0 1px 0 var(--neu-inset-highlight);
   transition:
     box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease;
 }
 
 .neu-raised:hover {
@@ -224,6 +334,7 @@
   box-shadow:
     inset 4px 4px 8px var(--neu-shadow-dark),
     inset -4px -4px 8px var(--neu-shadow-light);
+  transition: background 0.3s ease;
 }
 
 .neu-concave {
@@ -235,6 +346,7 @@
   box-shadow:
     inset 2px 2px 5px var(--neu-shadow-dark),
     inset -2px -2px 5px var(--neu-shadow-light);
+  transition: background 0.3s ease;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -248,6 +360,7 @@
   box-shadow: var(--glass-shadow), var(--glass-highlight);
   color: var(--glass-text);
   border-radius: 12px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .glass-sm {
@@ -258,6 +371,7 @@
   box-shadow: var(--glass-shadow), var(--glass-highlight);
   color: var(--glass-text);
   border-radius: 8px;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -341,14 +455,14 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #161625;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333350;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #444468;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -356,5 +470,23 @@
    ═══════════════════════════════════════════════════ */
 ::selection {
   background: rgba(0, 212, 255, 0.25);
-  color: #ffffff;
+  color: var(--heading-color);
+}
+
+/* ═══════════════════════════════════════════════════
+   WAVE SECTION DIVIDER
+   ═══════════════════════════════════════════════════ */
+.wave-divider {
+  position: relative;
+  overflow: hidden;
+}
+.wave-divider::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: var(--surface-sunken);
+  clip-path: ellipse(55% 100% at 50% 100%);
 }

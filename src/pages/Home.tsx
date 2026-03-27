@@ -1,23 +1,77 @@
 /**
- * Home Page — Hero + About section
+ * Home Page — Hero + Stats + About section
  * Design: "Forged Monolith" — monolithic hero with forge glow,
  * massive typography, noise texture, neumorphic stat cards
+ * Content: Personal portfolio voice for Patrick Anderson
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
 import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
-import { ArrowRight, BarChart3, Globe, Layers } from "lucide-react";
+import { ArrowRight, BookOpen, Code2, Globe, Layers } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 
-const HERO_BG =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663348511113/cgabRkVvvkEeRS4uPt589p/hero-bg-VjjDCXXy793fpu7LHF6Q7T.webp";
+/* ── Animated Counter Component ── */
+function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const duration = 2000;
+          const steps = 60;
+          const increment = target / steps;
+          let current = 0;
+          const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+              setCount(target);
+              clearInterval(timer);
+            } else {
+              setCount(Math.floor(current));
+            }
+          }, duration / steps);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [target]);
+
+  return (
+    <div ref={ref} className="font-display text-2xl font-bold text-glow-cyan" style={{ color: "var(--heading-color)" }}>
+      {count.toLocaleString()}{suffix}
+    </div>
+  );
+}
 
 const stats = [
-  { value: "59K+", label: "LINES OF CODE", icon: Layers },
-  { value: "10+", label: "CHART COMPONENTS", icon: BarChart3 },
-  { value: "30", label: "MLS TEAMS TRACKED", icon: Globe },
+  { value: 233, suffix: "K+", label: "LINES OF CODE", icon: Code2 },
+  { value: 5, suffix: "+", label: "INDUSTRIES", icon: Globe },
+  { value: 3, suffix: "", label: "PUBLICATIONS", icon: BookOpen },
+  { value: 6, suffix: "", label: "LIVE DASHBOARDS", icon: Layers },
+];
+
+const techStack = [
+  "Python",
+  "ArcGIS Pro",
+  "SQL",
+  "React / TypeScript",
+  "Three.js",
+  "MapLibre GL",
+  "Tailwind CSS",
+  "FastAPI",
+  "Tableau",
+  "GSAP",
+  "Vite",
+  "Vercel",
 ];
 
 export default function Home() {
@@ -28,14 +82,13 @@ export default function Home() {
         className="relative min-h-screen flex items-center justify-start overflow-hidden noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
-        {/* Background image */}
+        {/* Subtle grid overlay */}
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: `url(${HERO_BG})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.6,
+            backgroundImage:
+              "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
           }}
         />
         {/* Gradient overlay */}
@@ -43,7 +96,7 @@ export default function Home() {
           className="absolute inset-0 z-[1]"
           style={{
             background:
-              "linear-gradient(to right, rgba(18,18,32,0.95) 0%, rgba(18,18,32,0.7) 50%, rgba(18,18,32,0.4) 100%)",
+              "radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.06) 0%, transparent 60%)",
           }}
         />
 
@@ -59,33 +112,35 @@ export default function Home() {
             </FadeIn>
 
             <FadeIn delay={0.4} duration={0.8}>
-              <h1 className="heading-xl mb-6" style={{ color: "#ffffff" }}>
-                Building the
+              <h1 className="heading-xl mb-6" style={{ color: "var(--heading-color)" }}>
+                Patrick Anderson
                 <br />
                 <span className="text-glow-cyan" style={{ color: "var(--cyan)" }}>
-                  future of sports
+                  Geospatial Data Scientist
                 </span>
                 <br />
-                analytics.
+                <span style={{ fontSize: "0.6em", fontWeight: 500, color: "var(--text-secondary)" }}>
+                  &amp; AI Infrastructure Engineer
+                </span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.6} duration={0.8}>
               <p
                 className="body-lg max-w-xl mb-10"
-                style={{ color: "var(--glass-text-muted)" }}
+                style={{ color: "var(--text-muted)" }}
               >
-                PTA Geospatial Intelligence crafts high-performance data
-                dashboards and visualization platforms. Our flagship MLS
-                Analytics Dashboard transforms raw league data into actionable
-                insights through 3D charts, interactive maps, and real-time
-                statistics.
+                I build production-grade data pipelines and interactive spatial
+                dashboards that transform complex geospatial data into
+                executive-level intelligence. From satellite imagery analysis to
+                full-stack 3D visualization platforms, I bridge rigorous
+                scientific analysis with modern engineering.
               </p>
             </FadeIn>
 
             <FadeIn delay={0.8} duration={0.8}>
               <div className="flex flex-wrap gap-4">
-                <Link href="/projects">
+                <Link href="/work">
                   <span
                     className="neu-raised inline-flex items-center gap-2 px-6 py-3 rounded-lg font-display font-semibold text-sm transition-all"
                     style={{
@@ -100,7 +155,7 @@ export default function Home() {
                 <Link href="/contact">
                   <span
                     className="neu-flat inline-flex items-center gap-2 px-6 py-3 rounded-lg font-display font-medium text-sm"
-                    style={{ color: "#8892b0" }}
+                    style={{ color: "var(--text-muted)" }}
                   >
                     GET IN TOUCH
                   </span>
@@ -119,7 +174,7 @@ export default function Home() {
         <div className="container relative z-10">
           <StaggerChildren
             staggerDelay={0.15}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-6"
           >
             {stats.map((stat) => (
               <StaggerItem key={stat.label}>
@@ -131,16 +186,11 @@ export default function Home() {
                     <stat.icon size={22} style={{ color: "var(--cyan)" }} />
                   </div>
                   <div>
-                    <div
-                      className="font-display text-2xl font-bold text-glow-cyan"
-                      style={{ color: "#ffffff" }}
-                    >
-                      {stat.value}
-                    </div>
+                    <AnimatedCounter target={stat.value} suffix={stat.suffix} />
                     <div
                       className="label-mono mt-1"
                       style={{
-                        color: "var(--glass-text-muted)",
+                        color: "var(--text-muted)",
                         fontSize: "0.6rem",
                       }}
                     >
@@ -169,29 +219,42 @@ export default function Home() {
                 >
                   ABOUT
                 </span>
-                <h2 className="heading-lg mb-6" style={{ color: "#ffffff" }}>
-                  Precision-crafted
+                <h2 className="heading-lg mb-6" style={{ color: "var(--heading-color)" }}>
+                  From the Soil
                   <br />
-                  data experiences.
+                  to the Server.
                 </h2>
                 <p
                   className="body-lg mb-6"
-                  style={{ color: "var(--glass-text-muted)" }}
+                  style={{ color: "var(--text-muted)" }}
                 >
-                  We specialize in transforming complex datasets into intuitive,
-                  visually striking interfaces. Every chart, every interaction,
-                  every pixel is engineered with the same rigor applied to the
-                  data itself.
+                  I am a Geospatial Data Scientist and AI Infrastructure
+                  Engineer who specializes in building complex, production-grade
+                  data pipelines and interactive spatial dashboards. With a
+                  foundation in agricultural science and environmental physics, I
+                  spent the early part of my career analyzing energy efficiency
+                  and healthcare utilization.
                 </p>
                 <p
                   className="body-lg"
-                  style={{ color: "var(--glass-text-muted)" }}
+                  style={{ color: "var(--text-muted)" }}
                 >
-                  Our design philosophy — "Dark Forge Industrial Neumorphism" —
-                  blends the tactile depth of neumorphic surfaces with the
-                  clarity of modern data visualization, creating dashboards that
-                  feel as substantial as the insights they deliver.
+                  Most recently, I led the GIS and remote sensing intelligence
+                  work for Meta&rsquo;s AI infrastructure expansion, where I built a
+                  233,000-line automated geospatial data pipeline from scratch. I
+                  bridge the gap between rigorous scientific analysis and modern
+                  full-stack engineering, turning massive, messy datasets into
+                  executive-level visual intelligence.
                 </p>
+                <Link href="/about">
+                  <span
+                    className="inline-flex items-center gap-2 mt-6 font-display font-medium text-sm transition-colors"
+                    style={{ color: "var(--cyan)" }}
+                  >
+                    Read my full story
+                    <ArrowRight size={14} />
+                  </span>
+                </Link>
               </div>
             </FadeIn>
 
@@ -204,23 +267,14 @@ export default function Home() {
                   TECH STACK
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                  {[
-                    "React 19",
-                    "TypeScript",
-                    "Tailwind CSS 4",
-                    "Three.js",
-                    "Recharts",
-                    "Framer Motion",
-                    "Vite 7",
-                    "Vercel",
-                  ].map((tech) => (
+                  {techStack.map((tech) => (
                     <div
                       key={tech}
                       className="neu-concave rounded-lg px-4 py-3"
                     >
                       <span
                         className="font-mono text-sm"
-                        style={{ color: "#e2e8f0" }}
+                        style={{ color: "var(--text-secondary)" }}
                       >
                         {tech}
                       </span>

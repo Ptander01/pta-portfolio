@@ -7,7 +7,7 @@ export default function Footer() {
     <footer
       className="border-t py-12"
       style={{
-        borderColor: "rgba(255, 255, 255, 0.06)",
+        borderColor: "var(--glass-border)",
         background: "var(--page-bg)",
       }}
     >
@@ -15,20 +15,20 @@ export default function Footer() {
         <div className="flex items-center gap-3">
           <span
             className="font-display text-sm font-bold"
-            style={{ color: "#ffffff" }}
+            style={{ color: "var(--heading-color)" }}
           >
-            PTA
+            Patrick Anderson
           </span>
           <span
             className="label-mono"
-            style={{ color: "var(--glass-text-muted)", fontSize: "0.6rem" }}
+            style={{ color: "var(--text-muted)", fontSize: "0.6rem" }}
           >
-            GEOSPATIAL INTELLIGENCE
+            GEOSPATIAL DATA SCIENCE
           </span>
         </div>
         <span
           className="label-mono"
-          style={{ color: "var(--glass-text-muted)", fontSize: "0.6rem" }}
+          style={{ color: "var(--text-muted)", fontSize: "0.6rem" }}
         >
           &copy; {new Date().getFullYear()} &mdash; ALL RIGHTS RESERVED
         </span>

@@ -1,21 +1,19 @@
 /**
  * Contact Page — Get in touch
  * Design: "Forged Monolith" — warm amber accent, neumorphic form cards
+ * Content: Personal portfolio voice for Patrick Anderson
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
 import { Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
-const CONTACT_BG =
-  "https://d2xsxph8kpxj0f.cloudfront.net/310519663348511113/cgabRkVvvkEeRS4uPt589p/contact-bg-TBQKCigGJKdzLcDcoVan9n.webp";
-
 const contactLinks = [
   {
     icon: Mail,
     label: "EMAIL",
-    value: "contact@pta-geo.com",
-    href: "mailto:contact@pta-geo.com",
+    value: "patrick.t.anderson1@gmail.com",
+    href: "mailto:patrick.t.anderson1@gmail.com",
   },
   {
     icon: Github,
@@ -26,13 +24,13 @@ const contactLinks = [
   {
     icon: Linkedin,
     label: "LINKEDIN",
-    value: "Connect",
-    href: "https://linkedin.com",
+    value: "patrick-anderson-gis",
+    href: "https://www.linkedin.com/in/patrick-anderson-gis/",
   },
   {
     icon: MapPin,
     label: "LOCATION",
-    value: "United States",
+    value: "Clemson, South Carolina",
     href: null,
   },
 ];
@@ -40,7 +38,7 @@ const contactLinks = [
 export default function Contact() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success("Message sent! We'll be in touch soon.", {
+    toast.success("Message sent! I'll be in touch soon.", {
       description: "Thank you for reaching out.",
     });
     (e.target as HTMLFormElement).reset();
@@ -53,13 +51,13 @@ export default function Contact() {
         className="relative min-h-[50vh] flex items-end overflow-hidden noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
+        {/* Subtle grid overlay */}
         <div
           className="absolute inset-0 z-0"
           style={{
-            backgroundImage: `url(${CONTACT_BG})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            opacity: 0.35,
+            backgroundImage:
+              "linear-gradient(rgba(255,179,71,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,179,71,0.03) 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
           }}
         />
         <div
@@ -80,7 +78,7 @@ export default function Contact() {
             </span>
           </FadeIn>
           <FadeIn delay={0.4} duration={0.8}>
-            <h1 className="heading-xl mb-4" style={{ color: "#ffffff" }}>
+            <h1 className="heading-xl mb-4" style={{ color: "var(--heading-color)" }}>
               Let&rsquo;s build
               <br />
               <span
@@ -94,10 +92,10 @@ export default function Contact() {
           <FadeIn delay={0.6} duration={0.8}>
             <p
               className="body-lg max-w-xl"
-              style={{ color: "var(--glass-text-muted)" }}
+              style={{ color: "var(--text-muted)" }}
             >
-              Interested in working together or have questions about our
-              projects? Reach out and we&rsquo;ll get back to you.
+              Interested in collaborating or have questions about my work?
+              I&rsquo;d love to hear from you.
             </p>
           </FadeIn>
         </div>
@@ -130,7 +128,7 @@ export default function Contact() {
                           <div
                             className="label-mono mb-1"
                             style={{
-                              color: "var(--glass-text-muted)",
+                              color: "var(--text-muted)",
                               fontSize: "0.55rem",
                             }}
                           >
@@ -142,14 +140,14 @@ export default function Contact() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="font-display text-sm font-medium hover:underline"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "var(--text-secondary)" }}
                             >
                               {link.value}
                             </a>
                           ) : (
                             <span
                               className="font-display text-sm font-medium"
-                              style={{ color: "#e2e8f0" }}
+                              style={{ color: "var(--text-secondary)" }}
                             >
                               {link.value}
                             </span>
@@ -182,7 +180,7 @@ export default function Contact() {
                         <label
                           className="label-mono block mb-2"
                           style={{
-                            color: "var(--glass-text-muted)",
+                            color: "var(--text-muted)",
                             fontSize: "0.6rem",
                           }}
                         >
@@ -193,7 +191,7 @@ export default function Contact() {
                           required
                           className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                           style={{
-                            color: "#e2e8f0",
+                            color: "var(--text-secondary)",
                             borderColor: "transparent",
                           }}
                           placeholder="Your name"
@@ -203,7 +201,7 @@ export default function Contact() {
                         <label
                           className="label-mono block mb-2"
                           style={{
-                            color: "var(--glass-text-muted)",
+                            color: "var(--text-muted)",
                             fontSize: "0.6rem",
                           }}
                         >
@@ -214,7 +212,7 @@ export default function Contact() {
                           required
                           className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                           style={{
-                            color: "#e2e8f0",
+                            color: "var(--text-secondary)",
                             borderColor: "transparent",
                           }}
                           placeholder="you@example.com"
@@ -226,7 +224,7 @@ export default function Contact() {
                       <label
                         className="label-mono block mb-2"
                         style={{
-                          color: "var(--glass-text-muted)",
+                          color: "var(--text-muted)",
                           fontSize: "0.6rem",
                         }}
                       >
@@ -237,7 +235,7 @@ export default function Contact() {
                         required
                         className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                         style={{
-                          color: "#e2e8f0",
+                          color: "var(--text-secondary)",
                           borderColor: "transparent",
                         }}
                         placeholder="Project inquiry"
@@ -248,7 +246,7 @@ export default function Contact() {
                       <label
                         className="label-mono block mb-2"
                         style={{
-                          color: "var(--glass-text-muted)",
+                          color: "var(--text-muted)",
                           fontSize: "0.6rem",
                         }}
                       >
@@ -259,10 +257,10 @@ export default function Contact() {
                         rows={5}
                         className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1 resize-none"
                         style={{
-                          color: "#e2e8f0",
+                          color: "var(--text-secondary)",
                           borderColor: "transparent",
                         }}
-                        placeholder="Tell us about your project..."
+                        placeholder="Tell me about your project..."
                       />
                     </div>
 

@@ -1,21 +1,31 @@
 /**
  * Navbar — Fixed top navigation
  * Design: "Forged Monolith" — glassmorphic nav bar with monospace labels
+ * Updated: Personal branding + theme toggle + new routes
  */
+import { useTheme } from "@/contexts/ThemeContext";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const navItems = [
   { label: "HOME", href: "/" },
-  { label: "PROJECTS", href: "/projects" },
+  { label: "WORK", href: "/work" },
+  { label: "ABOUT", href: "/about" },
+  { label: "JOURNEY", href: "/journey" },
   { label: "CONTACT", href: "/contact" },
 ];
 
 export default function Navbar() {
   const [location] = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+
+  const isActiveRoute = (href: string) => {
+    if (href === "/") return location === "/";
+    return location.startsWith(href);
+  };
 
   return (
     <motion.header
@@ -36,7 +46,7 @@ export default function Navbar() {
           <Link href="/" className="flex items-center gap-3 no-underline">
             <span
               className="font-display text-lg font-bold tracking-tight"
-              style={{ color: "#ffffff" }}
+              style={{ color: "var(--heading-color)" }}
             >
               PTA
             </span>
@@ -44,20 +54,20 @@ export default function Navbar() {
               className="label-mono hidden sm:inline"
               style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
             >
-              GEOSPATIAL INTELLIGENCE
+              GEOSPATIAL DATA SCIENCE
             </span>
           </Link>
 
-          {/* Desktop Nav */}
+          {/* Desktop Nav + Theme Toggle */}
           <div className="hidden md:flex items-center gap-1">
             {navItems.map((item) => {
-              const isActive = location === item.href;
+              const isActive = isActiveRoute(item.href);
               return (
                 <Link key={item.href} href={item.href}>
                   <span
                     className="label-mono relative px-4 py-2 rounded-md transition-all duration-200"
                     style={{
-                      color: isActive ? "#00d4ff" : "#8892b0",
+                      color: isActive ? "var(--cyan)" : "var(--text-muted)",
                       background: isActive
                         ? "rgba(0, 212, 255, 0.08)"
                         : "transparent",
@@ -69,7 +79,7 @@ export default function Navbar() {
                       <motion.div
                         layoutId="nav-indicator"
                         className="absolute bottom-0 left-2 right-2 h-[2px]"
-                        style={{ background: "#00d4ff" }}
+                        style={{ background: "var(--cyan)" }}
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                       />
                     )}
@@ -77,20 +87,43 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="ml-3 p-2 rounded-lg transition-all duration-200 hover:scale-110"
+              style={{
+                background: "transparent",
+                color: "var(--text-muted)",
+              }}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
           </div>
 
-          {/* Mobile Toggle */}
-          <button
-            className="md:hidden p-2"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? (
-              <X size={20} style={{ color: "#8892b0" }} />
-            ) : (
-              <Menu size={20} style={{ color: "#8892b0" }} />
-            )}
-          </button>
+          {/* Mobile: Theme Toggle + Hamburger */}
+          <div className="flex items-center gap-2 md:hidden">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg"
+              style={{ color: "var(--text-muted)" }}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+            <button
+              className="p-2"
+              onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileOpen ? (
+                <X size={20} style={{ color: "var(--text-muted)" }} />
+              ) : (
+                <Menu size={20} style={{ color: "var(--text-muted)" }} />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -103,7 +136,7 @@ export default function Navbar() {
             style={{ background: "var(--nav-bg)" }}
           >
             {navItems.map((item) => {
-              const isActive = location === item.href;
+              const isActive = isActiveRoute(item.href);
               return (
                 <Link
                   key={item.href}
@@ -113,7 +146,7 @@ export default function Navbar() {
                   <span
                     className="label-mono block py-3 px-4 rounded-md transition-colors"
                     style={{
-                      color: isActive ? "#00d4ff" : "#8892b0",
+                      color: isActive ? "var(--cyan)" : "var(--text-muted)",
                       background: isActive
                         ? "rgba(0, 212, 255, 0.08)"
                         : "transparent",
