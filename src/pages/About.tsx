@@ -1,76 +1,16 @@
 /**
- * About Page — Full career narrative + career timeline
+ * About Page — Full career narrative + horizontal career timeline
  * Design: "Forged Monolith" — editorial typography with neumorphic cards
  * Content sourced from About_Me_Narrative.md
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
-import StaggerChildren, {
-  StaggerItem,
-} from "@/components/animations/StaggerChildren";
+import CareerTimeline from "@/components/CareerTimeline";
 import {
-  Award,
-  BookOpen,
-  Briefcase,
   Download,
-  GraduationCap,
-  Leaf,
   MapPin,
-  Rocket,
   User,
 } from "lucide-react";
-
-const timelineEvents = [
-  {
-    year: "2014",
-    title: "B.S. Agricultural Mechanization & Business",
-    org: "Clemson University",
-    icon: GraduationCap,
-    color: "var(--emerald)",
-  },
-  {
-    year: "2015–2020",
-    title: "Agricultural Extension Agent",
-    org: "Clemson Cooperative Extension",
-    icon: Leaf,
-    color: "var(--amber)",
-  },
-  {
-    year: "2020",
-    title: "M.S. Applied Computing (GIS Focus)",
-    org: "Clemson University",
-    icon: GraduationCap,
-    color: "var(--emerald)",
-  },
-  {
-    year: "2020",
-    title: "3 Academic Publications",
-    org: "Spatial Data Analysis & Environmental Science",
-    icon: BookOpen,
-    color: "var(--cyan)",
-  },
-  {
-    year: "2021–2024",
-    title: "Geospatial Data Scientist",
-    org: "Booz Allen Hamilton / Veterans Health Administration",
-    icon: Briefcase,
-    color: "var(--amber)",
-  },
-  {
-    year: "2024",
-    title: "ASCIP Conference Speaker",
-    org: "San Diego — VA Healthcare Spatial Analytics",
-    icon: Award,
-    color: "var(--coral)",
-  },
-  {
-    year: "2025–2026",
-    title: "GIS & Remote Sensing Intelligence Lead",
-    org: "Meta — AI Infrastructure Expansion",
-    icon: Rocket,
-    color: "var(--cyan)",
-  },
-];
 
 export default function About() {
   return (
@@ -218,10 +158,39 @@ export default function About() {
         </div>
       </section>
 
+      {/* ═══════ CAREER TIMELINE (Horizontal) ═══════ */}
+      <section
+        className="relative py-20 noise-bg"
+        style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <div className="text-center mb-12">
+              <span
+                className="label-mono inline-block mb-4"
+                style={{ color: "var(--amber)", fontSize: "0.65rem" }}
+              >
+                CAREER TIMELINE
+              </span>
+              <h2
+                className="heading-lg"
+                style={{ color: "var(--heading-color)" }}
+              >
+                Key Milestones
+              </h2>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.2} duration={0.7}>
+            <CareerTimeline />
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══════ LONG NARRATIVE ═══════ */}
       <section
         className="relative py-28 noise-bg"
-        style={{ background: "var(--page-bg)" }}
+        style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10 max-w-4xl mx-auto">
           <FadeIn duration={0.6}>
@@ -235,7 +204,7 @@ export default function About() {
 
           {/* Section 1: From the Soil to the Server */}
           <FadeIn delay={0.2} duration={0.7}>
-            <div className="mb-16">
+            <div id="soil-to-server" className="mb-16 scroll-mt-24">
               <h2
                 className="heading-lg mb-6"
                 style={{ color: "var(--heading-color)" }}
@@ -267,7 +236,7 @@ export default function About() {
 
           {/* Section 2: The Spatial Awakening */}
           <FadeIn delay={0.3} duration={0.7}>
-            <div className="mb-16">
+            <div id="spatial-awakening" className="mb-16 scroll-mt-24">
               <h2
                 className="heading-lg mb-6"
                 style={{ color: "var(--heading-color)" }}
@@ -304,7 +273,7 @@ export default function About() {
 
           {/* Section 3: The AI Infrastructure Leap */}
           <FadeIn delay={0.4} duration={0.7}>
-            <div className="mb-8">
+            <div id="ai-infrastructure" className="mb-8 scroll-mt-24">
               <h2
                 className="heading-lg mb-6"
                 style={{ color: "var(--heading-color)" }}
@@ -348,82 +317,6 @@ export default function About() {
               </p>
             </div>
           </FadeIn>
-        </div>
-      </section>
-
-      {/* ═══════ CAREER TIMELINE ═══════ */}
-      <section
-        className="relative py-20 noise-bg"
-        style={{ background: "var(--surface-sunken)" }}
-      >
-        <div className="container relative z-10">
-          <FadeIn duration={0.6}>
-            <div className="text-center mb-16">
-              <span
-                className="label-mono inline-block mb-4"
-                style={{ color: "var(--amber)", fontSize: "0.65rem" }}
-              >
-                CAREER TIMELINE
-              </span>
-              <h2
-                className="heading-lg"
-                style={{ color: "var(--heading-color)" }}
-              >
-                Key Milestones
-              </h2>
-            </div>
-          </FadeIn>
-
-          <div className="max-w-3xl mx-auto">
-            <StaggerChildren staggerDelay={0.1} className="relative">
-              {/* Vertical line */}
-              <div
-                className="absolute left-6 top-0 bottom-0 w-px"
-                style={{ background: "var(--glass-border)" }}
-              />
-
-              {timelineEvents.map((event, index) => (
-                <StaggerItem key={index}>
-                  <div className="relative flex items-start gap-6 mb-8 last:mb-0">
-                    {/* Timeline dot */}
-                    <div
-                      className="neu-raised rounded-full flex items-center justify-center flex-shrink-0 relative z-10"
-                      style={{ width: 48, height: 48 }}
-                    >
-                      <event.icon size={20} style={{ color: event.color }} />
-                    </div>
-
-                    {/* Content card */}
-                    <div className="neu-raised rounded-xl p-5 flex-1">
-                      <div className="flex flex-wrap items-center gap-3 mb-2">
-                        <span
-                          className="label-mono"
-                          style={{
-                            color: event.color,
-                            fontSize: "0.6rem",
-                          }}
-                        >
-                          {event.year}
-                        </span>
-                      </div>
-                      <h3
-                        className="font-display font-semibold text-base mb-1"
-                        style={{ color: "var(--heading-color)" }}
-                      >
-                        {event.title}
-                      </h3>
-                      <p
-                        className="text-sm"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {event.org}
-                      </p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerChildren>
-          </div>
         </div>
       </section>
     </PageTransition>
