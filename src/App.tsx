@@ -41,6 +41,9 @@ function Router() {
 }
 
 function App() {
+  const [location] = useLocation();
+  const isHomepage = location === "/";
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
@@ -55,11 +58,11 @@ function App() {
             }}
           />
           <div className="min-h-screen flex flex-col">
-            <Navbar />
+            {!isHomepage && <Navbar />}
             <main className="flex-1">
               <Router />
             </main>
-            <Footer />
+            {!isHomepage && <Footer />}
           </div>
         </TooltipProvider>
       </ThemeProvider>

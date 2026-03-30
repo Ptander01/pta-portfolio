@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -489,4 +490,533 @@
   height: 60px;
   background: var(--surface-sunken);
   clip-path: ellipse(55% 100% at 50% 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CINEMATIC HOMEPAGE — "Cold Signal → Warm Insight"
+   Seven-chapter scroll experience for the homepage.
+   These classes are ADDITIVE — they do not replace the
+   neumorphic/glassmorphic system used on other pages.
+   ═══════════════════════════════════════════════════════════════ */
+
+
+/* ════════════════════════════════════════════════
+   CHAPTER COLOR ARC
+   Seven chapter accent variables.
+   Arc: cold cyan → teal → terrain → census amber
+        → steel blue → gold → warm white
+   ════════════════════════════════════════════════ */
+:root {
+  /* Ch 1 · Capture — deep space, cold cyan */
+  --ch1-accent: #00E5FF;
+  --ch1-glow:   rgba(0, 229, 255, 0.18);
+  --ch1-bg:     #03060A;
+  --ch1-text:   rgba(0, 229, 255, 0.85);
+
+  /* Ch 2 · Raw Data — navy + infrared orange */
+  --ch2-accent: #FF6B2B;
+  --ch2-glow:   rgba(255, 107, 43, 0.18);
+  --ch2-bg:     #05080F;
+  --ch2-text:   rgba(255, 107, 43, 0.85);
+
+  /* Ch 3 · Processing — navy bleeding to teal */
+  --ch3-accent: #00C897;
+  --ch3-glow:   rgba(0, 200, 151, 0.18);
+  --ch3-bg:     #040C0A;
+  --ch3-text:   rgba(0, 200, 151, 0.85);
+
+  /* Ch 4 · The Map — teal + warm neutral */
+  --ch4-accent: #7FC8C0;
+  --ch4-glow:   rgba(127, 200, 192, 0.15);
+  --ch4-bg:     #050C0B;
+  --ch4-text:   rgba(127, 200, 192, 0.85);
+
+  /* Ch 5 · Analysis — steel blue + amber creeping */
+  --ch5-accent: #4A90D9;
+  --ch5-glow:   rgba(74, 144, 217, 0.18);
+  --ch5-bg:     #050810;
+  --ch5-text:   rgba(74, 144, 217, 0.85);
+
+  /* Ch 6 · AI / Insight — deep charcoal + gold */
+  --ch6-accent: #E8A030;
+  --ch6-glow:   rgba(232, 160, 48, 0.2);
+  --ch6-bg:     #080602;
+  --ch6-text:   rgba(232, 160, 48, 0.85);
+
+  /* Ch 7 · Identity — full warmth, near-white light */
+  --ch7-accent: #F5DEB3;
+  --ch7-glow:   rgba(245, 222, 179, 0.25);
+  --ch7-bg:     #0A0806;
+  --ch7-text:   rgba(245, 222, 179, 0.9);
+
+  /* Named semantic palette shortcuts */
+  --signal:   #00E5FF;
+  --terrain:  #00C897;
+  --harvest:  #E8A030;
+  --census:   #7FC8C0;
+  --infrared: #FF6B2B;
+
+  /* Text data label color */
+  --text-data: rgba(0, 229, 255, 0.7);
+
+  /* Cinematic border tokens */
+  --border-subtle:   rgba(100, 160, 220, 0.08);
+  --border-mid:      rgba(100, 160, 220, 0.15);
+  --border-strong:   rgba(100, 160, 220, 0.28);
+
+  /* Scan line animation timing */
+  --scan-duration: 8s;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHAPTER PANEL SYSTEM
+   Each chapter has a data attribute that sets its accent color.
+   Usage: <section data-chapter="1"> ... </section>
+   ═══════════════════════════════════════════════════════════════ */
+
+[data-chapter="1"] {
+  --ch-accent: var(--ch1-accent);
+  --ch-glow:   var(--ch1-glow);
+  --ch-bg:     var(--ch1-bg);
+  --ch-text:   var(--ch1-text);
+}
+[data-chapter="2"] {
+  --ch-accent: var(--ch2-accent);
+  --ch-glow:   var(--ch2-glow);
+  --ch-bg:     var(--ch2-bg);
+  --ch-text:   var(--ch2-text);
+}
+[data-chapter="3"] {
+  --ch-accent: var(--ch3-accent);
+  --ch-glow:   var(--ch3-glow);
+  --ch-bg:     var(--ch3-bg);
+  --ch-text:   var(--ch3-text);
+}
+[data-chapter="4"] {
+  --ch-accent: var(--ch4-accent);
+  --ch-glow:   var(--ch4-glow);
+  --ch-bg:     var(--ch4-bg);
+  --ch-text:   var(--ch4-text);
+}
+[data-chapter="5"] {
+  --ch-accent: var(--ch5-accent);
+  --ch-glow:   var(--ch5-glow);
+  --ch-bg:     var(--ch5-bg);
+  --ch-text:   var(--ch5-text);
+}
+[data-chapter="6"] {
+  --ch-accent: var(--ch6-accent);
+  --ch-glow:   var(--ch6-glow);
+  --ch-bg:     var(--ch6-bg);
+  --ch-text:   var(--ch6-text);
+}
+[data-chapter="7"] {
+  --ch-accent: var(--ch7-accent);
+  --ch-glow:   var(--ch7-glow);
+  --ch-bg:     var(--ch7-bg);
+  --ch-text:   var(--ch7-text);
+}
+
+/* Chapter panel base — chapter text inherits accent color */
+.chapter-accent  { color: var(--ch-accent); }
+.chapter-glow-bg { background: var(--ch-glow); }
+.chapter-border  { border-color: var(--ch-accent); opacity: 0.25; }
+
+/* ═══════════════════════════════════════════════════════════════
+   SCROLL ARCHITECTURE UTILITIES
+   For the single-page cinematic scroll layout.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Fixed WebGL canvas layer — sits behind everything */
+.canvas-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Scroll container — provides scroll height for scrubbing */
+.scroll-container {
+  position: relative;
+  z-index: 10;
+}
+
+/* Chapter section — full viewport height scroll panel */
+.chapter-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 6vw;
+  pointer-events: none;
+}
+
+.chapter-section.align-right  { align-items: flex-end; text-align: right; }
+.chapter-section.align-center { align-items: center;   text-align: center; }
+.chapter-section.align-left   { align-items: flex-start; text-align: left; }
+
+/* Chapter text block — constrained max width */
+.chapter-content {
+  max-width: 520px;
+  pointer-events: auto;
+}
+
+/* Chapter tag line — e.g. "Chapter 01 · Capture" */
+.chapter-tag {
+  font-family: "Space Mono", monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ch-accent, var(--signal));
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0.85;
+}
+
+.chapter-tag::before {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* For right-aligned chapters, flip the tag decoration */
+.align-right .chapter-tag {
+  flex-direction: row-reverse;
+}
+.align-right .chapter-tag::before {
+  display: none;
+}
+.align-right .chapter-tag::after {
+  content: '';
+  display: inline-block;
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DATA OVERLAY SYSTEM
+   2D HUD-style panels that float over the 3D scene.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Data panel — translucent edge-anchored info block */
+.data-panel {
+  position: relative;
+  border-left: 1px solid var(--ch-accent, var(--signal));
+  padding: 1rem 1.25rem;
+  background: rgba(7, 10, 14, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(100, 160, 220, 0.08);
+  border-right: 1px solid rgba(100, 160, 220, 0.04);
+  border-bottom: 1px solid rgba(100, 160, 220, 0.04);
+}
+
+/* Corner accent — top-left engineering bracket */
+.data-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--ch-accent, var(--signal));
+  border-left: 2px solid var(--ch-accent, var(--signal));
+}
+
+/* Stat card — small metric readout */
+.stat-card {
+  padding: 1.25rem 1rem;
+  border: 1px solid var(--border-subtle);
+  border-top-color: var(--border-mid);
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  position: relative;
+  transition: border-color 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: rgba(100, 160, 220, 0.22);
+}
+
+/* Coordinate display — lat/lon or pixel coords */
+.coord-display {
+  font-family: "Space Mono", monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  line-height: 2;
+}
+
+/* Progress bar — classification progress, scan progress */
+.scan-progress {
+  height: 2px;
+  background: var(--border-subtle);
+  position: relative;
+  overflow: hidden;
+}
+
+.scan-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: var(--ch-accent, var(--signal));
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Tag pill — spectral band label, classification class */
+.data-tag {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid var(--border-subtle);
+  color: var(--ch-accent, var(--signal));
+  background: rgba(7, 10, 14, 0.8);
+  display: inline-block;
+}
+
+/* ── Data value — large numeric readout ── */
+.data-value {
+  font-family: "Space Mono", monospace;
+  font-weight: 700;
+  font-size: clamp(1.5rem, 2.5vw, 2.25rem);
+  line-height: 1;
+  color: var(--heading-color);
+  letter-spacing: -0.02em;
+}
+
+/* ── Coordinate / code strings ── */
+.data-string {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-size: 0.6875rem;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  color: var(--text-data);
+  opacity: 0.7;
+}
+
+/* ── Small mono label ── */
+.label-mono-sm {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-size: 0.5625rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HUD / NAVIGATION (Homepage only)
+   ═══════════════════════════════════════════════════════════════ */
+
+.hud-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 6vw;
+  background: linear-gradient(
+    to bottom,
+    rgba(7, 10, 14, 0.85) 0%,
+    transparent 100%
+  );
+  pointer-events: auto;
+}
+
+.hud-logo {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-primary, var(--heading-color));
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Live indicator dot */
+.hud-logo::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: var(--signal);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--signal);
+  animation: live-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.65); }
+}
+
+/* Chapter progress bar — top of viewport */
+.chapter-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    var(--ch1-accent),
+    var(--ch3-accent),
+    var(--ch5-accent),
+    var(--ch6-accent),
+    var(--ch7-accent)
+  );
+  z-index: 200;
+  transform-origin: left center;
+  transition: transform 0.1s linear;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SCAN LINE EFFECT
+   Periodic horizontal sweep — reinforces sensor/remote-sensing theme
+   ═══════════════════════════════════════════════════════════════ */
+.scan-line {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 229, 255, 0.3) 35%,
+    rgba(0, 229, 255, 0.5) 50%,
+    rgba(0, 229, 255, 0.3) 65%,
+    transparent 100%
+  );
+  z-index: 5;
+  pointer-events: none;
+  animation: scan-sweep var(--scan-duration) linear infinite;
+}
+
+@keyframes scan-sweep {
+  0%   { top: -1px; opacity: 0; }
+  3%   { opacity: 1; }
+  97%  { opacity: 1; }
+  100% { top: 100vh; opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SURFACE CARDS (Cinematic flat-depth — used alongside neumorphic)
+   ═══════════════════════════════════════════════════════════════ */
+
+.card-surface {
+  background: var(--surface);
+  border: 1px solid var(--border-subtle);
+  border-top-color: var(--border-mid);
+  transition: border-color 0.25s ease;
+}
+
+.card-surface:hover {
+  border-color: var(--border-mid);
+  border-top-color: var(--border-strong);
+}
+
+.card-raised {
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-top-color: var(--border-mid);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+}
+
+.card-raised:hover {
+  border-top-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   IDENTITY REVEAL CHAPTER
+   Final chapter — particle assembly scene.
+   ═══════════════════════════════════════════════════════════════ */
+.identity-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.identity-name {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: var(--ch7-accent);
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+
+.identity-name.revealed {
+  opacity: 1;
+}
+
+.identity-title {
+  font-family: "Space Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-top: 1.5rem;
+  opacity: 0;
+  transition: opacity 1.2s ease 0.4s;
+}
+
+.identity-title.revealed {
+  opacity: 1;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LINK STYLES (Cinematic homepage)
+   ═══════════════════════════════════════════════════════════════ */
+.link-signal {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--signal);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.2s ease, opacity 0.2s ease;
+}
+
+.link-signal:hover {
+  gap: 10px;
+  opacity: 0.8;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION (Cinematic homepage additions)
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  .scan-line            { animation: none; opacity: 0; }
+  .hud-logo::before     { animation: none; }
+  .chapter-progress-bar { transition: none; }
 }
