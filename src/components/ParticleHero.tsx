@@ -191,23 +191,36 @@ function generateCapture(): Float32Array {
 
 /**
  * Ch2 · RAW DATA
- * Dense pixel raster grid — regular with noise
+ * Pixel raster grid — spread wider with depth layers and gaps
+ * Tuned for legibility: fewer particles per area, more Z scatter
  */
 function generateRawData(): Float32Array {
   const pos = new Float32Array(MAX_PARTICLES * 3);
   const rng = seededRandom(2002);
-  const cols = 134;
+  const cols = 100;  // fewer columns → more spacing
   const rows = Math.ceil(MAX_PARTICLES / cols);
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
     const c = i % cols;
     const r = Math.floor(i / cols);
-    const x = (c / cols) * 16 - 8;
-    const y = (r / rows) * 12 - 6;
-    const noise = rng() * 0.18;
-    pos[i * 3]     = x + (rng() - 0.5) * noise;
-    pos[i * 3 + 1] = y + (rng() - 0.5) * noise;
-    pos[i * 3 + 2] = (rng() - 0.5) * 0.8;
+    const x = (c / cols) * 20 - 10;  // wider spread: -10 to +10
+    const y = (r / rows) * 16 - 8;   // taller spread: -8 to +8
+    const noise = rng() * 0.35;       // more noise for organic feel
+    // Create gaps — skip particles in certain grid cells
+    const cellX = Math.floor(c / 10);
+    const cellY = Math.floor(r / 10);
+    const gapSeed = (cellX * 7 + cellY * 13) % 5;
+    const hasGap = gapSeed === 0;  // ~20% of cells have gaps
+    if (hasGap) {
+      // Push gap particles far off screen
+      pos[i * 3]     = (rng() - 0.5) * 30;
+      pos[i * 3 + 1] = (rng() - 0.5) * 30;
+      pos[i * 3 + 2] = -15 + rng() * 2;
+    } else {
+      pos[i * 3]     = x + (rng() - 0.5) * noise;
+      pos[i * 3 + 1] = y + (rng() - 0.5) * noise;
+      pos[i * 3 + 2] = (rng() - 0.5) * 3.5;  // much more Z scatter
+    }
   }
 
   return pos;
@@ -241,20 +254,24 @@ function generateProcessing(): Float32Array {
 
 /**
  * Ch4 · THE MAP
- * Census block grid — irregular polygonal clusters
+ * Census block grid — wider spacing, visible gaps between tracts
+ * Tuned for legibility: blocks spread further apart with clear gutters
  */
 function generateTheMap(): Float32Array {
   const pos = new Float32Array(MAX_PARTICLES * 3);
   const rng = seededRandom(4004);
 
+  // Fewer, larger blocks with wider gutters
   const blocks: Array<{x: number; y: number; w: number; h: number; density: number}> = [];
-  for (let r = 0; r < 8; r++) {
-    for (let c = 0; c < 10; c++) {
+  for (let r = 0; r < 6; r++) {
+    for (let c = 0; c < 8; c++) {
+      // Skip some blocks entirely for visual breathing room
+      if ((r + c) % 5 === 0) continue;
       blocks.push({
-        x: c * 1.6 - 7.5,
-        y: r * 1.4 - 5.2,
-        w: 1.2 + rng() * 0.5,
-        h: 1.0 + rng() * 0.4,
+        x: c * 2.2 - 8,     // wider horizontal spacing
+        y: r * 2.0 - 5.5,   // wider vertical spacing
+        w: 1.0 + rng() * 0.6,
+        h: 0.8 + rng() * 0.5,
         density: 0.3 + rng() * 0.7,
       });
     }
@@ -264,18 +281,19 @@ function generateTheMap(): Float32Array {
   let i = 0;
 
   for (const block of blocks) {
-    const count = Math.floor((block.density / totalDensity) * MAX_PARTICLES);
+    const count = Math.floor((block.density / totalDensity) * MAX_PARTICLES * 0.85);
     for (let p = 0; p < count && i < MAX_PARTICLES; p++, i++) {
       pos[i * 3]     = block.x + rng() * block.w;
       pos[i * 3 + 1] = block.y + rng() * block.h;
-      pos[i * 3 + 2] = (rng() - 0.5) * 0.4;
+      pos[i * 3 + 2] = (rng() - 0.5) * 2.0;  // more Z depth
     }
   }
 
+  // Remaining particles: scatter as sparse ambient dust
   while (i < MAX_PARTICLES) {
-    pos[i * 3]     = (rng() - 0.5) * 16;
-    pos[i * 3 + 1] = (rng() - 0.5) * 11;
-    pos[i * 3 + 2] = (rng() - 0.5) * 0.3;
+    pos[i * 3]     = (rng() - 0.5) * 22;
+    pos[i * 3 + 1] = (rng() - 0.5) * 16;
+    pos[i * 3 + 2] = (rng() - 0.5) * 6;
     i++;
   }
 
@@ -461,9 +479,12 @@ function generateSizes(chapter: number, isDark: boolean): Float32Array {
       const base = chapter === 7 ? 1.8 : 1.2;
       sizes[i] = base + rng() * 1.0;
     } else {
-      // Light mode: smaller, tighter particles for matte feel
-      const base = chapter === 7 ? 1.2 : 0.7;
-      sizes[i] = base + rng() * 0.5;
+      // Light mode: per-chapter tuned sizes
+      // Ch2 and Ch4 get smaller particles to reduce density
+      const denseScene = chapter === 2 || chapter === 4;
+      const base = chapter === 7 ? 1.2 : denseScene ? 0.5 : 0.7;
+      const range = denseScene ? 0.3 : 0.5;
+      sizes[i] = base + rng() * range;
     }
   }
 
@@ -479,8 +500,12 @@ function generateAlphas(chapter: number, isDark: boolean): Float32Array {
       // Dark mode: original alpha range
       alphas[i] = 0.4 + rng() * 0.6;
     } else {
-      // Light mode: lower, more uniform opacity for matte charcoal
-      alphas[i] = 0.25 + rng() * 0.35;
+      // Light mode: per-chapter tuned opacity
+      // Ch2 and Ch4 are dense scenes — lower opacity for legibility
+      const denseScene = chapter === 2 || chapter === 4;
+      const base  = denseScene ? 0.12 : 0.25;
+      const range = denseScene ? 0.18 : 0.35;
+      alphas[i] = base + rng() * range;
     }
   }
 

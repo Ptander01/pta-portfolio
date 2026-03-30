@@ -973,6 +973,15 @@
   transition: opacity 1.2s ease;
 }
 
+/* Light mode: use heading color with white halo so text reads over charcoal particles */
+[data-theme="light"] .identity-name {
+  color: var(--heading-color);
+  text-shadow:
+    0 0 20px rgba(240, 240, 243, 0.95),
+    0 0 40px rgba(240, 240, 243, 0.7),
+    0 0 80px rgba(240, 240, 243, 0.4);
+}
+
 .identity-name.revealed {
   opacity: 1;
 }
