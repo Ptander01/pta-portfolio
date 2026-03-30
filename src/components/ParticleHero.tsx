@@ -13,6 +13,10 @@
  *   - Chapter 7: particles assemble into name glyphs, then fires
  *     onIdentityComplete()
  *
+ * Theme-aware rendering:
+ *   - Dark mode:  AdditiveBlending, bright accent colors, glowing particles
+ *   - Light mode: NormalBlending, matte charcoal particles, ink/graphite feel
+ *
  * Chapter scenes:
  *   1 · Capture     — orbital satellite swarm + crop field grid
  *   2 · Raw Data    — pixel raster grid dissolving into noise
@@ -25,6 +29,7 @@
  * Props:
  *   activeChapter      : number  (1–7, from useActiveChapter hook)
  *   onIdentityComplete : () => void  (fires after name assembly)
+ *   isDark             : boolean (theme state from useTheme)
  *
  * Patrick Anderson — PTA Geospatial Intelligence
  */
@@ -38,15 +43,27 @@ import gsap from "gsap";
 ───────────────────────────────────────────────────────────── */
 const MAX_PARTICLES = 18_000;
 
-// Per-chapter accent colors (must match index.css chapter tokens)
-const CHAPTER_COLORS: Record<number, [number, number, number]> = {
-  1: [0.0,  0.898, 1.0  ],   // #00E5FF  cold cyan
-  2: [1.0,  0.420, 0.169],   // #FF6B2B  infrared orange
-  3: [0.0,  0.784, 0.592],   // #00C897  teal
-  4: [0.498,0.784, 0.753],   // #7FC8C0  census teal
-  5: [0.290,0.565, 0.851],   // #4A90D9  steel blue
-  6: [0.910,0.627, 0.188],   // #E8A030  amber
-  7: [0.961,0.871, 0.702],   // #F5DEB3  warm wheat
+// Per-chapter accent colors — DARK MODE (bright, glowing)
+const CHAPTER_COLORS_DARK: Record<number, [number, number, number]> = {
+  1: [0.0,   0.898, 1.0  ],   // #00E5FF  cold cyan
+  2: [1.0,   0.420, 0.169],   // #FF6B2B  infrared orange
+  3: [0.0,   0.784, 0.592],   // #00C897  teal
+  4: [0.498, 0.784, 0.753],   // #7FC8C0  census teal
+  5: [0.290, 0.565, 0.851],   // #4A90D9  steel blue
+  6: [0.910, 0.627, 0.188],   // #E8A030  amber
+  7: [0.961, 0.871, 0.702],   // #F5DEB3  warm wheat
+};
+
+// Per-chapter accent colors — LIGHT MODE (matte charcoal tints)
+// Base charcoal with subtle chapter-specific warm/cool shifts
+const CHAPTER_COLORS_LIGHT: Record<number, [number, number, number]> = {
+  1: [0.18,  0.20,  0.22 ],   // cool charcoal (slight blue)
+  2: [0.22,  0.18,  0.16 ],   // warm charcoal (slight brown)
+  3: [0.16,  0.20,  0.19 ],   // teal-tinted charcoal
+  4: [0.19,  0.21,  0.20 ],   // neutral charcoal
+  5: [0.17,  0.19,  0.23 ],   // steel charcoal (slight blue)
+  6: [0.23,  0.20,  0.16 ],   // amber-tinted charcoal
+  7: [0.12,  0.11,  0.10 ],   // deep charcoal for name reveal
 };
 
 // Transition durations per chapter change (seconds)
@@ -412,15 +429,20 @@ async function generateIdentityAsync(): Promise<Float32Array> {
 
 /* ─────────────────────────────────────────────────────────────
    PARTICLE ATTRIBUTE GENERATORS
+   Theme-aware: dark mode = bright accents, light mode = charcoal
 ───────────────────────────────────────────────────────────── */
 
-function generateColors(chapter: number): Float32Array {
+function generateColors(chapter: number, isDark: boolean): Float32Array {
   const colors = new Float32Array(MAX_PARTICLES * 3);
   const rng    = seededRandom(chapter * 9999);
-  const base   = CHAPTER_COLORS[chapter] ?? CHAPTER_COLORS[1];
+  const palette = isDark ? CHAPTER_COLORS_DARK : CHAPTER_COLORS_LIGHT;
+  const base   = palette[chapter] ?? palette[1];
+
+  // Light mode: very tight variation for consistent charcoal
+  // Dark mode: wider variation for sparkle
+  const variation = isDark ? 0.15 : 0.04;
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
-    const variation = 0.15;
     colors[i * 3]     = Math.max(0, Math.min(1, base[0] + (rng() - 0.5) * variation));
     colors[i * 3 + 1] = Math.max(0, Math.min(1, base[1] + (rng() - 0.5) * variation));
     colors[i * 3 + 2] = Math.max(0, Math.min(1, base[2] + (rng() - 0.5) * variation));
@@ -429,24 +451,37 @@ function generateColors(chapter: number): Float32Array {
   return colors;
 }
 
-function generateSizes(chapter: number): Float32Array {
+function generateSizes(chapter: number, isDark: boolean): Float32Array {
   const sizes = new Float32Array(MAX_PARTICLES);
   const rng   = seededRandom(chapter * 1337);
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
-    const base = chapter === 7 ? 1.8 : 1.2;
-    sizes[i] = base + rng() * 1.0;
+    if (isDark) {
+      // Dark mode: original sizes
+      const base = chapter === 7 ? 1.8 : 1.2;
+      sizes[i] = base + rng() * 1.0;
+    } else {
+      // Light mode: smaller, tighter particles for matte feel
+      const base = chapter === 7 ? 1.2 : 0.7;
+      sizes[i] = base + rng() * 0.5;
+    }
   }
 
   return sizes;
 }
 
-function generateAlphas(chapter: number): Float32Array {
+function generateAlphas(chapter: number, isDark: boolean): Float32Array {
   const alphas = new Float32Array(MAX_PARTICLES);
   const rng    = seededRandom(chapter * 2674);
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
-    alphas[i] = 0.4 + rng() * 0.6;
+    if (isDark) {
+      // Dark mode: original alpha range
+      alphas[i] = 0.4 + rng() * 0.6;
+    } else {
+      // Light mode: lower, more uniform opacity for matte charcoal
+      alphas[i] = 0.25 + rng() * 0.35;
+    }
   }
 
   return alphas;
@@ -471,11 +506,13 @@ const SYNC_GENERATORS: Record<number, () => Float32Array> = {
 interface ParticleHeroProps {
   activeChapter: number;
   onIdentityComplete: () => void;
+  isDark: boolean;
 }
 
 export default function ParticleHero({
   activeChapter,
   onIdentityComplete,
+  isDark,
 }: ParticleHeroProps) {
   const mountRef           = useRef<HTMLDivElement>(null);
   const rendererRef        = useRef<THREE.WebGLRenderer | null>(null);
@@ -483,11 +520,16 @@ export default function ParticleHero({
   const cameraRef          = useRef<THREE.PerspectiveCamera | null>(null);
   const materialRef        = useRef<THREE.ShaderMaterial | null>(null);
   const geometryRef        = useRef<THREE.BufferGeometry | null>(null);
+  const pointsRef          = useRef<THREE.Points | null>(null);
   const rafRef             = useRef<number>(0);
   const prevChapterRef     = useRef<number>(0);
   const positionCacheRef   = useRef<Record<number, Float32Array>>({});
   const identityFiredRef   = useRef(false);
   const clockRef           = useRef(new THREE.Clock());
+  const isDarkRef          = useRef(isDark);
+
+  // Keep isDarkRef in sync
+  isDarkRef.current = isDark;
 
   /* ── Get positions (sync for 1-6, async-cached for 7) ── */
   const getPositions = useCallback((chapter: number): Float32Array => {
@@ -542,21 +584,22 @@ export default function ParticleHero({
     );
     geometry.setAttribute(
       "aColor",
-      new THREE.BufferAttribute(generateColors(1), 3)
+      new THREE.BufferAttribute(generateColors(1, isDarkRef.current), 3)
     );
     geometry.setAttribute(
       "aSize",
-      new THREE.BufferAttribute(generateSizes(1), 1)
+      new THREE.BufferAttribute(generateSizes(1, isDarkRef.current), 1)
     );
     geometry.setAttribute(
       "aAlpha",
-      new THREE.BufferAttribute(generateAlphas(1), 1)
+      new THREE.BufferAttribute(generateAlphas(1, isDarkRef.current), 1)
     );
 
     geometryRef.current = geometry;
 
-    // Shader material
-    const [r, g, b] = CHAPTER_COLORS[1];
+    // Shader material — blending mode set by theme
+    const palette = isDarkRef.current ? CHAPTER_COLORS_DARK : CHAPTER_COLORS_LIGHT;
+    const [r, g, b] = palette[1];
     const material = new THREE.ShaderMaterial({
       vertexShader:   VERTEX_SHADER,
       fragmentShader: FRAGMENT_SHADER,
@@ -568,7 +611,7 @@ export default function ParticleHero({
       },
       transparent: true,
       depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      blending: isDarkRef.current ? THREE.AdditiveBlending : THREE.NormalBlending,
     });
 
     materialRef.current = material;
@@ -576,6 +619,7 @@ export default function ParticleHero({
     // Points mesh
     const points = new THREE.Points(geometry, material);
     scene.add(points);
+    pointsRef.current = points;
 
     // Pre-cache chapters 2-6 synchronously in background (staggered)
     let cacheIdx = 2;
@@ -629,6 +673,67 @@ export default function ParticleHero({
     };
   }, [getPositions]);
 
+  /* ── Theme change — update blending, colors, sizes, alphas ── */
+  useEffect(() => {
+    if (!materialRef.current || !geometryRef.current) return;
+
+    const material = materialRef.current;
+    const geometry = geometryRef.current;
+    const chapter  = prevChapterRef.current || 1;
+
+    // Switch blending mode
+    material.blending = isDark ? THREE.AdditiveBlending : THREE.NormalBlending;
+    material.needsUpdate = true;
+
+    // Update accent color uniform
+    const palette = isDark ? CHAPTER_COLORS_DARK : CHAPTER_COLORS_LIGHT;
+    const [tr, tg, tb] = palette[chapter] ?? palette[1];
+
+    const colorDur = PREFERS_REDUCED_MOTION ? 0.01 : 1.2;
+    gsap.to(material.uniforms.uAccentColor.value, {
+      x: tr,
+      y: tg,
+      z: tb,
+      duration: colorDur,
+      ease: "power1.inOut",
+    });
+
+    // Transition per-particle attributes to new theme
+    const newColors = generateColors(chapter, isDark);
+    const newSizes  = generateSizes(chapter, isDark);
+    const newAlphas = generateAlphas(chapter, isDark);
+    const colorAttr = geometry.attributes.aColor as THREE.BufferAttribute;
+    const sizeAttr  = geometry.attributes.aSize  as THREE.BufferAttribute;
+    const alphaAttr = geometry.attributes.aAlpha as THREE.BufferAttribute;
+
+    const oldColors = (colorAttr.array as Float32Array).slice();
+    const oldSizes  = (sizeAttr.array  as Float32Array).slice();
+    const oldAlphas = (alphaAttr.array as Float32Array).slice();
+
+    const themeProxy = { t: 0 };
+    gsap.to(themeProxy, {
+      t: 1,
+      duration: colorDur,
+      ease: "power1.inOut",
+      onUpdate() {
+        const t = themeProxy.t;
+        const ca = colorAttr.array as Float32Array;
+        const sa = sizeAttr.array  as Float32Array;
+        const aa = alphaAttr.array as Float32Array;
+        for (let i = 0; i < MAX_PARTICLES; i++) {
+          ca[i * 3]     = oldColors[i * 3]     + (newColors[i * 3]     - oldColors[i * 3])     * t;
+          ca[i * 3 + 1] = oldColors[i * 3 + 1] + (newColors[i * 3 + 1] - oldColors[i * 3 + 1]) * t;
+          ca[i * 3 + 2] = oldColors[i * 3 + 2] + (newColors[i * 3 + 2] - oldColors[i * 3 + 2]) * t;
+          sa[i]         = oldSizes[i]  + (newSizes[i]  - oldSizes[i])  * t;
+          aa[i]         = oldAlphas[i] + (newAlphas[i] - oldAlphas[i]) * t;
+        }
+        colorAttr.needsUpdate = true;
+        sizeAttr.needsUpdate  = true;
+        alphaAttr.needsUpdate = true;
+      },
+    });
+  }, [isDark]);
+
   /* ── Chapter morph on activeChapter change ── */
   useEffect(() => {
     if (
@@ -676,8 +781,10 @@ export default function ParticleHero({
       },
     });
 
-    // Transition accent color
-    const [tr, tg, tb] = CHAPTER_COLORS[activeChapter] ?? CHAPTER_COLORS[1];
+    // Transition accent color — use theme-appropriate palette
+    const dark = isDarkRef.current;
+    const palette = dark ? CHAPTER_COLORS_DARK : CHAPTER_COLORS_LIGHT;
+    const [tr, tg, tb] = palette[activeChapter] ?? palette[1];
     const colorDur = PREFERS_REDUCED_MOTION ? 0.01 : COLOR_DURATION;
     gsap.to(material.uniforms.uAccentColor.value, {
       x: tr,
@@ -700,10 +807,10 @@ export default function ParticleHero({
         ease: "power1.out",
       });
 
-    // Update per-particle attributes for new chapter
-    const newColors = generateColors(activeChapter);
-    const newSizes  = generateSizes(activeChapter);
-    const newAlphas = generateAlphas(activeChapter);
+    // Update per-particle attributes for new chapter (theme-aware)
+    const newColors = generateColors(activeChapter, dark);
+    const newSizes  = generateSizes(activeChapter, dark);
+    const newAlphas = generateAlphas(activeChapter, dark);
     const colorAttr = geometry.attributes.aColor as THREE.BufferAttribute;
     const sizeAttr  = geometry.attributes.aSize  as THREE.BufferAttribute;
     const alphaAttr = geometry.attributes.aAlpha as THREE.BufferAttribute;

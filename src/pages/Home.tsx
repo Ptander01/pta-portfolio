@@ -17,6 +17,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import PageTransition from "@/components/animations/PageTransition";
 import ParticleHero from "@/components/ParticleHero";
+import { useTheme } from "@/contexts/ThemeContext";
 
 /* ─────────────────────────────────────────────────────────────
    CHAPTER DATA
@@ -554,6 +555,8 @@ function HudNav({ activeChapter }: { activeChapter: number }) {
 ───────────────────────────────────────────────────────────── */
 export default function Home() {
   const activeChapter = useActiveChapter();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const handleIdentityComplete = useCallback(() => {
     window.dispatchEvent(new Event("identity:revealed"));
@@ -575,6 +578,7 @@ export default function Home() {
         <ParticleHero
           activeChapter={activeChapter}
           onIdentityComplete={handleIdentityComplete}
+          isDark={isDark}
         />
       </div>
 
