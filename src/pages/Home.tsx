@@ -1,6 +1,6 @@
 /**
- * Home Page — Hero + Stats + About section
- * Design: "Forged Monolith" — monolithic hero with forge glow,
+ * Home Page — Particle Hero + Stats + About section
+ * Design: "Forged Monolith" — cinematic 3D particle hero with forge glow,
  * massive typography, noise texture, neumorphic stat cards
  * Content: Personal portfolio voice for Patrick Anderson
  */
@@ -9,6 +9,7 @@ import PageTransition from "@/components/animations/PageTransition";
 import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
+import ParticleHero from "@/components/ParticleHero";
 import { ArrowRight, BookOpen, Code2, Globe, Layers } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
@@ -77,94 +78,8 @@ const techStack = [
 export default function Home() {
   return (
     <PageTransition>
-      {/* ═══════ HERO SECTION ═══════ */}
-      <section
-        className="relative min-h-screen flex items-center justify-start overflow-hidden noise-bg"
-        style={{ background: "var(--page-bg)" }}
-      >
-        {/* Subtle grid overlay */}
-        <div
-          className="absolute inset-0 z-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px)",
-            backgroundSize: "60px 60px",
-          }}
-        />
-        {/* Gradient overlay */}
-        <div
-          className="absolute inset-0 z-[1]"
-          style={{
-            background:
-              "radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.06) 0%, transparent 60%)",
-          }}
-        />
-
-        <div className="container relative z-10 pt-32 pb-24">
-          <div className="max-w-3xl">
-            <FadeIn delay={0.2} duration={0.8}>
-              <span
-                className="label-mono inline-block mb-6"
-                style={{ color: "var(--cyan)", fontSize: "0.7rem" }}
-              >
-                DATA VISUALIZATION &middot; ANALYTICS &middot; GEOSPATIAL
-              </span>
-            </FadeIn>
-
-            <FadeIn delay={0.4} duration={0.8}>
-              <h1 className="heading-xl mb-6" style={{ color: "var(--heading-color)" }}>
-                Patrick Anderson
-                <br />
-                <span className="text-glow-cyan" style={{ color: "var(--cyan)" }}>
-                  Geospatial Data Scientist
-                </span>
-                <br />
-                <span style={{ fontSize: "0.6em", fontWeight: 500, color: "var(--text-secondary)" }}>
-                  &amp; AI Infrastructure Engineer
-                </span>
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.6} duration={0.8}>
-              <p
-                className="body-lg max-w-xl mb-10"
-                style={{ color: "var(--text-muted)" }}
-              >
-                I build production-grade data pipelines and interactive spatial
-                dashboards that transform complex geospatial data into
-                executive-level intelligence. From satellite imagery analysis to
-                full-stack 3D visualization platforms, I bridge rigorous
-                scientific analysis with modern engineering.
-              </p>
-            </FadeIn>
-
-            <FadeIn delay={0.8} duration={0.8}>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/work">
-                  <span
-                    className="neu-raised inline-flex items-center gap-2 px-6 py-3 rounded-lg font-display font-semibold text-sm transition-all"
-                    style={{
-                      color: "var(--primary-foreground)",
-                      background: "var(--cyan)",
-                    }}
-                  >
-                    VIEW PROJECTS
-                    <ArrowRight size={16} />
-                  </span>
-                </Link>
-                <Link href="/contact">
-                  <span
-                    className="neu-flat inline-flex items-center gap-2 px-6 py-3 rounded-lg font-display font-medium text-sm"
-                    style={{ color: "var(--text-muted)" }}
-                  >
-                    GET IN TOUCH
-                  </span>
-                </Link>
-              </div>
-            </FadeIn>
-          </div>
-        </div>
-      </section>
+      {/* ═══════ 3D PARTICLE HERO (Scroll-Driven) ═══════ */}
+      <ParticleHero />
 
       {/* ═══════ STATS BAR ═══════ */}
       <section

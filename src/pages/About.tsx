@@ -1,16 +1,65 @@
 /**
- * About Page — Full career narrative + horizontal career timeline
+ * About Page — Full career narrative + horizontal career timeline + Philosophy section
  * Design: "Forged Monolith" — editorial typography with neumorphic cards
  * Content sourced from About_Me_Narrative.md
+ * S-5: Added "Philosophy & Approach" section emphasizing end-to-end ownership
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
+import StaggerChildren, {
+  StaggerItem,
+} from "@/components/animations/StaggerChildren";
 import CareerTimeline from "@/components/CareerTimeline";
 import {
+  ArrowRight,
+  Beaker,
+  Brain,
   Download,
+  Layers,
   MapPin,
+  MessageSquare,
+  Search,
   User,
 } from "lucide-react";
+
+/* ── Philosophy workflow steps ── */
+const workflowSteps = [
+  {
+    icon: Search,
+    title: "Problem Framing",
+    description:
+      "Every project begins with understanding the business context. I work directly with stakeholders to define the question before touching any data — ensuring the analysis serves a strategic purpose, not just a technical exercise.",
+    color: "var(--coral)",
+  },
+  {
+    icon: Layers,
+    title: "Data Collection & Preparation",
+    description:
+      "From satellite imagery tasking to field-collected soil samples, I source, clean, and harmonize data from disparate origins. My background in agricultural science and environmental physics means I understand the physical reality behind the numbers.",
+    color: "var(--amber)",
+  },
+  {
+    icon: Brain,
+    title: "Analysis & Architecture",
+    description:
+      "I design and build the analytical pipeline — whether that's geographically weighted regression models, spatial clustering algorithms, or full-stack React dashboards. The architecture is always purpose-built for the problem at hand.",
+    color: "var(--cyan)",
+  },
+  {
+    icon: Beaker,
+    title: "Interpretation & Insight",
+    description:
+      "Raw outputs are not deliverables. I draw conclusions from complex analyses, identify patterns that matter, and translate statistical results into actionable intelligence that drives real decisions.",
+    color: "var(--emerald)",
+  },
+  {
+    icon: MessageSquare,
+    title: "Communication & Delivery",
+    description:
+      "The final mile is the most critical. I present findings to both technical and non-technical audiences — from conference presentations alongside VA executive directors to interactive dashboards consumed by C-suite leadership at Meta.",
+    color: "var(--amber)",
+  },
+];
 
 export default function About() {
   return (
@@ -158,10 +207,132 @@ export default function About() {
         </div>
       </section>
 
+      {/* ═══════ PHILOSOPHY & APPROACH ═══════ */}
+      <section
+        className="relative py-28 noise-bg"
+        style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <div className="text-center mb-6">
+              <span
+                className="label-mono inline-block mb-4"
+                style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
+              >
+                PHILOSOPHY &amp; APPROACH
+              </span>
+              <h2
+                className="heading-lg mb-4"
+                style={{ color: "var(--heading-color)" }}
+              >
+                From Messy Data to
+                <br />
+                <span className="text-glow-cyan" style={{ color: "var(--cyan)" }}>
+                  Executive Intelligence.
+                </span>
+              </h2>
+              <p
+                className="body-lg max-w-3xl mx-auto"
+                style={{ color: "var(--text-muted)" }}
+              >
+                The industry is shifting from pure technical execution to critical
+                thinking, strategic analysis, and stakeholder communication. I
+                don&rsquo;t just build tools &mdash; I own the entire workflow from
+                experiential design and field data collection through iterative
+                complex analysis to drawing conclusions and communicating them to
+                both technical and non-technical audiences.
+              </p>
+            </div>
+          </FadeIn>
+
+          {/* Workflow arrow chain */}
+          <div className="mt-16 max-w-5xl mx-auto">
+            <StaggerChildren staggerDelay={0.12} className="space-y-0">
+              {workflowSteps.map((step, index) => (
+                <StaggerItem key={step.title}>
+                  <div className="flex items-start gap-6 mb-2">
+                    {/* Step number + connector line */}
+                    <div className="flex flex-col items-center flex-shrink-0" style={{ width: 48 }}>
+                      <div
+                        className="neu-concave rounded-full flex items-center justify-center"
+                        style={{ width: 48, height: 48 }}
+                      >
+                        <step.icon size={20} style={{ color: step.color }} />
+                      </div>
+                      {index < workflowSteps.length - 1 && (
+                        <div
+                          className="w-px flex-1 my-2"
+                          style={{
+                            minHeight: 32,
+                            background: `linear-gradient(to bottom, ${step.color}, transparent)`,
+                            opacity: 0.4,
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {/* Content card */}
+                    <div className="neu-raised rounded-xl p-6 flex-1 mb-4">
+                      <div className="flex items-center gap-3 mb-3">
+                        <span
+                          className="label-mono"
+                          style={{ color: step.color, fontSize: "0.55rem" }}
+                        >
+                          STEP {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <h3
+                          className="font-display font-semibold text-lg"
+                          style={{ color: "var(--heading-color)" }}
+                        >
+                          {step.title}
+                        </h3>
+                      </div>
+                      <p
+                        className="text-sm leading-relaxed"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        {step.description}
+                      </p>
+                    </div>
+                  </div>
+                </StaggerItem>
+              ))}
+            </StaggerChildren>
+          </div>
+
+          {/* Summary callout */}
+          <FadeIn delay={0.4} duration={0.7}>
+            <div className="mt-12 max-w-3xl mx-auto text-center">
+              <div className="neu-raised rounded-2xl p-8">
+                <p
+                  className="body-lg"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  This end-to-end ownership is what separates a data scientist
+                  from a data <em>analyst</em>. Every project in my portfolio
+                  demonstrates this complete loop &mdash; from understanding the
+                  business problem through building the analytical infrastructure
+                  to delivering actionable intelligence that drives real
+                  decisions.
+                </p>
+                <a
+                  href="/work"
+                  className="inline-flex items-center gap-2 mt-6 font-display font-medium text-sm transition-colors"
+                  style={{ color: "var(--cyan)" }}
+                >
+                  See this approach in action
+                  <ArrowRight size={14} />
+                </a>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* ═══════ CAREER TIMELINE (Horizontal) ═══════ */}
       <section
         className="relative py-20 noise-bg"
-        style={{ background: "var(--page-bg)" }}
+        style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>
@@ -190,7 +361,7 @@ export default function About() {
       {/* ═══════ LONG NARRATIVE ═══════ */}
       <section
         className="relative py-28 noise-bg"
-        style={{ background: "var(--surface-sunken)" }}
+        style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10 max-w-4xl mx-auto">
           <FadeIn duration={0.6}>

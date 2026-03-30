@@ -2,14 +2,32 @@
  * Project Detail / Case Study Page
  * Design: "Forged Monolith" — split-screen narrative with neumorphic feature cards
  * Template for all Tier 1 project case studies
+ * S-5: Added structured "Methodology & Workflow" section with end-to-end loop
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
 import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
-import { ArrowLeft, ExternalLink, Github } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Beaker,
+  Brain,
+  ExternalLink,
+  Github,
+  Layers,
+  MessageSquare,
+  Search,
+} from "lucide-react";
 import { Link, useParams } from "wouter";
+
+/* ── Methodology step type ── */
+interface MethodologyStep {
+  phase: string;
+  title: string;
+  description: string;
+}
 
 /* ── Project Data ── */
 interface ProjectData {
@@ -22,9 +40,19 @@ interface ProjectData {
   approach: string;
   techStack: { label: string; items: string }[];
   features: { title: string; description: string }[];
+  methodology: MethodologyStep[];
   demoUrl: string;
   githubUrl: string;
 }
+
+const methodologyIcons = [Search, Layers, Brain, Beaker, MessageSquare];
+const methodologyColors = [
+  "var(--coral)",
+  "var(--amber)",
+  "var(--cyan)",
+  "var(--emerald)",
+  "var(--amber)",
+];
 
 const projectData: Record<string, ProjectData> = {
   "mls-dashboard": {
@@ -71,6 +99,32 @@ const projectData: Record<string, ProjectData> = {
           "A dual-source data pipeline that combines curated static datasets with real-time API feeds, ensuring both reliability and freshness of data.",
       },
     ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "Defining the Analytical Scope",
+        description:
+          "MLS lacks a unified analytics platform that serves both casual fans and data-driven analysts. I defined six distinct analytical dimensions — team overview, player performance, financial analysis, travel logistics, tactical analysis, and league-wide comparisons — each requiring different data structures and visualization approaches.",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "Multi-Source Data Pipeline",
+        description:
+          "Data was sourced from public MLS APIs, web-scraped statistics, and manually curated datasets. I built a Python normalization pipeline that harmonized player stats, salary data, stadium coordinates, and schedule information into a unified JSON schema consumed by the frontend.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "Modular Tab-Based Analytics Engine",
+        description:
+          "Each tab was architected as an independent analytical module with its own data transformations, chart configurations, and interaction patterns. Three.js handles 3D visualizations (travel globe, extruded charts), while Recharts powers traditional 2D analytics. A custom design system ensures visual consistency across all modules.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Auto-Generated Data Journalism",
+        description:
+          "Rather than leaving interpretation to the user, I built an AI-powered insight engine that generates narrative summaries from live data — producing human-readable articles that contextualize statistical patterns, identify outliers, and surface actionable insights for each team and player.",
+      },
+    ],
     demoUrl: "https://mls-dashboard-psi.vercel.app/",
     githubUrl: "https://github.com/Ptander01/mls-dashboard",
   },
@@ -111,6 +165,32 @@ const projectData: Record<string, ProjectData> = {
         title: "Filterable Data Tables with Export",
         description:
           "TanStack Table integration with advanced filtering, sorting, and CSV export for downstream analysis and reporting.",
+      },
+    ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "The Consensus Challenge",
+        description:
+          "Meta's infrastructure intelligence team needed a single source of truth for global data center locations, but 9 different vendor sources provided conflicting coordinates, capacity figures, and operational statuses. The business question: which sources are reliable, and how do we reconcile disagreements?",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "9-Source Geospatial Harmonization",
+        description:
+          "I ingested geospatial records from 9 commercial data vendors, each with different schemas, coordinate systems, and naming conventions. A custom ETL pipeline normalized all records into a unified spatial schema, preserving source attribution for downstream confidence scoring.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "UCID Spatial Clustering Algorithm",
+        description:
+          "I designed and implemented a Universal Consensus ID (UCID) algorithm that clusters nearby records from different sources, scores agreement levels, and generates confidence-weighted consensus positions. The algorithm handles edge cases like overlapping campuses, renamed facilities, and decommissioned sites.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Interactive Consensus Dashboard",
+        description:
+          "Results were delivered through an interactive MapLibre GL dashboard where stakeholders can explore consensus confidence at the campus and building level, drill into vendor disagreements, and export filtered datasets for strategic planning and land acquisition decisions.",
       },
     ],
     demoUrl: "https://aidatacentertracker.vercel.app/",
@@ -155,6 +235,32 @@ const projectData: Record<string, ProjectData> = {
           "Filterable project database with comprehensive case profiles including investment amounts, failure causes, and residual development potential.",
       },
     ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "Turning Failure into Opportunity",
+        description:
+          "When data center projects fail, billions in infrastructure investment and years of permitting work may still hold residual value. The question: can we systematically identify which failed sites represent acquisition opportunities versus permanently compromised locations?",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "Comprehensive Failure Database",
+        description:
+          "I compiled data from regulatory filings, news archives, community opposition groups, and industry reports to build a comprehensive database of 28 failed or at-risk projects. Each record was enriched with geographic coordinates, failure stage classification, opposition categorization, and estimated investment figures.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "Stage-Gate Risk Framework",
+        description:
+          "I designed a multi-dimensional risk analysis framework that categorizes projects by failure stage (proposal, permitting, construction), opposition type (environmental, regulatory, community, infrastructure), and residual value potential. The framework enables systematic comparison across geographic regions and failure patterns.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Strategic Risk Intelligence Dashboard",
+        description:
+          "The dashboard translates complex risk data into actionable intelligence for land acquisition teams. Interactive maps show geographic clustering of failures, stage-gate visualizations reveal common failure patterns, and detailed case profiles provide the context needed for strategic decision-making.",
+      },
+    ],
     demoUrl: "https://dc-graveyard-dashboard.vercel.app/",
     githubUrl: "https://github.com/Ptander01/dc-graveyard-dashboard",
   },
@@ -195,6 +301,32 @@ const projectData: Record<string, ProjectData> = {
         title: "Synchronized Timeline Scrubber",
         description:
           "A unified timeline control that synchronizes imagery, charts, and data tables across all monitored sites for comparative temporal analysis.",
+      },
+    ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "Quantifying Physical Progress from Space",
+        description:
+          "Competitive intelligence teams needed to track data center construction progress across multiple global sites, but lacked a systematic way to quantify what satellite imagery revealed. The challenge: transform visual observations into measurable, comparable metrics.",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "Satellite Imagery Tasking & Ingestion",
+        description:
+          "I coordinated satellite imagery tasking across 5 priority sites, collecting 53 historical snapshots spanning multiple construction phases. Each image was georeferenced, color-balanced, and organized into a temporal sequence for systematic comparison.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "Temporal Change Detection Pipeline",
+        description:
+          "I built an automated pipeline that detects infrastructure changes between temporal snapshots — identifying cleared land, foundation work, structural steel, and completed buildings. A capacity forecasting model projects completion timelines based on observed construction velocity and industry benchmarks.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Interactive Temporal Explorer",
+        description:
+          "The platform delivers insights through an interactive swipe tool for visual comparison, synchronized timeline controls for multi-site analysis, and automated progress reports that translate pixel-level changes into executive-level construction intelligence.",
       },
     ],
     demoUrl: "https://satellite-explorer-seven.vercel.app/",
@@ -364,10 +496,98 @@ export default function ProjectDetail() {
         </div>
       </section>
 
-      {/* ═══════ APPROACH & TECH STACK ═══════ */}
+      {/* ═══════ METHODOLOGY & WORKFLOW (End-to-End Loop) ═══════ */}
       <section
         className="relative py-28 noise-bg"
         style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <div className="text-center mb-16">
+              <span
+                className="label-mono inline-block mb-4"
+                style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
+              >
+                METHODOLOGY &amp; WORKFLOW
+              </span>
+              <h2 className="heading-lg" style={{ color: "var(--heading-color)" }}>
+                End-to-End Ownership
+              </h2>
+              <p
+                className="body-lg max-w-2xl mx-auto mt-4"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Every project follows a complete analytical loop &mdash; from
+                understanding the business problem through building the
+                infrastructure to delivering actionable intelligence.
+              </p>
+            </div>
+          </FadeIn>
+
+          <div className="max-w-4xl mx-auto">
+            <StaggerChildren staggerDelay={0.12} className="space-y-0">
+              {project.methodology.map((step, index) => {
+                const Icon = methodologyIcons[index % methodologyIcons.length];
+                const color = methodologyColors[index % methodologyColors.length];
+                return (
+                  <StaggerItem key={step.phase}>
+                    <div className="flex items-start gap-6 mb-2">
+                      {/* Step icon + connector */}
+                      <div className="flex flex-col items-center flex-shrink-0" style={{ width: 48 }}>
+                        <div
+                          className="neu-concave rounded-full flex items-center justify-center"
+                          style={{ width: 48, height: 48 }}
+                        >
+                          <Icon size={20} style={{ color }} />
+                        </div>
+                        {index < project.methodology.length - 1 && (
+                          <div
+                            className="w-px flex-1 my-2"
+                            style={{
+                              minHeight: 32,
+                              background: `linear-gradient(to bottom, ${color}, transparent)`,
+                              opacity: 0.4,
+                            }}
+                          />
+                        )}
+                      </div>
+
+                      {/* Content card */}
+                      <div className="neu-raised rounded-xl p-6 flex-1 mb-4">
+                        <div className="flex items-center gap-3 mb-3">
+                          <span
+                            className="label-mono"
+                            style={{ color, fontSize: "0.55rem" }}
+                          >
+                            {step.phase}
+                          </span>
+                        </div>
+                        <h3
+                          className="font-display font-semibold text-lg mb-3"
+                          style={{ color: "var(--heading-color)" }}
+                        >
+                          {step.title}
+                        </h3>
+                        <p
+                          className="text-sm leading-relaxed"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          {step.description}
+                        </p>
+                      </div>
+                    </div>
+                  </StaggerItem>
+                );
+              })}
+            </StaggerChildren>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ APPROACH & TECH STACK ═══════ */}
+      <section
+        className="relative py-28 noise-bg"
+        style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -380,7 +600,7 @@ export default function ProjectDetail() {
                   THE APPROACH
                 </span>
                 <h2 className="heading-lg mb-6" style={{ color: "var(--heading-color)" }}>
-                  Methodology
+                  Technical Architecture
                 </h2>
                 <p
                   className="body-lg"
@@ -426,7 +646,7 @@ export default function ProjectDetail() {
       {/* ═══════ KEY FEATURES ═══════ */}
       <section
         className="relative py-20 noise-bg"
-        style={{ background: "var(--surface-sunken)" }}
+        style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>

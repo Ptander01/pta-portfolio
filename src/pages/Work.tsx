@@ -1,12 +1,11 @@
 /**
- * Work Page — Project index showing all Tier 1 projects
- * Design: "Forged Monolith" — grid of project cards with neumorphic styling
+ * Work Page — Project index with 3D Carousel
+ * Design: "Forged Monolith" — 3D perspective carousel with glassmorphism cards
+ * S-5: Replaced static grid with interactive 3D carousel
  */
 import FadeIn from "@/components/animations/FadeIn";
+import Carousel3D from "@/components/Carousel3D";
 import PageTransition from "@/components/animations/PageTransition";
-import StaggerChildren, {
-  StaggerItem,
-} from "@/components/animations/StaggerChildren";
 import {
   ArrowRight,
   BarChart3,
@@ -123,94 +122,21 @@ export default function Work() {
             >
               Each project represents a complete data pipeline &mdash; from raw
               ingestion through spatial analysis to interactive, executive-level
-              visualization. Click any project to explore the full case study.
+              visualization. Navigate the carousel to explore each case study.
             </p>
           </FadeIn>
         </div>
       </section>
 
-      {/* ═══════ PROJECT GRID ═══════ */}
+      {/* ═══════ 3D PROJECT CAROUSEL ═══════ */}
       <section
         className="relative py-20 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
-          <StaggerChildren
-            staggerDelay={0.12}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-8"
-          >
-            {projects.map((project) => (
-              <StaggerItem key={project.slug}>
-                <Link href={`/work/${project.slug}`}>
-                  <div className="neu-raised rounded-2xl overflow-hidden h-full flex flex-col cursor-pointer group">
-                    {/* Card header with icon */}
-                    <div
-                      className="relative p-8 flex items-center gap-6"
-                      style={{
-                        background: `linear-gradient(135deg, var(--neu-bg-concave-from), var(--neu-bg-concave-to))`,
-                      }}
-                    >
-                      <div
-                        className="neu-concave rounded-xl p-4 flex items-center justify-center flex-shrink-0"
-                        style={{ minWidth: 64, minHeight: 64 }}
-                      >
-                        <project.icon
-                          size={28}
-                          style={{ color: project.color }}
-                        />
-                      </div>
-                      <div>
-                        <span
-                          className="label-mono mb-1 block"
-                          style={{ color: project.color, fontSize: "0.55rem" }}
-                        >
-                          {project.subtitle}
-                        </span>
-                        <h3
-                          className="font-display font-bold text-xl group-hover:text-glow-cyan transition-all"
-                          style={{ color: "var(--heading-color)" }}
-                        >
-                          {project.title}
-                        </h3>
-                      </div>
-                    </div>
-
-                    {/* Card body */}
-                    <div className="p-8 flex-1 flex flex-col">
-                      <p
-                        className="text-sm leading-relaxed mb-6 flex-1"
-                        style={{ color: "var(--text-muted)" }}
-                      >
-                        {project.description}
-                      </p>
-
-                      {/* Tech pills */}
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {project.techHighlights.map((tech) => (
-                          <span
-                            key={tech}
-                            className="neu-concave rounded-md px-3 py-1.5 font-mono text-xs"
-                            style={{ color: "var(--text-secondary)" }}
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* CTA */}
-                      <div
-                        className="flex items-center gap-2 font-display font-medium text-sm group-hover:gap-3 transition-all"
-                        style={{ color: project.color }}
-                      >
-                        View Case Study
-                        <ArrowRight size={14} />
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </StaggerItem>
-            ))}
-          </StaggerChildren>
+          <FadeIn duration={0.7}>
+            <Carousel3D projects={projects} />
+          </FadeIn>
         </div>
       </section>
     </PageTransition>
