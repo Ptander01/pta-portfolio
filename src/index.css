@@ -105,6 +105,7 @@
   --surface: #1e1e2e;
   --surface-raised: #252538;
   --surface-sunken: #161625;
+  --surface-deep: #0A0A0B;
 
   /* Neumorphic shadow tokens */
   --neu-shadow-dark: rgba(0, 0, 0, 0.5);
@@ -199,6 +200,7 @@
   --surface: #e0e5ec;
   --surface-raised: #e8ecf1;
   --surface-sunken: #d6dbe3;
+  --surface-deep: #F3F4F6;
 
   /* Neumorphic shadow tokens — light on light */
   --neu-shadow-dark: rgba(163, 177, 198, 0.6);
@@ -751,7 +753,7 @@
   padding: 1.25rem 1rem;
   border: 1px solid var(--border-subtle);
   border-top-color: var(--border-mid);
-  background: rgba(13, 17, 23, 0.7);
+  background: var(--surface-raised);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   position: relative;
@@ -1041,3 +1043,287 @@
   .hud-logo::before     { animation: none; }
   .chapter-progress-bar { transition: none; }
 }
+
+/*
+ * ═══════════════════════════════════════════════════════════════
+ * PTA PORTFOLIO SITE — TEXTURE & REFINEMENT ADDENDUM
+ * Add this block at the END of src/index.css
+ *
+ * This adds the paper/fiber texture system to the portfolio site
+ * and a few editorial refinements that unify it with the
+ * upgraded MLS dashboard aesthetic.
+ *
+ * The portfolio and dashboard now share:
+ *   - Playfair Display (headlines)
+ *   - DM Sans (body)
+ *   - Space Mono (data labels)
+ *   - Identical noise texture implementation
+ *   - Same chart source citation style
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ═══════════════════════════════════════════════════════════════
+   PAPER / FIBER TEXTURE SYSTEM
+   Identical implementation to the MLS dashboard for consistency.
+   ═══════════════════════════════════════════════════════════════ */
+
+.texture-light,
+.texture-dark {
+  position: relative;
+  isolation: isolate;
+}
+
+.texture-light::before,
+.texture-dark::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+}
+
+/* Light surfaces — paper grain */
+.texture-light::before {
+  opacity: 0.032;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  mix-blend-mode: multiply;
+}
+
+/* Dark surfaces — fiber grain */
+.texture-dark::before {
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: screen;
+}
+
+/* ── Apply texture to chapter sections automatically ── */
+.chapter-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: screen;
+}
+
+/* ── Apply texture to data panels ── */
+.data-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  mix-blend-mode: screen;
+  border-radius: inherit;
+}
+
+/* ── Stat cards get subtle texture ── */
+.stat-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  mix-blend-mode: screen;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EDITORIAL HEADLINE REFINEMENTS
+   Small calibrations to the Playfair Display rendering that
+   improve legibility at smaller sizes.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Force subpixel rendering on Playfair for crisp serifs */
+.heading-xl,
+.heading-xl-italic,
+.heading-lg,
+.heading-md,
+.heading-sm,
+.identity-name,
+.chart-panel-title {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Italic lines breathe a touch wider */
+.heading-xl em,
+.heading-xl-italic,
+.heading-lg em {
+  letter-spacing: 0.005em;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SOURCE CITATION — matches dashboard implementation
+   Use at the bottom of any work showcase section.
+   ═══════════════════════════════════════════════════════════════ */
+.source-citation {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 0.5px solid var(--border-subtle);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   WORK SHOWCASE SECTION
+   For featuring the MLS dashboard inside the portfolio scroll.
+   Lavergne-style: full bleed, generous whitespace, artifact feel.
+   ═══════════════════════════════════════════════════════════════ */
+.work-showcase {
+  position: relative;
+  padding: 6rem 6vw;
+  z-index: 10;
+}
+
+.work-showcase-label {
+  font-family: "Space Mono", monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--harvest);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.work-showcase-label::before {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+}
+
+.work-showcase-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--heading-color);
+  margin-bottom: 0.75rem;
+}
+
+.work-showcase-title em {
+  font-style: italic;
+  color: var(--harvest);
+}
+
+.work-showcase-body {
+  font-family: "DM Sans", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin-bottom: 2rem;
+}
+
+/* Screenshot frame — editorial artifact presentation */
+.work-screenshot-frame {
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  border-top-color: var(--border-mid);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* Corner bracket decoration — top left */
+.work-screenshot-frame::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 16px;
+  height: 16px;
+  border-top: 2px solid var(--harvest);
+  border-left: 2px solid var(--harvest);
+  z-index: 2;
+}
+
+/* Corner bracket decoration — bottom right */
+.work-screenshot-frame::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 16px;
+  height: 16px;
+  border-bottom: 2px solid var(--harvest);
+  border-right: 2px solid var(--harvest);
+  z-index: 2;
+}
+
+.work-screenshot-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.work-screenshot-frame:hover img {
+  transform: scale(1.015);
+}
+
+/* Screenshot caption */
+.work-screenshot-caption {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CAREER SECTION ENHANCEMENTS
+   For the timeline + table section that lives between the scroll
+   chapters and the identity reveal.
+   ═══════════════════════════════════════════════════════════════ */
+
+.career-section {
+  position: relative;
+  padding: 6rem 6vw;
+  z-index: 10;
+  background: var(--surface-deep);
+}
+
+/* Subtle top border to separate from scroll */
+.career-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 6vw; right: 6vw;
+  height: 0.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--border-mid) 20%,
+    var(--border-mid) 80%,
+    transparent
+  );
+}
+
+/* Timeline segment colors — matches widget demo */
+.tl-seg-ag    { background: #639922; }
+.tl-seg-grad  { background: #7F77DD; }
+.tl-seg-health{ background: #378ADD; }
+.tl-seg-meta  { background: #E8A030; }

@@ -3,6 +3,7 @@
  * Design: "Forged Monolith" — split-screen narrative with neumorphic feature cards
  * Template for all Tier 1 project case studies
  * S-5: Added structured "Methodology & Workflow" section with end-to-end loop
+ * S-8: Added Hero Image, Process Gallery, Impact Metrics, and 2 missing projects
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
@@ -29,6 +30,19 @@ interface MethodologyStep {
   description: string;
 }
 
+/* ── Gallery image type ── */
+interface GalleryImage {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+/* ── Impact metric type ── */
+interface ImpactMetric {
+  value: string;
+  label: string;
+}
+
 /* ── Project Data ── */
 interface ProjectData {
   slug: string;
@@ -43,6 +57,9 @@ interface ProjectData {
   methodology: MethodologyStep[];
   demoUrl: string;
   githubUrl: string;
+  heroImage?: string;
+  gallery?: GalleryImage[];
+  impactMetrics?: ImpactMetric[];
 }
 
 const methodologyIcons = [Search, Layers, Brain, Beaker, MessageSquare];
@@ -127,6 +144,17 @@ const projectData: Record<string, ProjectData> = {
     ],
     demoUrl: "https://mls-dashboard-one.vercel.app/",
     githubUrl: "https://github.com/Ptander01/mls-dashboard",
+    heroImage: "/assets/projects/mls-dashboard/hero.webp",
+    gallery: [
+      { src: "/assets/projects/mls-dashboard/3d-pitch.webp", alt: "3D Pitch Visualization", caption: "THREE.JS 3D PITCH — TACTICAL FORMATION OVERLAY" },
+      { src: "/assets/projects/mls-dashboard/budget-chart.webp", alt: "Stacked Bar Budget Chart", caption: "TEAM BUDGET — STACKED BAR SALARY BREAKDOWN" },
+      { src: "/assets/projects/mls-dashboard/scatter-plot.webp", alt: "Player Scatter Plot", caption: "PLAYER PERFORMANCE — MULTI-AXIS SCATTER ANALYSIS" },
+    ],
+    impactMetrics: [
+      { value: "619+", label: "Players Tracked" },
+      { value: "30", label: "MLS Teams Covered" },
+      { value: "6", label: "Analytical Modules" },
+    ],
   },
   "consensus-viewer": {
     slug: "consensus-viewer",
@@ -195,6 +223,16 @@ const projectData: Record<string, ProjectData> = {
     ],
     demoUrl: "https://aidatacentertracker.vercel.app/",
     githubUrl: "https://github.com/Ptander01/consensus-viewer",
+    heroImage: "/assets/projects/consensus-viewer/hero.webp",
+    gallery: [
+      { src: "/assets/projects/consensus-viewer/map-view.webp", alt: "Main Map View", caption: "CONSENSUS MAP — CAMPUS-LEVEL CONFIDENCE SCORING" },
+      { src: "/assets/projects/consensus-viewer/harmonization-table.webp", alt: "Source Harmonization Table", caption: "SOURCE HARMONIZATION — 9-VENDOR RECONCILIATION TABLE" },
+    ],
+    impactMetrics: [
+      { value: "9", label: "Vendor Sources Harmonized" },
+      { value: "120", label: "Campuses Mapped" },
+      { value: "280", label: "Buildings Tracked" },
+    ],
   },
   "dc-graveyard": {
     slug: "dc-graveyard",
@@ -263,6 +301,16 @@ const projectData: Record<string, ProjectData> = {
     ],
     demoUrl: "https://dc-graveyard-dashboard.vercel.app/",
     githubUrl: "https://github.com/Ptander01/dc-graveyard-dashboard",
+    heroImage: "/assets/projects/dc-graveyard/hero.webp",
+    gallery: [
+      { src: "/assets/projects/dc-graveyard/stage-gate.webp", alt: "Stage-Gate Visualization", caption: "STAGE-GATE ANALYSIS — PROJECT FAILURE PIPELINE" },
+      { src: "/assets/projects/dc-graveyard/case-profile.webp", alt: "Detailed Case Profile", caption: "CASE PROFILE — OPPOSITION FACTOR BREAKDOWN" },
+    ],
+    impactMetrics: [
+      { value: "28", label: "At-Risk Projects Tracked" },
+      { value: "11", label: "US States Covered" },
+      { value: "$4.2B+", label: "Investment Analyzed" },
+    ],
   },
   "satellite-explorer": {
     slug: "satellite-explorer",
@@ -331,9 +379,315 @@ const projectData: Record<string, ProjectData> = {
     ],
     demoUrl: "https://satellite-explorer-seven.vercel.app/",
     githubUrl: "https://github.com/Ptander01/satellite-explorer",
+    heroImage: "/assets/projects/satellite-explorer/hero.webp",
+    gallery: [
+      { src: "/assets/projects/satellite-explorer/swipe-tool.webp", alt: "Historical Imagery Swipe Tool", caption: "TEMPORAL SWIPE — BEFORE/AFTER CONSTRUCTION COMPARISON" },
+      { src: "/assets/projects/satellite-explorer/timeline.webp", alt: "Timeline Scrubber", caption: "SYNCHRONIZED TIMELINE — MULTI-SITE TEMPORAL ANALYSIS" },
+    ],
+    impactMetrics: [
+      { value: "53", label: "Historical Snapshots" },
+      { value: "5", label: "Sites Monitored" },
+      { value: "3yr", label: "Temporal Coverage" },
+    ],
+  },
+  "dc-parcel-dashboard": {
+    slug: "dc-parcel-dashboard",
+    title: "DC Parcel Dashboard",
+    subtitle: "REAL ESTATE INTELLIGENCE PLATFORM",
+    color: "var(--cyan)",
+    problem:
+      "How do you evaluate hundreds of potential data center sites simultaneously — comparing zoning, utility access, environmental constraints, and acquisition timelines — without drowning in spreadsheets?",
+    outcome:
+      "An interactive parcel-level intelligence dashboard for data center site evaluation, combining zoning data, utility infrastructure, environmental constraints, and acquisition timelines into a unified decision-support tool covering multiple metro areas.",
+    approach:
+      "I built a geospatial decision-support platform that layers parcel-level zoning data, utility infrastructure maps, and environmental constraint overlays into a single interactive interface. The system includes a Gantt-style acquisition timeline tracker and dual-panel comparison tools for side-by-side site evaluation.",
+    techStack: [
+      { label: "FRONTEND", items: "React 18 · TypeScript · Vite" },
+      { label: "MAPPING", items: "MapLibre GL JS · Parcel Boundary Layers" },
+      { label: "CHARTS", items: "Apache ECharts · Gantt Timeline · Comparison Panels" },
+      { label: "DATA", items: "TanStack Table · Zoning Classification · Utility Scoring" },
+    ],
+    features: [
+      {
+        title: "Parcel-Level Symbology Map",
+        description:
+          "Interactive map with custom symbology showing zoning classifications, utility proximity scores, and environmental constraint overlays for each parcel.",
+      },
+      {
+        title: "Acquisition Timeline Gantt",
+        description:
+          "A Gantt-style visualization tracking acquisition milestones across multiple sites, with 36+ milestone markers per project and critical path highlighting.",
+      },
+      {
+        title: "Dual-Panel Site Comparison",
+        description:
+          "Side-by-side comparison tool for evaluating competing sites across acreage, zoning, utility access, and environmental risk dimensions.",
+      },
+      {
+        title: "Site Intelligence Tables",
+        description:
+          "Filterable data tables with parcel-level detail including ownership records, zoning history, utility distance calculations, and environmental assessments.",
+      },
+    ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "Systematizing Site Selection",
+        description:
+          "Data center site selection involves evaluating dozens of variables across hundreds of parcels — zoning compatibility, utility access, environmental risk, and acquisition complexity. The challenge: replace ad hoc spreadsheet analysis with a systematic, map-driven decision framework.",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "Multi-Layer Geospatial Assembly",
+        description:
+          "I assembled parcel boundary data, zoning classifications, utility infrastructure maps, environmental constraint layers, and ownership records from county GIS systems, utility providers, and public records databases. Each layer was georeferenced and normalized into a unified spatial schema.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "Composite Site Scoring Engine",
+        description:
+          "I designed a multi-criteria scoring framework that weights zoning compatibility, utility proximity, environmental risk, and acquisition complexity into a composite site score. The system supports custom weight profiles for different evaluation scenarios and stakeholder priorities.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Interactive Decision-Support Dashboard",
+        description:
+          "The dashboard delivers site intelligence through an interactive map with parcel-level drill-down, Gantt-style acquisition timelines, dual-panel comparison tools, and exportable data tables — enabling land acquisition teams to make data-driven site selection decisions.",
+      },
+    ],
+    demoUrl: "https://dc-parcel-dashboard.vercel.app/",
+    githubUrl: "https://github.com/Ptander01/dc-parcel-dashboard",
+    heroImage: "/assets/projects/dc-parcel-dashboard/hero.webp",
+    gallery: [
+      { src: "/assets/projects/dc-parcel-dashboard/symbology-map.webp", alt: "Parcel Symbology Map", caption: "PARCEL SYMBOLOGY — ZONING & UTILITY OVERLAY" },
+      { src: "/assets/projects/dc-parcel-dashboard/gantt-timeline.webp", alt: "Acquisition Timeline Gantt", caption: "ACQUISITION GANTT — 36 MILESTONE TRACKER" },
+      { src: "/assets/projects/dc-parcel-dashboard/compare-sites.webp", alt: "Dual-Panel Site Comparison", caption: "SITE COMPARISON — DUAL-PANEL ACREAGE ANALYSIS" },
+    ],
+    impactMetrics: [
+      { value: "36+", label: "Milestones per Site" },
+      { value: "4", label: "Metro Areas Covered" },
+      { value: "158K", label: "Lines of Code" },
+    ],
+  },
+  "agent-flow-visualizer": {
+    slug: "agent-flow-visualizer",
+    title: "Agent Flow Visualizer",
+    subtitle: "AI WORKFLOW INTELLIGENCE",
+    color: "var(--emerald)",
+    problem:
+      "When multiple AI agents collaborate on complex geospatial analysis tasks, how do you observe, debug, and understand the reasoning chains that produce the final output?",
+    outcome:
+      "A real-time visualization of multi-agent AI orchestration workflows, showing how autonomous agents collaborate through structured reasoning chains to solve complex geospatial analysis tasks — with chronological replay and node-graph exploration.",
+    approach:
+      "I built a dual-view visualization system that captures and replays multi-agent workflows in real time. The chronological timeline view shows the temporal sequence of agent actions, while the node-graph view reveals the dependency structure and data flow between agents. Both views are synchronized and support interactive exploration.",
+    techStack: [
+      { label: "FRONTEND", items: "React 18 · TypeScript · Vite" },
+      { label: "VISUALIZATION", items: "D3.js · Custom Node Graph · Timeline Engine" },
+      { label: "DATA", items: "WebSocket · Real-Time Event Stream · JSON Replay" },
+      { label: "DESIGN", items: "Neumorphic UI · Animated Transitions · Framer Motion" },
+    ],
+    features: [
+      {
+        title: "Chronological Replay Timeline",
+        description:
+          "A scrubable timeline that replays multi-agent workflows step by step, showing the exact sequence of reasoning, tool calls, and data transformations.",
+      },
+      {
+        title: "Interactive Node Graph",
+        description:
+          "A D3.js-powered directed graph showing agent dependencies, data flow paths, and reasoning chain connections with animated edge traversal.",
+      },
+      {
+        title: "Agent Action Detail Panels",
+        description:
+          "Expandable detail panels for each agent action showing input/output data, reasoning context, tool invocations, and execution timing.",
+      },
+      {
+        title: "Real-Time Event Streaming",
+        description:
+          "WebSocket-based live event capture that streams agent actions as they occur, enabling real-time monitoring of active orchestration workflows.",
+      },
+    ],
+    methodology: [
+      {
+        phase: "PROBLEM FRAMING",
+        title: "Making AI Reasoning Visible",
+        description:
+          "Multi-agent AI systems produce complex, branching reasoning chains that are nearly impossible to debug from log files alone. The challenge: create an intuitive visual interface that makes agent collaboration patterns, decision points, and data transformations immediately comprehensible.",
+      },
+      {
+        phase: "DATA COLLECTION & PREP",
+        title: "Agent Event Schema Design",
+        description:
+          "I designed a structured event schema that captures every agent action — tool calls, reasoning steps, data transformations, and inter-agent messages — with precise timestamps and dependency metadata. This schema enables both real-time streaming and historical replay.",
+      },
+      {
+        phase: "ANALYSIS & ARCHITECTURE",
+        title: "Dual-View Visualization Engine",
+        description:
+          "I architected a synchronized dual-view system: a chronological timeline for temporal analysis and a node graph for structural analysis. Both views share a common data model and respond to the same interaction events, enabling seamless switching between temporal and structural perspectives.",
+      },
+      {
+        phase: "INTERPRETATION & COMMUNICATION",
+        title: "Interactive Workflow Explorer",
+        description:
+          "The visualizer delivers insights through interactive replay controls, expandable detail panels, and animated graph traversal — enabling developers and stakeholders to understand exactly how AI agents collaborate, where bottlenecks occur, and how reasoning chains produce final outputs.",
+      },
+    ],
+    demoUrl: "https://agentflow-eaqzkikc.manus.space",
+    githubUrl: "https://github.com/Ptander01/agent-flow-visualizer",
+    heroImage: "/assets/projects/agent-flow-visualizer/hero.webp",
+    gallery: [
+      { src: "/assets/projects/agent-flow-visualizer/timeline.webp", alt: "Chronological Replay Timeline", caption: "CHRONOLOGICAL REPLAY — STEP-BY-STEP AGENT ACTIONS" },
+      { src: "/assets/projects/agent-flow-visualizer/node-graph.webp", alt: "Interactive Node Graph", caption: "NODE GRAPH — AGENT DEPENDENCY & DATA FLOW" },
+    ],
+    impactMetrics: [
+      { value: "5", label: "Agent Types Visualized" },
+      { value: "Real-Time", label: "Event Streaming" },
+      { value: "2", label: "Synchronized Views" },
+    ],
   },
 };
 
+/* ═══════════════════════════════════════════════════════════════
+   HERO IMAGE SECTION
+   Full-width screenshot at the top of the case study.
+   Uses the .work-screenshot-frame class from the texture addendum.
+   ═══════════════════════════════════════════════════════════════ */
+function HeroImage({ src, alt, color }: { src: string; alt: string; color: string }) {
+  return (
+    <section
+      className="relative py-12 noise-bg"
+      style={{ background: "var(--surface-sunken)" }}
+    >
+      <div className="container relative z-10">
+        <FadeIn duration={0.8}>
+          <div className="work-screenshot-frame rounded-lg" style={{ borderTopColor: color }}>
+            <img
+              src={src}
+              alt={alt}
+              className="w-full h-auto"
+              loading="eager"
+            />
+          </div>
+        </FadeIn>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   IMPACT METRICS ROW
+   3-column stats row with neumorphic cards.
+   ═══════════════════════════════════════════════════════════════ */
+function ImpactMetricsRow({ metrics, color }: { metrics: ImpactMetric[]; color: string }) {
+  return (
+    <section
+      className="relative py-20 noise-bg"
+      style={{ background: "var(--page-bg)" }}
+    >
+      <div className="container relative z-10">
+        <FadeIn duration={0.6}>
+          <div className="text-center mb-12">
+            <span
+              className="label-mono inline-block mb-4"
+              style={{ color, fontSize: "0.65rem" }}
+            >
+              IMPACT AT A GLANCE
+            </span>
+          </div>
+        </FadeIn>
+        <StaggerChildren
+          staggerDelay={0.12}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto"
+        >
+          {metrics.map((metric, i) => (
+            <StaggerItem key={i}>
+              <div className="stat-card rounded-xl text-center py-8 px-4">
+                <div
+                  className="data-value mb-2"
+                  style={{ color }}
+                >
+                  {metric.value}
+                </div>
+                <div
+                  className="label-mono"
+                  style={{ color: "var(--text-muted)", fontSize: "0.6rem" }}
+                >
+                  {metric.label}
+                </div>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROCESS GALLERY
+   Grid gallery with .work-screenshot-frame artifact framing.
+   ═══════════════════════════════════════════════════════════════ */
+function ProcessGallery({ images, color }: { images: GalleryImage[]; color: string }) {
+  return (
+    <section
+      className="work-showcase noise-bg"
+      style={{ background: "var(--surface-deep)", padding: "5rem 6vw" }}
+    >
+      <div className="container relative z-10">
+        <FadeIn duration={0.6}>
+          <div className="mb-12">
+            <span
+              className="work-showcase-label"
+              style={{ color }}
+            >
+              VISUAL EVIDENCE
+            </span>
+            <h2 className="work-showcase-title">
+              Process <em>&amp; Output</em>
+            </h2>
+          </div>
+        </FadeIn>
+        <StaggerChildren
+          staggerDelay={0.15}
+          className={`grid gap-6 ${
+            images.length === 1
+              ? "grid-cols-1"
+              : images.length === 2
+              ? "grid-cols-1 md:grid-cols-2"
+              : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          }`}
+        >
+          {images.map((img, i) => (
+            <StaggerItem key={i}>
+              <div>
+                <div className="work-screenshot-frame rounded-lg">
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    className="w-full h-auto"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="work-screenshot-caption mt-3">
+                  <span>{img.caption}</span>
+                  <span style={{ opacity: 0.5 }}>
+                    {String(i + 1).padStart(2, "0")}/{String(images.length).padStart(2, "0")}
+                  </span>
+                </div>
+              </div>
+            </StaggerItem>
+          ))}
+        </StaggerChildren>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN COMPONENT
+   ═══════════════════════════════════════════════════════════════ */
 export default function ProjectDetail() {
   const params = useParams<{ slug: string }>();
   const project = projectData[params.slug || ""];
@@ -446,6 +800,16 @@ export default function ProjectDetail() {
         </div>
       </section>
 
+      {/* ═══════ HERO IMAGE (S-8) ═══════ */}
+      {project.heroImage && (
+        <HeroImage src={project.heroImage} alt={`${project.title} — Hero Screenshot`} color={project.color} />
+      )}
+
+      {/* ═══════ IMPACT METRICS (S-8) ═══════ */}
+      {project.impactMetrics && project.impactMetrics.length > 0 && (
+        <ImpactMetricsRow metrics={project.impactMetrics} color={project.color} />
+      )}
+
       {/* ═══════ PROBLEM & OUTCOME (Split Screen) ═══════ */}
       <section
         className="relative py-32 noise-bg"
@@ -495,6 +859,11 @@ export default function ProjectDetail() {
           </div>
         </div>
       </section>
+
+      {/* ═══════ PROCESS GALLERY (S-8) ═══════ */}
+      {project.gallery && project.gallery.length > 0 && (
+        <ProcessGallery images={project.gallery} color={project.color} />
+      )}
 
       {/* ═══════ METHODOLOGY & WORKFLOW (End-to-End Loop) ═══════ */}
       <section
