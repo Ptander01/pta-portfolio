@@ -54,8 +54,8 @@
   --color-surface: var(--surface);
   --color-surface-raised: var(--surface-raised);
   --color-surface-sunken: var(--surface-sunken);
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-mono: "Space Mono", monospace;
 }
 
 /* ═══════════════════════════════════════════════════
@@ -253,7 +253,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-family: "DM Sans", system-ui, sans-serif;
     background-color: var(--page-bg);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
@@ -404,15 +404,15 @@
    TYPOGRAPHY UTILITIES
    ═══════════════════════════════════════════════════ */
 .font-display {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Playfair Display", Georgia, serif;
 }
 
 .font-mono {
-  font-family: "JetBrains Mono", monospace;
+  font-family: "Space Mono", monospace;
 }
 
 .heading-xl {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-weight: 700;
   font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
   line-height: 1.05;
@@ -420,7 +420,7 @@
 }
 
 .heading-lg {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-weight: 700;
   font-size: clamp(1.75rem, 3vw + 0.5rem, 3rem);
   line-height: 1.1;
@@ -428,21 +428,21 @@
 }
 
 .heading-md {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "Playfair Display", Georgia, serif;
   font-weight: 600;
   font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem);
   line-height: 1.2;
 }
 
 .body-lg {
-  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-family: "DM Sans", system-ui, sans-serif;
   font-weight: 300;
   font-size: 1.125rem;
   line-height: 1.7;
 }
 
 .label-mono {
-  font-family: "JetBrains Mono", monospace;
+  font-family: "Space Mono", monospace;
   font-weight: 500;
   font-size: 0.75rem;
   letter-spacing: 0.15em;
@@ -663,6 +663,18 @@
 .chapter-content {
   max-width: 520px;
   pointer-events: auto;
+  /* Legibility backdrop: subtle blur behind text so particles never obscure copy */
+  background: rgba(7, 10, 14, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 2rem 2.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(100, 160, 220, 0.06);
+}
+
+[data-theme="light"] .chapter-content {
+  background: rgba(240, 240, 243, 0.55);
+  border-color: rgba(0, 0, 0, 0.06);
 }
 
 /* Chapter tag line — e.g. "Chapter 01 · Capture" */

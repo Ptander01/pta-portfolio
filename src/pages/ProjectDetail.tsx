@@ -125,7 +125,7 @@ const projectData: Record<string, ProjectData> = {
           "Rather than leaving interpretation to the user, I built an AI-powered insight engine that generates narrative summaries from live data — producing human-readable articles that contextualize statistical patterns, identify outliers, and surface actionable insights for each team and player.",
       },
     ],
-    demoUrl: "https://mls-dashboard-psi.vercel.app/",
+    demoUrl: "https://mls-dashboard-one.vercel.app/",
     githubUrl: "https://github.com/Ptander01/mls-dashboard",
   },
   "consensus-viewer": {
@@ -387,7 +387,7 @@ export default function ProjectDetail() {
           }}
         />
 
-        <div className="container relative z-10 pt-32 pb-16">
+        <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.1} duration={0.6}>
             <Link href="/work">
               <span
@@ -448,11 +448,11 @@ export default function ProjectDetail() {
 
       {/* ═══════ PROBLEM & OUTCOME (Split Screen) ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <FadeIn direction="left" duration={0.7}>
               <div>
                 <span
@@ -498,12 +498,12 @@ export default function ProjectDetail() {
 
       {/* ═══════ METHODOLOGY & WORKFLOW (End-to-End Loop) ═══════ */}
       <section
-        className="relative py-28 noise-bg"
+        className="relative py-40 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>
-            <div className="text-center mb-16">
+            <div className="text-center mb-20">
               <span
                 className="label-mono inline-block mb-4"
                 style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
@@ -586,7 +586,7 @@ export default function ProjectDetail() {
 
       {/* ═══════ APPROACH & TECH STACK ═══════ */}
       <section
-        className="relative py-28 noise-bg"
+        className="relative py-40 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
@@ -645,12 +645,12 @@ export default function ProjectDetail() {
 
       {/* ═══════ KEY FEATURES ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>
-            <div className="text-center mb-16">
+            <div className="text-center mb-20">
               <span
                 className="label-mono inline-block mb-4"
                 style={{ color: project.color, fontSize: "0.65rem" }}

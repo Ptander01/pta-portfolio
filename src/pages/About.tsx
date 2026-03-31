@@ -85,7 +85,7 @@ export default function About() {
           }}
         />
 
-        <div className="container relative z-10 pt-32 pb-12">
+        <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.2} duration={0.8}>
             <span
               className="label-mono inline-block mb-4"
@@ -120,11 +120,11 @@ export default function About() {
 
       {/* ═══════ ELEVATOR PITCH ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
             {/* Photo placeholder */}
             <div className="lg:col-span-2">
               <FadeIn direction="left" duration={0.7}>
@@ -157,7 +157,8 @@ export default function About() {
                     </span>
                   </div>
                   <a
-                    href="#"
+                    href="/Patrick_Anderson_Resume.pdf"
+                    download
                     className="neu-flat inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-display font-medium text-sm transition-all"
                     style={{ color: "var(--cyan)" }}
                   >
@@ -209,12 +210,12 @@ export default function About() {
 
       {/* ═══════ PHILOSOPHY & APPROACH ═══════ */}
       <section
-        className="relative py-28 noise-bg"
+        className="relative py-40 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>
-            <div className="text-center mb-6">
+            <div className="text-center mb-8">
               <span
                 className="label-mono inline-block mb-4"
                 style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
@@ -331,12 +332,12 @@ export default function About() {
 
       {/* ═══════ CAREER TIMELINE (Horizontal) ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
           <FadeIn duration={0.6}>
-            <div className="text-center mb-12">
+            <div className="text-center mb-16">
               <span
                 className="label-mono inline-block mb-4"
                 style={{ color: "var(--amber)", fontSize: "0.65rem" }}
@@ -360,7 +361,7 @@ export default function About() {
 
       {/* ═══════ LONG NARRATIVE ═══════ */}
       <section
-        className="relative py-28 noise-bg"
+        className="relative py-40 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10 max-w-4xl mx-auto">

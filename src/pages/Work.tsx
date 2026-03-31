@@ -9,9 +9,11 @@ import PageTransition from "@/components/animations/PageTransition";
 import {
   ArrowRight,
   BarChart3,
+  Building,
   Globe,
   Map,
   Satellite,
+  Workflow,
 } from "lucide-react";
 import { Link } from "wouter";
 
@@ -36,7 +38,7 @@ export const projects: ProjectSummary[] = [
     icon: BarChart3,
     color: "var(--cyan)",
     techHighlights: ["React 19", "Three.js", "Recharts", "TypeScript"],
-    demoUrl: "https://mls-dashboard-psi.vercel.app/",
+    demoUrl: "https://mls-dashboard-one.vercel.app/",
   },
   {
     slug: "consensus-viewer",
@@ -71,6 +73,28 @@ export const projects: ProjectSummary[] = [
     techHighlights: ["MapLibre GL", "Apache ECharts", "TanStack Table", "TypeScript"],
     demoUrl: "https://satellite-explorer-seven.vercel.app/",
   },
+  {
+    slug: "dc-parcel-dashboard",
+    title: "DC Parcel Dashboard",
+    subtitle: "Real Estate Intelligence Platform",
+    description:
+      "An interactive parcel-level intelligence dashboard for data center site evaluation, combining zoning data, utility infrastructure, and environmental constraints into a unified decision-support tool.",
+    icon: Building,
+    color: "var(--cyan)",
+    techHighlights: ["MapLibre GL", "React", "TanStack Table", "TypeScript"],
+    demoUrl: "https://dc-parcel-dashboard.vercel.app/",
+  },
+  {
+    slug: "agent-flow-visualizer",
+    title: "Agent Flow Visualizer",
+    subtitle: "AI Workflow Intelligence",
+    description:
+      "A real-time visualization of multi-agent AI orchestration workflows, showing how autonomous agents collaborate to solve complex geospatial analysis tasks through structured reasoning chains.",
+    icon: Workflow,
+    color: "var(--emerald)",
+    techHighlights: ["React", "D3.js", "WebSocket", "TypeScript"],
+    demoUrl: "https://agentflow-eaqzkikc.manus.space",
+  },
 ];
 
 export default function Work() {
@@ -97,7 +121,7 @@ export default function Work() {
           }}
         />
 
-        <div className="container relative z-10 pt-32 pb-12">
+        <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.2} duration={0.8}>
             <span
               className="label-mono inline-block mb-4"
@@ -130,7 +154,7 @@ export default function Work() {
 
       {/* ═══════ 3D PROJECT CAROUSEL ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">

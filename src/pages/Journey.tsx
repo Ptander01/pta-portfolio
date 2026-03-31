@@ -332,7 +332,7 @@ export default function Journey() {
           }}
         />
 
-        <div className="container relative z-10 pt-32 pb-12">
+        <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.2} duration={0.8}>
             <span
               className="label-mono inline-block mb-4"
@@ -373,7 +373,7 @@ export default function Journey() {
 
       {/* ═══════ X-RAY REVEAL: Data Transformation Showcase ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10">
@@ -438,7 +438,7 @@ export default function Journey() {
 
       {/* ═══════ GALLERY GRID ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">

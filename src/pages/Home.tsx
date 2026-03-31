@@ -131,16 +131,16 @@ const CHAPTERS = [
     tag: "Chapter 06 · AI / Insight",
     headline: ["Data becomes", "decision."],
     headlineItalic: 1,
-    body: "A 233,000-line automated geospatial pipeline feeds spatial features into infrastructure siting models. Transmission proximity, fiber dark spots, environmental constraints, and demographic demand surfaces converge into executive-level visual intelligence.",
+    body: "A 158K-line automated geospatial pipeline — written in 2026 alone — feeds spatial features into infrastructure siting models. Transmission proximity, fiber dark spots, environmental constraints, and demographic demand surfaces converge into executive-level visual intelligence.",
     align: "right",
     dataPanel: {
       label: "PIPELINE STATUS",
       lines: [
-        "CODEBASE   · 233K lines",
+        "CODEBASE   · 158K lines (2026)",
         "MODEL      · XGBoost + GNN",
         "FEATURES   · 847 spatial",
         "INFERENCE  · < 2s / parcel",
-        "OUTPUT     · LIVE DASHBOARD",
+        "OUTPUT     · 5 LIVE DASHBOARDS",
       ],
     },
     tags: ["ML", "XGBOOST", "GNN", "PIPELINE"],
@@ -365,9 +365,9 @@ function IdentityReveal() {
   }, []);
 
   const contactLinks = [
-    { label: "LinkedIn", href: "https://linkedin.com/in/ptander" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/patrick-anderson-gis/" },
     { label: "GitHub",   href: "https://github.com/Ptander01" },
-    { label: "Email",    href: "mailto:patrick@ptageospatial.com" },
+    { label: "Email",    href: "mailto:patrick.t.anderson1@gmail.com" },
   ];
 
   return (
@@ -422,8 +422,8 @@ function IdentityReveal() {
       >
         {[
           "GIS · RS · AI",
-          "233K LINE PIPELINE",
-          "META AI INFRA",
+          "158K LINES IN 2026",
+          "5 LIVE DASHBOARDS",
           "3 PUBLICATIONS",
         ].map((tag) => (
           <span key={tag} className="data-tag">

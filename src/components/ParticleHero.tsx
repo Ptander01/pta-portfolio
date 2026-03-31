@@ -475,9 +475,10 @@ function generateSizes(chapter: number, isDark: boolean): Float32Array {
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
     if (isDark) {
-      // Dark mode: original sizes
-      const base = chapter === 7 ? 1.8 : 1.2;
-      sizes[i] = base + rng() * 1.0;
+      // Dark mode: tamed sizes — particles accent, not dominate
+      const denseScene = chapter === 2 || chapter === 4;
+      const base = chapter === 7 ? 1.4 : denseScene ? 0.6 : 0.8;
+      sizes[i] = base + rng() * 0.5;
     } else {
       // Light mode: per-chapter tuned sizes
       // Ch2 and Ch4 get smaller particles to reduce density
@@ -497,14 +498,16 @@ function generateAlphas(chapter: number, isDark: boolean): Float32Array {
 
   for (let i = 0; i < MAX_PARTICLES; i++) {
     if (isDark) {
-      // Dark mode: original alpha range
-      alphas[i] = 0.4 + rng() * 0.6;
-    } else {
-      // Light mode: per-chapter tuned opacity
-      // Ch2 and Ch4 are dense scenes — lower opacity for legibility
+      // Dark mode: tamed glow — particles accent, not dominate
       const denseScene = chapter === 2 || chapter === 4;
-      const base  = denseScene ? 0.12 : 0.25;
-      const range = denseScene ? 0.18 : 0.35;
+      const base  = denseScene ? 0.15 : 0.25;
+      const range = denseScene ? 0.15 : 0.25;
+      alphas[i] = base + rng() * range;
+    } else {
+      // Light mode: subtle charcoal dust — text must dominate
+      const denseScene = chapter === 2 || chapter === 4;
+      const base  = denseScene ? 0.06 : 0.12;
+      const range = denseScene ? 0.10 : 0.18;
       alphas[i] = base + rng() * range;
     }
   }
@@ -596,7 +599,7 @@ export default function ParticleHero({
       0.1,
       1000
     );
-    camera.position.set(0, 0, 12);
+    camera.position.set(0, 0, 16);
     cameraRef.current = camera;
 
     // Geometry — single persistent buffer

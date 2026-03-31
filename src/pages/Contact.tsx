@@ -5,7 +5,7 @@
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
-import { Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
 const contactLinks = [
@@ -68,7 +68,7 @@ export default function Contact() {
           }}
         />
 
-        <div className="container relative z-10 pt-32 pb-12">
+        <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.2} duration={0.8}>
             <span
               className="label-mono inline-block mb-4"
@@ -103,11 +103,11 @@ export default function Contact() {
 
       {/* ═══════ CONTACT CONTENT ═══════ */}
       <section
-        className="relative py-20 noise-bg"
+        className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
         <div className="container relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-16">
             {/* Contact Links */}
             <div className="lg:col-span-2">
               <FadeIn direction="left" duration={0.7}>
@@ -156,6 +156,19 @@ export default function Contact() {
                       </div>
                     </div>
                   ))}
+                </div>
+
+                {/* Resume Download CTA */}
+                <div className="mt-6">
+                  <a
+                    href="/Patrick_Anderson_Resume.pdf"
+                    download
+                    className="neu-raised w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-display font-semibold text-sm transition-all"
+                    style={{ color: "var(--cyan)" }}
+                  >
+                    <Download size={16} />
+                    Download Resume
+                  </a>
                 </div>
               </FadeIn>
             </div>
