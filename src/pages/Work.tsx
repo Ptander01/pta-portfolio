@@ -163,6 +163,56 @@ export default function Work() {
           </FadeIn>
         </div>
       </section>
+
+      {/* ═══════ FEATURED DATA VISUALIZATION ═══════ */}
+      <section
+        className="relative py-24 noise-bg"
+        style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn delay={0.2} duration={0.8}>
+            <div className="text-center mb-12">
+              <span
+                className="label-mono inline-block mb-4"
+                style={{ color: "var(--amber)", fontSize: "0.7rem" }}
+              >
+                FEATURED VISUALIZATION
+              </span>
+              <h2
+                className="heading-lg mb-4"
+                style={{ color: "var(--heading-color)" }}
+              >
+                US PhD Concentration in 2024
+              </h2>
+              <p
+                className="body-lg max-w-2xl mx-auto"
+                style={{ color: "var(--text-muted)" }}
+              >
+                A 3D hexbin map visualizing the geographic distribution of doctoral
+                degree holders across the United States, revealing concentration
+                corridors along the Boston–DC axis, Research Triangle, and SF Bay Area.
+              </p>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.4} duration={0.8}>
+            <div className="work-showcase">
+              <div className="work-screenshot-frame" style={{ maxWidth: "1000px", margin: "0 auto" }}>
+                <img
+                  src="/assets/showcase/hexbin-phd-concentration.png"
+                  alt="US PhD Concentration in 2024 — 3D hexbin map showing doctoral degree distribution across the United States"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    display: "block",
+                    borderRadius: "4px",
+                  }}
+                  loading="lazy"
+                />
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
     </PageTransition>
   );
 }

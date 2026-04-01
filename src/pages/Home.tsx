@@ -573,6 +573,25 @@ export default function Home() {
       {/* ── HUD navigation ── */}
       <HudNav activeChapter={activeChapter} />
 
+      {/* ── Cinematic hero background — photographic layer ── */}
+      <div
+        className="hero-photo-layer"
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 0,
+          backgroundImage: "url(/assets/hero/homepage-hero.png)",
+          backgroundSize: "cover",
+          backgroundPosition: "center 30%",
+          opacity: isDark ? 0.12 : 0.06,
+          transition: "opacity 0.6s ease",
+          pointerEvents: "none",
+        }}
+      />
+
       {/* ── Fixed WebGL canvas — behind everything ── */}
       <div className="canvas-layer">
         <ParticleHero

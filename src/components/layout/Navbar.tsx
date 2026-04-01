@@ -42,14 +42,16 @@ export default function Navbar() {
           className="glass-sm flex items-center justify-between px-6 py-3"
           style={{ background: "var(--nav-bg)" }}
         >
-          {/* Logo / Brand */}
+          {/* Logo / Brand — theme-aware monogram */}
           <Link href="/" className="flex items-center gap-3 no-underline">
-            <span
-              className="font-display text-lg font-bold tracking-tight"
-              style={{ color: "var(--heading-color)" }}
-            >
-              PTA
-            </span>
+            <img
+              src={theme === "dark"
+                ? "/assets/brand/logo-dark.png"
+                : "/assets/brand/logo-light.png"
+              }
+              alt="PTA"
+              className="h-9 w-9 rounded-sm object-contain transition-opacity duration-300"
+            />
             <span
               className="label-mono hidden sm:inline"
               style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
