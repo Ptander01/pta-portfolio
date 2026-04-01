@@ -144,11 +144,12 @@ const projectData: Record<string, ProjectData> = {
     ],
     demoUrl: "https://mls-dashboard-one.vercel.app/",
     githubUrl: "https://github.com/Ptander01/mls-dashboard",
-    heroImage: "/assets/projects/mls-dashboard/hero.webp",
+    heroImage: "/assets/projects/mls-dashboard/cinematic-hero.webp",
     gallery: [
-      { src: "/assets/projects/mls-dashboard/3d-pitch.webp", alt: "3D Pitch Visualization", caption: "THREE.JS 3D PITCH — TACTICAL FORMATION OVERLAY" },
-      { src: "/assets/projects/mls-dashboard/budget-chart.webp", alt: "Stacked Bar Budget Chart", caption: "TEAM BUDGET — STACKED BAR SALARY BREAKDOWN" },
-      { src: "/assets/projects/mls-dashboard/scatter-plot.webp", alt: "Player Scatter Plot", caption: "PLAYER PERFORMANCE — MULTI-AXIS SCATTER ANALYSIS" },
+      { src: "/assets/projects/mls-dashboard/gallery-methods.webp", alt: "Season Rank Flow with Methods Panel", caption: "SEASON RANK FLOW — AI-GENERATED INSIGHTS & METHODS PANEL" },
+      { src: "/assets/projects/mls-dashboard/gallery-rankings.webp", alt: "Power Rankings Table", caption: "POWER RANKINGS — COMPOSITE SCORING ACROSS 30 TEAMS" },
+      { src: "/assets/projects/mls-dashboard/gallery-attendance.webp", alt: "Attendance Analytics Dashboard", caption: "ATTENDANCE ANALYTICS — 3D BAR CHART & MATCHWEEK TRENDS" },
+      { src: "/assets/projects/mls-dashboard/gallery-shotmap.webp", alt: "3D Shot Map Editorial View", caption: "3D SHOT MAP — xG ANALYSIS WITH EDITORIAL RENDERING" },
     ],
     impactMetrics: [
       { value: "619+", label: "Players Tracked" },
