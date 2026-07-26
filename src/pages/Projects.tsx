@@ -4,7 +4,7 @@
  * Four layout modes the visitor can cycle between:
  *
  *   A · Cinematic     — Full-bleed vertical scroll, images lead
- *   B · Editorial     — Alternating image + Playfair text blocks
+ *   B · Editorial     — Alternating image + Cinzel text blocks
  *   C · Gallery       — Masonry grid, hero pieces full-width
  *   D · By Domain     — Organized by career chapter / domain
  *
@@ -1009,7 +1009,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
               </div>
               <h2
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "'Cinzel', Georgia, serif",
                   fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
                   fontWeight: 700,
                   color: "#E8F0FE",
@@ -1128,7 +1128,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
               {/* Editorial headline */}
               <h2
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "'Cinzel', Georgia, serif",
                   fontSize: "clamp(1.5rem, 2.5vw, 2.25rem)",
                   fontWeight: 700,
                   lineHeight: 1.1,
@@ -1152,7 +1152,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
               {/* Description */}
               <p
                 style={{
-                  fontFamily: "'DM Sans', sans-serif",
+                  fontFamily: "'Lora', serif",
                   fontSize: "0.9375rem",
                   fontWeight: 300,
                   lineHeight: 1.8,
@@ -1192,7 +1192,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "'Lora', serif",
                     fontSize: "0.875rem",
                     fontWeight: 500,
                     color: p.accent,
@@ -1263,7 +1263,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                 </span>
                 <span
                   style={{
-                    fontFamily: "'Playfair Display', serif",
+                    fontFamily: "'Cinzel', serif",
                     fontSize: "1.0625rem",
                     fontWeight: 700,
                     color: "#E8F0FE",
@@ -1284,7 +1284,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
             </div>
             <div
               style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "'Lora', serif",
                 fontSize: "0.875rem",
                 fontWeight: 300,
                 color: "rgba(232,240,254,0.4)",
@@ -1328,7 +1328,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                     </div>
                     <div
                       style={{
-                        fontFamily: "'Playfair Display', serif",
+                        fontFamily: "'Cinzel', serif",
                         fontSize: "0.9375rem",
                         fontWeight: 700,
                         color: "#E8F0FE",
@@ -1384,7 +1384,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                 <div>
                   <div
                     style={{
-                      fontFamily: "'Playfair Display', serif",
+                      fontFamily: "'Cinzel', serif",
                       fontSize: "1.125rem",
                       fontWeight: 700,
                       color: "#E8F0FE",
@@ -1423,7 +1423,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                     <div style={{ marginTop: 8 }}>
                       <div
                         style={{
-                          fontFamily: "'Playfair Display', serif",
+                          fontFamily: "'Cinzel', serif",
                           fontSize: "0.9375rem",
                           fontWeight: 700,
                           color: "#E8F0FE",
@@ -1448,7 +1448,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                       </div>
                       <div
                         style={{
-                          fontFamily: "'DM Sans', sans-serif",
+                          fontFamily: "'Lora', serif",
                           fontSize: "0.8125rem",
                           fontWeight: 300,
                           lineHeight: 1.65,
@@ -1566,7 +1566,7 @@ function LayoutButton({
       </div>
       <span
         style={{
-          fontFamily: "'DM Sans', sans-serif",
+          fontFamily: "'Lora', serif",
           fontSize: "0.625rem",
           fontWeight: 300,
           color: active
@@ -1672,7 +1672,7 @@ export default function Projects() {
               </div>
               <h1
                 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "'Cinzel', Georgia, serif",
                   fontSize: "clamp(2rem, 5vw, 4rem)",
                   fontWeight: 700,
                   lineHeight: 1.05,

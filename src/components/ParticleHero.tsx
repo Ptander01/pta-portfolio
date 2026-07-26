@@ -405,7 +405,7 @@ async function generateIdentityAsync(): Promise<Float32Array> {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "#000000";
-  ctx.font      = "bold 68px 'Playfair Display', Georgia, serif";
+  ctx.font      = "bold 68px 'Cinzel', Georgia, serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   ctx.fillText("PATRICK", canvas.width / 2, 70);
