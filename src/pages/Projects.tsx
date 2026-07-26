@@ -259,6 +259,11 @@ const PROJECTS: Project[] = [
     method:
       "UNHCR forced displacement dataset 2023. Origin-destination flow lines. Particle density encodes volume. Great circle routing on globe projection.",
     image: "/images/work/refugee-displacement.webp",
+    images: [
+      "/images/work/refugee-displacement.webp",
+      "/images/work/refugee-displacement-2.webp",
+      "/images/work/refugee-displacement-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: UNHCR Global Trends 2023 · Method: OD flow visualization",
     tags: ["Humanitarian", "Migration", "UNHCR", "Flow Mapping", "Global"],
@@ -441,6 +446,11 @@ const PROJECTS: Project[] = [
     method:
       "EPA Greenhouse Gas Reporting Program and EIA facility datasets. Proportional-symbol mapping by reported CO2e. Compiled with Jon Sherwood and Blake Lytle, Clemson Center for Geospatial Technologies.",
     image: "/images/work/facility-emissions.webp",
+    images: [
+      "/images/work/facility-emissions.webp",
+      "/images/work/facility-emissions-2.webp",
+      "/images/work/facility-emissions-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: EPA GHGRP · EIA · Clemson Center for Geospatial Technologies",
     tags: ["EPA", "Emissions", "Environmental", "Clemson"],
@@ -463,6 +473,11 @@ const PROJECTS: Project[] = [
     method:
       "Monthly surface temperature anomaly relative to the 1961–1990 average. Source: Met Office Hadley Centre. Built in Tableau.",
     image: "/images/work/temperature-analysis.webp",
+    images: [
+      "/images/work/temperature-analysis.webp",
+      "/images/work/temperature-analysis-2.webp",
+      "/images/work/temperature-analysis-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: Met Office Hadley Centre for Climate Change",
     tags: ["Climate", "Temperature", "Tableau", "Time Series"],
@@ -565,6 +580,10 @@ const PROJECTS: Project[] = [
     method:
       "Historical Atlantic and Gulf storm track data. Multi-track path rendering by system, color-coded for legibility.",
     image: "/images/work/storm-tracking.webp",
+    images: [
+      "/images/work/storm-tracking.webp",
+      "/images/work/storm-tracking-2.webp",
+    ],
     imageCrop: "center",
     source: "Data: Historical Atlantic storm track records",
     tags: ["Storms", "Hazards", "Atlantic", "Track Mapping"],
@@ -587,6 +606,11 @@ const PROJECTS: Project[] = [
     method:
       "Fault line overlay on high-resolution elevation data. 188 seismograph stations recording magnitude, depth, and timestamp. 3D aftershock spheres sized and colored by magnitude. Seismic wave travel-distance buffer rings.",
     image: "/images/work/tremors-in-north-ridge.webp",
+    images: [
+      "/images/work/tremors-in-north-ridge.webp",
+      "/images/work/tremors-in-north-ridge-2.webp",
+      "/images/work/tremors-in-north-ridge-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: 1994 Northridge Earthquake seismograph network · 188 stations",
     tags: ["Earthquake", "Seismic", "California", "Hazards"],
@@ -609,6 +633,11 @@ const PROJECTS: Project[] = [
     method:
       "US Census Bureau 2023 state-to-state migration data. Bidirectional flow mapping via Flow Map City, an open-source in-browser mobility analytics tool.",
     image: "/images/work/us-state-migration-flows.webp",
+    images: [
+      "/images/work/us-state-migration-flows.webp",
+      "/images/work/us-state-migration-flows-2.webp",
+      "/images/work/us-state-migration-flows-3.webp",
+    ],
     imageCrop: "center",
     link: "https://www.flowmap.city/",
     source: "Data: US Census Bureau 2023 · Tool: Flow Map City",
@@ -632,6 +661,11 @@ const PROJECTS: Project[] = [
     method:
       "Interactive dashboard summarizing vehicle fuel efficiency data by make, model, class, fuel type, and cylinder count.",
     image: "/images/work/vehicle-fuel-efficiency.webp",
+    images: [
+      "/images/work/vehicle-fuel-efficiency.webp",
+      "/images/work/vehicle-fuel-efficiency-2.webp",
+      "/images/work/vehicle-fuel-efficiency-3.webp",
+    ],
     imageCrop: "center",
     source: "Method: Interactive dashboard by vehicle class and cylinder count",
     tags: ["Vehicles", "Fuel Efficiency", "Dashboard", "Data Viz"],
@@ -654,6 +688,11 @@ const PROJECTS: Project[] = [
     method:
       "INSPIRE building footprint data, downloaded via feed.extract() and filtered by province. Buffered and intersected with tmaptools (Geocode_OSM, st_buffer, st_intersection). Rendered with the tmap package; color ramp via colorRampPalette().",
     image: "/images/work/visualizing-urban-growth.webp",
+    images: [
+      "/images/work/visualizing-urban-growth.webp",
+      "/images/work/visualizing-urban-growth-2.webp",
+      "/images/work/visualizing-urban-growth-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: INSPIRE building footprints · Method: R, tmap, tmaptools",
     tags: ["Urban Growth", "R", "tmap", "INSPIRE"],
@@ -676,6 +715,11 @@ const PROJECTS: Project[] = [
     method:
       "React Flow node graph with dagre layout. Project clusters branch into task nodes; execution timeline drives graph highlighting. Data sourced from the Manus API.",
     image: "/images/work/agent-flow-visualizer.webp",
+    images: [
+      "/images/work/agent-flow-visualizer.webp",
+      "/images/work/agent-flow-visualizer-2.webp",
+      "/images/work/agent-flow-visualizer-3.webp",
+    ],
     imageCrop: "top",
     link: "https://agentflow-eaqzkikc.manus.space",
     source: "Data: Manus API · 57 tasks · 2,580 messages · 907 files · Mar 10–29, 2026",
