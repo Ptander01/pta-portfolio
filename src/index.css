@@ -1327,3 +1327,286 @@
 .tl-seg-grad  { background: #7F77DD; }
 .tl-seg-health{ background: #378ADD; }
 .tl-seg-meta  { background: #E8A030; }
+
+/* ═══════════════════════════════════════════════════════════════
+   PORTED UI PATTERNS — Pill Nav / Pull-Quote / Toggle Switch
+   Recolored from a sister-app design system (navy dark / off-white
+   light, cyan+amber accents instead of the source gold-on-parchment)
+   to match this site's existing "Cold Signal → Warm Insight" palette.
+   New token names only — nothing here overrides existing tokens.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --pill-bg:        linear-gradient(150deg, #1c2540 0%, #141a30 50%, #0d1120 100%);
+  --pill-bg-active: linear-gradient(150deg, #0a0d18 0%, #141a30 50%, #1c2540 100%);
+
+  /* 3D "lip" shadow system — resting (out) / hover / pressed (in) / active-selected (in-glow) */
+  --lip-out:
+    0 6px 18px rgba(0,0,0,0.55),
+    0 2px 5px  rgba(0,0,0,0.4),
+    inset 0  1px 0 rgba(255,255,255,0.06),
+    inset 0 -1px 0 rgba(0,0,0,0.45),
+    inset 0  0   0 1px rgba(255,255,255,0.03);
+  --lip-hover:
+    0 8px 22px rgba(0,0,0,0.6),
+    0 3px 7px  rgba(0,0,0,0.45),
+    inset 0  1px 0 rgba(255,255,255,0.1),
+    inset 0 -1px 0 rgba(0,0,0,0.5),
+    inset 0  0   0 1px rgba(255,255,255,0.05),
+    0 0 14px rgba(0,212,255,0.14);
+  --lip-in:
+    inset 0  4px 14px rgba(0,0,0,0.75),
+    inset 0  2px  5px rgba(0,0,0,0.55),
+    inset 0 -1px  3px rgba(255,255,255,0.02),
+    inset 0  0    0 1px rgba(255,255,255,0.02);
+  --lip-in-glow:
+    inset 0  4px 14px rgba(0,0,0,0.75),
+    inset 0  2px  5px rgba(0,0,0,0.55),
+    inset 0 -1px  3px rgba(255,255,255,0.02),
+    inset 0  0    0 1px rgba(0,212,255,0.3),
+    0 0 18px rgba(0,212,255,0.22);
+}
+
+[data-theme="light"] {
+  --pill-bg:        linear-gradient(150deg, #ffffff 0%, #f4f5f7 50%, #e9ebef 100%);
+  --pill-bg-active: linear-gradient(150deg, #dde1e8 0%, #eceef2 50%, #ffffff 100%);
+
+  --lip-out:
+    0 4px 14px rgba(163,177,198,0.3),
+    0 1px 4px  rgba(163,177,198,0.2),
+    inset 0  1px 0 rgba(255,255,255,0.85),
+    inset 0 -1px 0 rgba(163,177,198,0.25),
+    inset 0  0   0 1px rgba(255,255,255,0.4);
+  --lip-hover:
+    0 5px 18px rgba(163,177,198,0.35),
+    0 2px 6px  rgba(163,177,198,0.22),
+    inset 0  1px 0 rgba(255,255,255,0.9),
+    inset 0 -1px 0 rgba(163,177,198,0.3),
+    inset 0  0   0 1px rgba(255,255,255,0.5),
+    0 0 10px rgba(0,153,204,0.14);
+  --lip-in:
+    inset 0  3px 10px rgba(163,177,198,0.28),
+    inset 0  1px  4px rgba(163,177,198,0.18),
+    inset 0 -1px  2px rgba(255,255,255,0.7),
+    inset 0  0    0 1px rgba(255,255,255,0.3);
+  --lip-in-glow:
+    inset 0  3px 10px rgba(163,177,198,0.28),
+    inset 0  1px  4px rgba(163,177,198,0.18),
+    inset 0 -1px  2px rgba(255,255,255,0.7),
+    inset 0  0    0 1px rgba(0,153,204,0.4),
+    0 0 14px rgba(0,153,204,0.18);
+}
+
+/* ── Pill segmented nav ──
+   Pattern: resting = --pill-bg + --lip-out. Hover = --lip-hover + accent text.
+   Active/selected = --pill-bg-active + --lip-in-glow (reads as pressed-in + lit). */
+.nav-pill-group {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 22px;
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in);
+}
+
+.nav-pill {
+  font-family: "Space Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  padding: 8px 16px;
+  border-radius: 16px;
+  display: inline-block;
+  transition: color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+.nav-pill:hover { color: var(--heading-color); }
+.nav-pill--active {
+  color: var(--cyan);
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+}
+
+/* ── Bordered italic pull-quote ── */
+.pull-quote {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--cyan);
+  background: rgba(0, 212, 255, 0.06);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 0 8px 8px 0;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+[data-theme="light"] .pull-quote {
+  background: rgba(0, 153, 204, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* ── Theme toggle — physical 3D capsule switch ──
+   Two-stage interaction: press → flip mid-press → spring back, so the
+   swap reads as a thumbed physical action rather than an instant CSS swap. */
+.tt-wrap { flex-shrink: 0; position: relative; perspective: 600px; }
+
+.tt-glow-wide, .tt-glow-mid, .tt-glow-core {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.tt-wrap--light .tt-glow-wide,
+.tt-wrap--light .tt-glow-mid,
+.tt-wrap--light .tt-glow-core { opacity: 1; }
+.tt-glow-wide {
+  inset: -40px -50px;
+  background: radial-gradient(ellipse at 52% 50%, rgba(255, 179, 71, 0.16) 0%, transparent 65%);
+  filter: blur(20px);
+}
+.tt-glow-mid {
+  inset: -18px -22px;
+  background: radial-gradient(ellipse at 52% 52%, rgba(255, 179, 71, 0.24) 0%, transparent 60%);
+  filter: blur(10px);
+}
+.tt-glow-core {
+  inset: -4px -6px;
+  background: radial-gradient(ellipse at 52% 55%, rgba(255, 179, 71, 0.30) 0%, transparent 65%);
+  filter: blur(4px);
+}
+
+.tt {
+  position: relative;
+  display: block;
+  width: 52px;
+  height: 24px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transform: perspective(600px) rotateX(7deg);
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.tt:hover    { transform: perspective(600px) rotateX(4deg) rotateY(-1deg) scale(1.04); }
+.tt--pressed { transform: perspective(600px) rotateX(1deg) scale(0.97) !important; }
+
+.tt-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: linear-gradient(150deg, #1a2036 0%, #12162a 40%, #0a0c16 100%);
+  box-shadow:
+    inset 0 3px 10px rgba(0,0,0,0.85),
+    inset 0 -1px 3px rgba(255,255,255,0.025),
+    0 10px 36px rgba(0,0,0,0.7),
+    0 3px 8px rgba(0,0,0,0.45);
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+}
+.tt--light .tt-track {
+  background: linear-gradient(150deg, #ffffff 0%, #f2f3f6 40%, #e6e9ee 100%);
+  box-shadow:
+    inset 0 2px 8px rgba(163,177,198,0.28),
+    inset 0 -3px 8px rgba(255,255,255,0.85),
+    0 10px 36px rgba(163,177,198,0.16),
+    0 3px 8px rgba(163,177,198,0.10),
+    0 0 60px rgba(255,179,71,0.08);
+}
+
+.tt-recess {
+  position: absolute;
+  inset: 13% 4.5%;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #060608 0%, #0c0c10 50%, #090909 100%);
+  box-shadow: inset 0 4px 16px rgba(0,0,0,0.95), inset 0 -1px 3px rgba(255,255,255,0.01);
+  transition: background 0.8s ease, box-shadow 0.8s ease;
+}
+.tt--light .tt-recess {
+  background: linear-gradient(180deg, #cfd3dc 0%, #dcdfe6 50%, #e8eaef 100%);
+  box-shadow: inset 0 4px 16px rgba(163,177,198,0.30), inset 0 -2px 8px rgba(255,255,255,0.65);
+}
+
+.tt-floor-glow {
+  position: absolute;
+  bottom: 9%; left: 8%; right: 8%; height: 10%;
+  border-radius: 4px;
+  opacity: 0;
+  background: linear-gradient(90deg, transparent 3%, rgba(255,179,71,0.5) 25%, rgba(255,179,71,0.75) 50%, rgba(255,179,71,0.5) 75%, transparent 97%);
+  filter: blur(3px);
+  transition: opacity 0.9s ease;
+}
+.tt--light .tt-floor-glow { opacity: 0.6; }
+
+.tt-rim {
+  position: absolute; inset: 0;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+  pointer-events: none;
+  transition: box-shadow 0.8s ease;
+}
+.tt--light .tt-rim { box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5); }
+
+.tt-knob {
+  position: absolute;
+  top: 13%; left: 5%; width: 42%; bottom: 13%;
+  border-radius: 7px;
+  background: linear-gradient(150deg, #2c3350 0%, #1f253d 35%, #151a2c 100%);
+  box-shadow:
+    0 6px 20px rgba(0,0,0,0.7),
+    0 2px 6px rgba(0,0,0,0.5),
+    inset 0 1px 3px rgba(255,255,255,0.06),
+    inset 0 -2px 4px rgba(0,0,0,0.4);
+  transition:
+    left 0.5s cubic-bezier(0.34, 1.3, 0.64, 1),
+    background 0.8s ease,
+    box-shadow 0.8s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tt--light .tt-knob {
+  left: 53%;
+  background: linear-gradient(150deg, #f7f8fa 0%, #ececf0 35%, #e0e3e9 100%);
+  box-shadow:
+    0 6px 22px rgba(163,177,198,0.30),
+    0 2px 7px rgba(163,177,198,0.18),
+    inset 0 3px 6px rgba(255,255,255,0.95),
+    inset 0 -2px 5px rgba(163,177,198,0.15),
+    0 0 30px rgba(255,179,71,0.10);
+}
+.tt--pressed .tt-knob { transform: translateY(1.5px); }
+
+.tt-icon {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0;
+  transform: scale(0.4) rotate(120deg);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+  color: var(--cyan);
+}
+.tt--light .tt-icon { color: var(--amber); }
+.tt-icon--visible { opacity: 1; transform: scale(1) rotate(0deg); }
+
+.tt-shadow {
+  position: absolute;
+  bottom: -5px; left: 10%; right: 10%; height: 8px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  filter: blur(8px);
+  pointer-events: none;
+  opacity: 0.6;
+  transition: opacity 0.8s ease, background 0.8s ease;
+}
+.tt-wrap--light .tt-shadow { background: rgba(163,177,198,0.4); opacity: 0.5; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tt, .tt-track, .tt-recess, .tt-rim, .tt-knob, .tt-icon, .tt-shadow,
+  .tt-glow-wide, .tt-glow-mid, .tt-glow-core, .tt-floor-glow {
+    transition: none !important;
+  }
+}

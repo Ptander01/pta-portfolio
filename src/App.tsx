@@ -12,6 +12,7 @@ import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import Journey from "./pages/Journey";
 import ProjectDetail from "./pages/ProjectDetail";
+import Projects from "./pages/Projects";
 import Work from "./pages/Work";
 
 function Router() {
@@ -23,16 +24,10 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/work" component={Work} />
         <Route path="/work/:slug" component={ProjectDetail} />
+        <Route path="/projects" component={Projects} />
         <Route path="/about" component={About} />
         <Route path="/journey" component={Journey} />
         <Route path="/contact" component={Contact} />
-        {/* Legacy route redirect */}
-        <Route path="/projects">
-          {() => {
-            window.location.replace("/work");
-            return null;
-          }}
-        </Route>
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>

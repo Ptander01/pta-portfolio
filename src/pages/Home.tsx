@@ -519,8 +519,9 @@ function HudNav({ activeChapter }: { activeChapter: number }) {
       >
         {(
           [
-            { label: "Work",    href: "/work" },
-            { label: "Contact", href: "#chapter-7" },
+            { label: "Work",     href: "/work" },
+            { label: "Projects", href: "/projects" },
+            { label: "Contact",  href: "#chapter-7" },
           ] as const
         ).map((item) => (
           <li key={item.label}>
