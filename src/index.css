@@ -570,9 +570,6 @@
   --border-subtle:   rgba(100, 160, 220, 0.08);
   --border-mid:      rgba(100, 160, 220, 0.15);
   --border-strong:   rgba(100, 160, 220, 0.28);
-
-  /* Scan line animation timing */
-  --scan-duration: 8s;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -741,18 +738,6 @@
   border-bottom: 1px solid rgba(100, 160, 220, 0.04);
 }
 
-/* Corner accent — top-left engineering bracket */
-.data-panel::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid var(--ch-accent, var(--signal));
-  border-left: 2px solid var(--ch-accent, var(--signal));
-}
-
 /* Stat card — small metric readout */
 .stat-card {
   padding: 1.25rem 1rem;
@@ -909,35 +894,6 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   SCAN LINE EFFECT
-   Periodic horizontal sweep — reinforces sensor/remote-sensing theme
-   ═══════════════════════════════════════════════════════════════ */
-.scan-line {
-  position: fixed;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 229, 255, 0.3) 35%,
-    rgba(0, 229, 255, 0.5) 50%,
-    rgba(0, 229, 255, 0.3) 65%,
-    transparent 100%
-  );
-  z-index: 5;
-  pointer-events: none;
-  animation: scan-sweep var(--scan-duration) linear infinite;
-}
-
-@keyframes scan-sweep {
-  0%   { top: -1px; opacity: 0; }
-  3%   { opacity: 1; }
-  97%  { opacity: 1; }
-  100% { top: 100vh; opacity: 0; }
-}
-
-/* ═══════════════════════════════════════════════════════════════
    SURFACE CARDS (Cinematic flat-depth — used alongside neumorphic)
    ═══════════════════════════════════════════════════════════════ */
 
@@ -1044,7 +1000,6 @@
    REDUCED MOTION (Cinematic homepage additions)
    ═══════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-  .scan-line            { animation: none; opacity: 0; }
   .hud-logo::before     { animation: none; }
   .chapter-progress-bar { transition: none; }
 }
@@ -1104,45 +1059,13 @@
   mix-blend-mode: screen;
 }
 
-/* ── Apply texture to chapter sections automatically ── */
-.chapter-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.018;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  mix-blend-mode: screen;
-}
-
-/* ── Apply texture to data panels ── */
-.data-panel::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 160px 160px;
-  mix-blend-mode: screen;
-  border-radius: inherit;
-}
-
-/* ── Stat cards get subtle texture ── */
-.stat-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.02;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
-  mix-blend-mode: screen;
-}
+/* NOTE — texture zoning (July 2026)
+   Grain is applied at ONE level only: the page ground, via `.noise-bg`
+   on top-level <section>s. The old auto-applied overlays on
+   `.chapter-section`, `.data-panel`, and `.stat-card` were removed —
+   each of those already sits inside a `.noise-bg` section, so they were
+   stacking grain on grain. `.texture-light` / `.texture-dark` above stay
+   available for deliberate opt-in use on individual surfaces. */
 
 /* ═══════════════════════════════════════════════════════════════
    EDITORIAL HEADLINE REFINEMENTS
@@ -1247,32 +1170,6 @@
   border-top-color: var(--border-mid);
   overflow: hidden;
   background: var(--surface);
-}
-
-/* Corner bracket decoration — top left */
-.work-screenshot-frame::before {
-  content: '';
-  position: absolute;
-  top: -1px;
-  left: -1px;
-  width: 16px;
-  height: 16px;
-  border-top: 2px solid var(--harvest);
-  border-left: 2px solid var(--harvest);
-  z-index: 2;
-}
-
-/* Corner bracket decoration — bottom right */
-.work-screenshot-frame::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 16px;
-  height: 16px;
-  border-bottom: 2px solid var(--harvest);
-  border-right: 2px solid var(--harvest);
-  z-index: 2;
 }
 
 .work-screenshot-frame img {

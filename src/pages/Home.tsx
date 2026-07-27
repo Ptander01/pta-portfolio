@@ -565,9 +565,6 @@ export default function Home() {
 
   return (
     <PageTransition>
-      {/* ── Scan line effect ── */}
-      <div className="scan-line" />
-
       {/* ── Progress bar ── */}
       <ScrollProgressBar />
 

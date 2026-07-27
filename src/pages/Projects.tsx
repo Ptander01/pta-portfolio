@@ -858,35 +858,19 @@ function ProjectImage({
         background: "#0A0E14",
       }}
     >
-      {/* Corner brackets */}
-      {[
-        { top: -1, left: -1, borderTop: true, borderLeft: true },
-        { bottom: -1, right: -1, borderBottom: true, borderRight: true },
-      ].map((pos, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute",
-            ...pos,
-            width: 18,
-            height: 18,
-            borderTop: pos.borderTop
-              ? `1.5px solid ${project.accent}`
-              : undefined,
-            borderLeft: pos.borderLeft
-              ? `1.5px solid ${project.accent}`
-              : undefined,
-            borderBottom: pos.borderBottom
-              ? `1.5px solid ${project.accent}`
-              : undefined,
-            borderRight: pos.borderRight
-              ? `1.5px solid ${project.accent}`
-              : undefined,
-            zIndex: 3,
-            opacity: 0.75,
-          }}
-        />
-      ))}
+      {/* Accent bar — carries the domain color the corner brackets used to.
+          One mark instead of two, anchored to the bottom edge. */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "34%",
+          height: 2,
+          background: project.accent,
+          zIndex: 3,
+        }}
+      />
 
       {!error ? (
         <div style={{ position: "relative", width: "100%", height }}>
