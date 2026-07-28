@@ -54,6 +54,12 @@ interface Project {
   source: string;
   tags: string[];
   hero?: boolean;             // gets full-width in Gallery layout
+  /** Controlled technique vocabulary — drives the TECHNIQUE filter facet.
+   *  Distinct from freeform `tags`, which stay display-only. */
+  tech: TechKey[];
+  /** True when a live interactive product exists (link or deployed app),
+   *  false for static renders. Drives the FORMAT filter facet. */
+  interactive: boolean;
 }
 
 type DomainKey =
@@ -110,6 +116,32 @@ const DOMAINS: Record<
 };
 
 /* ─────────────────────────────────────────────────────────────
+   TECHNIQUE VOCABULARY — second filter facet.
+   Kept deliberately small: a facet term that matches one piece
+   is a label, not a filter.
+───────────────────────────────────────────────────────────── */
+type TechKey =
+  | "gis"
+  | "remote-sensing"
+  | "dataviz"
+  | "analytics"
+  | "statistics"
+  | "fullstack"
+  | "webgl3d"
+  | "aiml";
+
+const TECHS: Record<TechKey, string> = {
+  gis: "GIS",
+  "remote-sensing": "Remote Sensing · Photogrammetry",
+  dataviz: "Data Visualization",
+  analytics: "Data Analytics",
+  statistics: "Statistics",
+  fullstack: "Full-Stack",
+  webgl3d: "3D & WebGL",
+  aiml: "AI / ML",
+};
+
+/* ─────────────────────────────────────────────────────────────
    LAYOUT MODE DEFINITIONS
 ───────────────────────────────────────────────────────────── */
 const LAYOUTS: Record<
@@ -151,6 +183,8 @@ const PROJECTS: Project[] = [
     subtitle: "Physical Oceanography · Current Velocity · Atlantic Basin",
     category: "Physical Oceanography",
     domain: "environmental",
+    tech: ["gis", "dataviz"],
+    interactive: false,
     accent: "#00E5FF",
     accentLabel: "Oceanography",
     description:
@@ -178,6 +212,8 @@ const PROJECTS: Project[] = [
     subtitle: "Chattooga River Gorge · Terrain Profile with Canopy · 1,008–1,714 ft",
     category: "Environmental Science",
     domain: "environmental",
+    tech: ["remote-sensing", "gis"],
+    interactive: false,
     accent: "#00C897",
     accentLabel: "Environmental",
     description:
@@ -205,6 +241,8 @@ const PROJECTS: Project[] = [
     subtitle: "Global Solar Irradiance · Summer Solstice · 82°46'W 34°37'N",
     category: "Agricultural GIS",
     domain: "environmental",
+    tech: ["remote-sensing", "gis", "analytics"],
+    interactive: false,
     accent: "#FF6B2B",
     accentLabel: "Agricultural GIS",
     description:
@@ -232,6 +270,8 @@ const PROJECTS: Project[] = [
     subtitle: "County-Level Composite Health Index · CONUS · 2024",
     category: "Public Health · Spatial Analysis",
     domain: "healthcare",
+    tech: ["statistics", "dataviz"],
+    interactive: false,
     accent: "#378ADD",
     accentLabel: "Public Health",
     description:
@@ -259,6 +299,8 @@ const PROJECTS: Project[] = [
     subtitle: "Global Forced Migration Flows · UNHCR 2023",
     category: "Humanitarian GIS",
     domain: "healthcare",
+    tech: ["analytics", "dataviz"],
+    interactive: false,
     accent: "#4A90D9",
     accentLabel: "Humanitarian",
     description:
@@ -286,6 +328,8 @@ const PROJECTS: Project[] = [
     subtitle: "AI Data Center Expansion · Satellite Time Series · Northern Virginia",
     category: "AI Infrastructure · Remote Sensing",
     domain: "infrastructure",
+    tech: ["remote-sensing", "gis", "fullstack"],
+    interactive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -314,6 +358,8 @@ const PROJECTS: Project[] = [
     subtitle: "AI Data Center Site Acquisition · Parcel Analysis · NOVA Corridor",
     category: "AI Infrastructure · Spatial Analysis",
     domain: "infrastructure",
+    tech: ["gis", "fullstack"],
+    interactive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -337,6 +383,8 @@ const PROJECTS: Project[] = [
     subtitle: "US PhD Concentration · CONUS Hexbin · ACS 2024",
     category: "Census · Data Art",
     domain: "dataart",
+    tech: ["gis", "dataviz"],
+    interactive: false,
     accent: "#00C897",
     accentLabel: "Census · Data Art",
     description:
@@ -359,6 +407,8 @@ const PROJECTS: Project[] = [
     subtitle: "Passing Network × Centrality Analysis · Inter Miami CF",
     category: "Network Analysis · Sports",
     domain: "dataart",
+    tech: ["statistics", "dataviz"],
+    interactive: false,
     accent: "#00E5FF",
     accentLabel: "Network Analysis",
     description:
@@ -381,6 +431,8 @@ const PROJECTS: Project[] = [
     subtitle: "MLS Standing Flows · 33 Matchweeks · 30 Teams",
     category: "Temporal Analysis · Data Art",
     domain: "dataart",
+    tech: ["analytics", "dataviz"],
+    interactive: false,
     accent: "#E8A030",
     accentLabel: "Temporal Analysis",
     description:
@@ -403,6 +455,8 @@ const PROJECTS: Project[] = [
     subtitle: "Geospatial Code Swirl · Self-Portrait as Workflow",
     category: "Personal Work · Data Art",
     domain: "dataart",
+    tech: ["gis", "dataviz"],
+    interactive: false,
     accent: "#F5DEB3",
     accentLabel: "Personal",
     description:
@@ -425,6 +479,8 @@ const PROJECTS: Project[] = [
     subtitle: "Full-Stack Sports Analytics · 881 Players · 30 Teams · 2025 Season",
     category: "Full-Stack Engineering",
     domain: "engineering",
+    tech: ["fullstack", "analytics", "webgl3d"],
+    interactive: true,
     accent: "#7F77DD",
     accentLabel: "Full-Stack",
     description:
@@ -449,6 +505,8 @@ const PROJECTS: Project[] = [
     subtitle: "EPA & EIA Facility-Level Emissions · Midwest Corridor",
     category: "Environmental Science",
     domain: "environmental",
+    tech: ["gis", "analytics"],
+    interactive: false,
     accent: "#00C897",
     accentLabel: "Environmental",
     description:
@@ -476,6 +534,8 @@ const PROJECTS: Project[] = [
     subtitle: "Global Surface Temperature Anomaly · 1850–2020s",
     category: "Climate · Data Viz",
     domain: "environmental",
+    tech: ["statistics", "dataviz"],
+    interactive: false,
     accent: "#4A90D9",
     accentLabel: "Climate",
     description:
@@ -503,6 +563,8 @@ const PROJECTS: Project[] = [
     subtitle: "3D Topographic Symbology · USGS 30m DEM",
     category: "GIS · Cartography",
     domain: "environmental",
+    tech: ["gis", "remote-sensing", "dataviz"],
+    interactive: false,
     accent: "#E8A030",
     accentLabel: "Cartography",
     description:
@@ -530,6 +592,8 @@ const PROJECTS: Project[] = [
     subtitle: "2015 UK General Election · Classification & Symbology Study",
     category: "Civic · Data Viz",
     domain: "civic",
+    tech: ["statistics", "dataviz"],
+    interactive: false,
     accent: "#7F77DD",
     accentLabel: "Civic",
     description:
@@ -556,6 +620,8 @@ const PROJECTS: Project[] = [
     subtitle: "San Francisco Crime Hotspot Analysis · Getis-Ord Gi*",
     category: "Public Safety · Spatial Analysis",
     domain: "civic",
+    tech: ["gis", "statistics"],
+    interactive: false,
     accent: "#E05555",
     accentLabel: "Public Safety",
     description:
@@ -583,6 +649,8 @@ const PROJECTS: Project[] = [
     subtitle: "Atlantic & Gulf Storm Track Visualization",
     category: "Environmental · Hazards",
     domain: "environmental",
+    tech: ["gis", "dataviz"],
+    interactive: false,
     accent: "#FF6B2B",
     accentLabel: "Hazards",
     description:
@@ -609,6 +677,8 @@ const PROJECTS: Project[] = [
     subtitle: "1994 Northridge Earthquake · Magnitude 6.7 · Southern California",
     category: "GIS · Seismic Analysis",
     domain: "environmental",
+    tech: ["gis", "dataviz"],
+    interactive: false,
     accent: "#8B4040",
     accentLabel: "Seismic",
     description:
@@ -636,6 +706,8 @@ const PROJECTS: Project[] = [
     subtitle: "2023 US Census Bureau State-to-State Migration",
     category: "Civic · Mobility Data",
     domain: "civic",
+    tech: ["analytics", "dataviz"],
+    interactive: true,
     accent: "#00C897",
     accentLabel: "Mobility",
     description:
@@ -664,6 +736,8 @@ const PROJECTS: Project[] = [
     subtitle: "Fuel Efficiency Dashboard · Make, Model, Class, Cylinder Count",
     category: "Civic · Data Viz",
     domain: "civic",
+    tech: ["statistics", "dataviz"],
+    interactive: false,
     accent: "#4A90D9",
     accentLabel: "Data Viz",
     description:
@@ -691,6 +765,8 @@ const PROJECTS: Project[] = [
     subtitle: "Building Age Analysis in R · INSPIRE Building Footprints",
     category: "GIS · Urban Analysis",
     domain: "environmental",
+    tech: ["remote-sensing", "gis"],
+    interactive: false,
     accent: "#7FC8C0",
     accentLabel: "Urban GIS",
     description:
@@ -718,6 +794,8 @@ const PROJECTS: Project[] = [
     subtitle: "Multi-Agent Orchestration · 57 Tasks · 20 Days",
     category: "AI Infrastructure · Meta",
     domain: "infrastructure",
+    tech: ["fullstack", "dataviz"],
+    interactive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -747,6 +825,8 @@ const PROJECTS: Project[] = [
     subtitle: "Global Remote Sensing Survey · SOLARGIS",
     category: "Remote Sensing",
     domain: "environmental",
+    tech: ["remote-sensing", "dataviz"],
+    interactive: false,
     accent: "#00E5FF",
     accentLabel: "Remote Sensing",
     description:
@@ -774,6 +854,8 @@ const PROJECTS: Project[] = [
     subtitle: "Geospatial Intelligence Platform · 120 Campuses · 280 Buildings",
     category: "AI Infrastructure · Geospatial Intelligence",
     domain: "infrastructure",
+    tech: ["gis", "fullstack", "analytics"],
+    interactive: true,
     accent: "#00C897",
     accentLabel: "AI Infrastructure",
     description:
@@ -803,6 +885,8 @@ const PROJECTS: Project[] = [
     subtitle: "Interactive 3D Brain Explorer · DICOM → WebGL · Own MRI, 2026",
     category: "Medical Imaging · Volumetric Analysis",
     domain: "healthcare",
+    tech: ["webgl3d", "aiml", "dataviz"],
+    interactive: true,
     accent: "#378ADD",
     accentLabel: "Medical Imaging",
     description:
@@ -826,6 +910,8 @@ const PROJECTS: Project[] = [
     subtitle: "At-Risk & Failed Data Center Projects · 28 Sites · 11 States",
     category: "AI Infrastructure · Risk Intelligence",
     domain: "infrastructure",
+    tech: ["gis", "fullstack", "analytics"],
+    interactive: true,
     accent: "#FF6B6B",
     accentLabel: "Risk Intelligence",
     description:
@@ -850,6 +936,8 @@ const PROJECTS: Project[] = [
     subtitle: "Canonical vs. Chronological Order · 66 Books → 14 Eras · Sankey",
     category: "Data Storytelling · History & Religion",
     domain: "history",
+    tech: ["dataviz"],
+    interactive: true,
     accent: "#C9A84C",
     accentLabel: "Data Storytelling",
     description:
@@ -873,6 +961,8 @@ const PROJECTS: Project[] = [
     subtitle: "Interactive Atlas · Ministry Map & Timeline · AD 29–33",
     category: "Interactive Atlas · History & Religion",
     domain: "history",
+    tech: ["gis", "dataviz", "fullstack"],
+    interactive: true,
     accent: "#6FA875",
     accentLabel: "Interactive Atlas",
     description:
@@ -901,6 +991,8 @@ const PROJECTS: Project[] = [
     subtitle: "Missionary Journeys & Letters · Interactive Map · AD 46–67",
     category: "Interactive Atlas · History & Religion",
     domain: "history",
+    tech: ["gis", "dataviz", "fullstack"],
+    interactive: true,
     accent: "#5B8DD6",
     accentLabel: "Interactive Atlas",
     description:
@@ -929,6 +1021,8 @@ const PROJECTS: Project[] = [
     subtitle: "ESV Chronological · ~4000 BC – AD 95 · Zoomable Timeline",
     category: "Interactive Timeline · History & Religion",
     domain: "history",
+    tech: ["dataviz", "fullstack"],
+    interactive: true,
     accent: "#B8933F",
     accentLabel: "Interactive Timeline",
     description:
@@ -957,6 +1051,8 @@ const PROJECTS: Project[] = [
     subtitle: "Resource Library · 48+ Studies · 58+ Word Studies · 3 Apps",
     category: "Resource Library · History & Religion",
     domain: "history",
+    tech: ["fullstack"],
+    interactive: true,
     accent: "#7C89C0",
     accentLabel: "Resource Library",
     description:
@@ -985,6 +1081,8 @@ const PROJECTS: Project[] = [
     subtitle: "Study App · 96 Observations · 10 Characteristics · Genesis → Revelation",
     category: "Study App · History & Religion",
     domain: "history",
+    tech: ["dataviz", "analytics"],
+    interactive: true,
     accent: "#C77B3A",
     accentLabel: "Study App",
     description:
@@ -1915,14 +2013,116 @@ function LayoutButton({
 }
 
 /* ─────────────────────────────────────────────────────────────
+   FILTER PILL — shared by all three facet groups
+───────────────────────────────────────────────────────────── */
+function FilterPill({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        fontFamily: "'Space Mono', monospace",
+        fontSize: "0.5625rem",
+        letterSpacing: "0.12em",
+        textTransform: "uppercase",
+        padding: "6px 12px",
+        borderRadius: 14,
+        border: active
+          ? "0.5px solid rgba(0,229,255,0.45)"
+          : "0.5px solid rgba(100,160,220,0.12)",
+        background: active ? "rgba(0,229,255,0.06)" : "transparent",
+        color: active ? "#00E5FF" : "rgba(232,240,254,0.45)",
+        fontWeight: active ? 700 : 400,
+        cursor: "pointer",
+        transition: "all 0.2s ease",
+      }}
+      onMouseEnter={(e) => {
+        if (!active) {
+          (e.currentTarget as HTMLElement).style.borderColor =
+            "rgba(100,160,220,0.3)";
+          (e.currentTarget as HTMLElement).style.color =
+            "rgba(232,240,254,0.75)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!active) {
+          (e.currentTarget as HTMLElement).style.borderColor =
+            "rgba(100,160,220,0.12)";
+          (e.currentTarget as HTMLElement).style.color =
+            "rgba(232,240,254,0.45)";
+        }
+      }}
+    >
+      {label}
+    </button>
+  );
+}
+
+function FilterGroupLabel({ children }: { children: string }) {
+  return (
+    <span
+      style={{
+        fontFamily: "'Space Mono', monospace",
+        fontSize: "0.5rem",
+        letterSpacing: "0.2em",
+        textTransform: "uppercase",
+        color: "rgba(232,240,254,0.2)",
+        flexShrink: 0,
+        width: 76,
+        paddingTop: 8,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+/* ─────────────────────────────────────────────────────────────
    PROJECTS PAGE — ROOT COMPONENT
 ───────────────────────────────────────────────────────────── */
+type FormatFilter = "all" | "interactive" | "static";
+
 export default function Projects() {
   const [layout, setLayout] = useState<LayoutMode>("gallery");
+  const [industries, setIndustries] = useState<ReadonlySet<DomainKey>>(
+    new Set()
+  );
+  const [techs, setTechs] = useState<ReadonlySet<TechKey>>(new Set());
+  const [format, setFormat] = useState<FormatFilter>("all");
 
   const handleLayout = useCallback((mode: LayoutMode) => {
     setLayout(mode);
   }, []);
+
+  const toggleIn = <T,>(set: ReadonlySet<T>, v: T): Set<T> => {
+    const next = new Set(set);
+    if (next.has(v)) next.delete(v);
+    else next.add(v);
+    return next;
+  };
+
+  const filtered = PROJECTS.filter(
+    (p) =>
+      (industries.size === 0 || industries.has(p.domain)) &&
+      (techs.size === 0 || p.tech.some((t) => techs.has(t))) &&
+      (format === "all" || (format === "interactive") === p.interactive)
+  );
+
+  const filtersActive =
+    industries.size > 0 || techs.size > 0 || format !== "all";
+
+  const clearFilters = () => {
+    setIndustries(new Set());
+    setTechs(new Set());
+    setFormat("all");
+  };
 
   return (
     <PageTransition>
@@ -2053,30 +2253,111 @@ export default function Projects() {
           </div>
         </header>
 
+        {/* ── Facet filters: industry × technique × format ── */}
+        <section
+          aria-label="Filter projects"
+          style={{
+            padding: "0 6vw",
+            marginBottom: "2.5rem",
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <FilterGroupLabel>Industry</FilterGroupLabel>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {(Object.entries(DOMAINS) as [DomainKey, (typeof DOMAINS)[DomainKey]][]).map(
+                ([key, d]) => (
+                  <FilterPill
+                    key={key}
+                    label={d.label}
+                    active={industries.has(key)}
+                    onClick={() => setIndustries(toggleIn(industries, key))}
+                  />
+                )
+              )}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <FilterGroupLabel>Technique</FilterGroupLabel>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {(Object.entries(TECHS) as [TechKey, string][]).map(([key, label]) => (
+                <FilterPill
+                  key={key}
+                  label={label}
+                  active={techs.has(key)}
+                  onClick={() => setTechs(toggleIn(techs, key))}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+            <FilterGroupLabel>Format</FilterGroupLabel>
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+              {(
+                [
+                  ["all", "All"],
+                  ["interactive", "Interactive · Live"],
+                  ["static", "Static · Print"],
+                ] as [FormatFilter, string][]
+              ).map(([key, label]) => (
+                <FilterPill
+                  key={key}
+                  label={label}
+                  active={format === key}
+                  onClick={() => setFormat(key)}
+                />
+              ))}
+              {filtersActive && (
+                <FilterPill
+                  label={`Clear · showing ${filtered.length} of ${PROJECTS.length}`}
+                  active={false}
+                  onClick={clearFilters}
+                />
+              )}
+            </div>
+          </div>
+        </section>
+
         {/* ── Gallery ── */}
         <main style={{ padding: "0 6vw 6rem" }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={layout}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
+          {filtered.length === 0 ? (
+            <p
+              style={{
+                fontFamily: "'Lora', serif",
+                color: "rgba(232,240,254,0.4)",
+                padding: "4rem 0",
+              }}
             >
-              {layout === "cinematic" && (
-                <LayoutCinematic projects={PROJECTS} />
-              )}
-              {layout === "editorial" && (
-                <LayoutEditorial projects={PROJECTS} />
-              )}
-              {layout === "gallery" && (
-                <LayoutGallery projects={PROJECTS} />
-              )}
-              {layout === "domain" && (
-                <LayoutDomain projects={PROJECTS} />
-              )}
-            </motion.div>
-          </AnimatePresence>
+              Nothing matches that combination — try removing a filter.
+            </p>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={layout}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {layout === "cinematic" && (
+                  <LayoutCinematic projects={filtered} />
+                )}
+                {layout === "editorial" && (
+                  <LayoutEditorial projects={filtered} />
+                )}
+                {layout === "gallery" && (
+                  <LayoutGallery projects={filtered} />
+                )}
+                {layout === "domain" && (
+                  <LayoutDomain projects={filtered} />
+                )}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </main>
 
         {/* ── Footer ── */}
