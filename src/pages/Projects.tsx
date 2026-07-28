@@ -74,9 +74,9 @@ const DOMAINS: Record<
     org: "Clemson · NRCS",
   },
   healthcare: {
-    label: "Healthcare · Public Data",
+    label: "Healthcare · Medical Imaging",
     accent: "#378ADD",
-    org: "Booz Allen · VHA",
+    org: "Booz Allen · VHA · Personal",
   },
   infrastructure: {
     label: "AI Infrastructure",
@@ -781,6 +781,29 @@ const PROJECTS: Project[] = [
     tags: ["MapLibre GL", "AI Infrastructure", "Data Reconciliation", "TypeScript"],
     hero: true,
   },
+  {
+    id: "brain-mri-explorer",
+    index: "26",
+    title: "The Terrain Inside",
+    editorialTitle: ["The terrain", "inside."],
+    subtitle: "Interactive 3D Brain Explorer · DICOM → WebGL · Own MRI, 2026",
+    category: "Medical Imaging · Volumetric Analysis",
+    domain: "healthcare",
+    accent: "#378ADD",
+    accentLabel: "Medical Imaging",
+    description:
+      "Built from my own MRI — 192 sagittal T1 slices carried from raw DICOM through skull-stripping, deep-learning segmentation, and mesh generation into a WebGL app you can rotate, slice, and pull apart. Fourteen structure layers, seven subcortical nuclei meshed bilaterally, and a 31-region cortical map traced from my own sulci rather than an atlas average.",
+    insight:
+      "Spatial analysis was never really about geography. A brain is a volume with coordinate frames, boundaries, and structures to segment — the same reasoning I point at terrain and satellite rasters, turned inward.",
+    method:
+      "6,212 DICOM instances recovered from truncated exports. Skull-stripped, then segmented with ANTsPyNet Desikan-Killiany-Tourville labeling for 31 cortical regions plus deep nuclei. Marching-cubes meshing with baked ambient occlusion; rendered in Three.js with image-based lighting and a live cross-section plane.",
+    image: "/images/work/brain-mri-explorer.webp",
+    imageCrop: "center",
+    link: "https://brain-mri-explorer.vercel.app",
+    source: "Data: Own MRI · SAG T1 MPRAGE, 192 slices · DKT parcellation (ANTsPyNet)",
+    tags: ["Three.js", "WebGL", "DICOM", "Medical Imaging", "Segmentation"],
+    hero: true,
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────
@@ -1310,15 +1333,36 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                   {section.hero.title}
                 </span>
               </div>
-              <span
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: "0.5rem",
-                  color: "rgba(232,240,254,0.2)",
-                }}
-              >
-                PTA · {section.hero.index}
-              </span>
+              <div style={{ textAlign: "right", flexShrink: 0 }}>
+                <span
+                  style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: "0.5rem",
+                    color: "rgba(232,240,254,0.2)",
+                  }}
+                >
+                  PTA · {section.hero.index}
+                </span>
+                {section.hero.link && (
+                  <div style={{ marginTop: 3 }}>
+                    <a
+                      href={section.hero.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontFamily: "'Space Mono', monospace",
+                        fontSize: "0.5rem",
+                        letterSpacing: "0.1em",
+                        color: section.hero.accent,
+                        textDecoration: "none",
+                        opacity: 0.85,
+                      }}
+                    >
+                      View live ↗
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
             <div
               style={{
@@ -1374,6 +1418,25 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                     >
                       {p.title}
                     </div>
+                    {p.link && (
+                      <a
+                        href={p.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-block",
+                          marginTop: 3,
+                          fontFamily: "'Space Mono', monospace",
+                          fontSize: "0.5rem",
+                          letterSpacing: "0.1em",
+                          color: p.accent,
+                          textDecoration: "none",
+                          opacity: 0.85,
+                        }}
+                      >
+                        View live ↗
+                      </a>
+                    )}
                     <SourceLine text={p.source} accent={p.accent} />
                   </div>
                 </article>
