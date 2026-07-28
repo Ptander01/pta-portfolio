@@ -28,7 +28,7 @@ export const entries: TimelineEntry[] = [
     startYear: 2014,
     endYear: 2014,
     label: "2014",
-    role: "B.S. Agricultural Mechanization & Business",
+    role: "B.S. Agricultural Science",
     org: "Clemson University",
     color: "var(--emerald)",
     description:
@@ -41,7 +41,7 @@ export const entries: TimelineEntry[] = [
     startYear: 2015,
     endYear: 2020,
     label: "2015–2020",
-    role: "Agricultural Extension Agent",
+    role: "Environmental Data Analyst",
     org: "Clemson Cooperative Extension",
     color: "var(--amber)",
     description:
@@ -55,11 +55,30 @@ export const entries: TimelineEntry[] = [
     anchor: "#soil-to-server",
   },
   {
+    id: "clemson-cafls",
+    startYear: 2016,
+    endYear: 2020,
+    label: "2016–2020",
+    role: "GIS & Remote Sensing Researcher",
+    org: "Clemson University — CAFLS",
+    color: "var(--emerald)",
+    description:
+      "Landscape-scale spatial analysis across 90,000+ km² for SCDNR, integrating elevation, land cover, forest density, soils, and NHD hydrology. Modeled PV site suitability across 88 agricultural sites from UAV and satellite imagery — published in Drones (MDPI, 2020).",
+    skills: [
+      "Remote Sensing",
+      "UAV / Photogrammetry",
+      "LiDAR (HTC)",
+      "Hydrology",
+      "Python",
+    ],
+    anchor: "#spatial-awakening",
+  },
+  {
     id: "clemson-ms",
     startYear: 2020,
     endYear: 2020,
     label: "2020",
-    role: "M.S. Applied Computing (GIS Focus)",
+    role: "M.S. Environmental Science",
     org: "Clemson University",
     color: "var(--emerald)",
     description:
@@ -76,9 +95,9 @@ export const entries: TimelineEntry[] = [
   {
     id: "booz-allen",
     startYear: 2021,
-    endYear: 2024,
-    label: "2021–2024",
-    role: "Geospatial Data Scientist",
+    endYear: 2025,
+    label: "2021–2025",
+    role: "Lead Spatial Data Scientist",
     org: "Booz Allen Hamilton / VA",
     color: "var(--cyan)",
     description:
@@ -98,8 +117,8 @@ export const entries: TimelineEntry[] = [
     startYear: 2025,
     endYear: 2026,
     label: "2025–2026",
-    role: "GIS & Remote Sensing Intelligence Lead",
-    org: "Meta",
+    role: "Lead Spatial Data Scientist / Remote Sensing Researcher",
+    org: "Meta (AI Research Labs)",
     color: "var(--coral)",
     description:
       "Led GIS and remote sensing intelligence for Meta's AI infrastructure expansion. Built a 233,000-line automated geospatial data pipeline, a custom UCID spatial clustering algorithm, and 41 automated validation scripts.",
