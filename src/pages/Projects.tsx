@@ -885,6 +885,7 @@ const PROJECTS: Project[] = [
     images: [
       "/images/work/jesus-world.webp",
       "/images/work/jesus-world-2.webp",
+      "/images/work/jesus-world-3.webp",
     ],
     imageCrop: "center",
     link: "https://jesus-world.vercel.app",
@@ -940,6 +941,7 @@ const PROJECTS: Project[] = [
     images: [
       "/images/work/bible-timeline.webp",
       "/images/work/bible-timeline-2.webp",
+      "/images/work/bible-timeline-3.webp",
     ],
     imageCrop: "center",
     link: "https://bible-timeline-pink.vercel.app",
@@ -964,7 +966,12 @@ const PROJECTS: Project[] = [
     method:
       "Hand-built HTML/CSS/JS study guides sharing a token-driven design system — guide modes, word-study cards, characteristic filters, and audio companions — published as static pages on GitHub Pages.",
     image: "/images/work/bible-study-library.webp",
-    imageCrop: "top",
+    images: [
+      "/images/work/bible-study-library.webp",
+      "/images/work/bible-study-library-2.webp",
+      "/images/work/bible-study-library-3.webp",
+    ],
+    imageCrop: "center",
     link: "https://ptander01.github.io/Bible-Study-Library/",
     source: "Stack: HTML · CSS · JavaScript · GitHub Pages",
     tags: ["Design System", "HTML/JS", "Resource Library", "GitHub Pages"],
@@ -990,6 +997,7 @@ const PROJECTS: Project[] = [
     images: [
       "/images/work/holy-spirit-study.webp",
       "/images/work/holy-spirit-study-2.webp",
+      "/images/work/holy-spirit-study-3.webp",
     ],
     imageCrop: "center",
     link: "https://ptander01.github.io/Bible-Study-Library/resource-series/holy-spirit-study_32.html",
