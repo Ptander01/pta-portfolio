@@ -10,19 +10,25 @@
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Open Graph / Social -->
+    <!-- Open Graph / Social
+         NOTE: og:image and twitter:image must be ABSOLUTE URLs — LinkedIn,
+         Slack, and Twitter do not reliably resolve relative paths. If this
+         site moves to a custom domain, update the three URLs below. -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PTA Geospatial Intelligence" />
+    <meta property="og:url" content="https://pta-portfolio.vercel.app/" />
     <meta property="og:title" content="PTA Geospatial Intelligence" />
     <meta property="og:description" content="Patrick T. Anderson — Geospatial Data Science, Remote Sensing, and AI-driven infrastructure analytics." />
-    <meta property="og:image" content="/assets/brand/og-image.png" />
+    <meta property="og:image" content="https://pta-portfolio.vercel.app/assets/brand/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="PTA Geospatial Intelligence — portfolio preview" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="PTA Geospatial Intelligence" />
     <meta name="twitter:description" content="Patrick T. Anderson — Geospatial Data Science, Remote Sensing, and AI-driven infrastructure analytics." />
-    <meta name="twitter:image" content="/assets/brand/og-image.png" />
+    <meta name="twitter:image" content="https://pta-portfolio.vercel.app/assets/brand/og-image.png" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

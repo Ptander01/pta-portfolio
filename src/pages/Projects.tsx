@@ -804,13 +804,17 @@ function AccentRule({ color }: { color: string }) {
   );
 }
 
-/** Image frame with corner brackets and fallback placeholder */
+/** Image frame with accent bar and fallback placeholder.
+ *  `priority` marks the first card in a layout — that one loads eagerly so
+ *  the above-the-fold image isn't deferred; every other card lazy-loads. */
 function ProjectImage({
   project,
   height = 360,
+  priority = false,
 }: {
   project: Project;
   height?: number;
+  priority?: boolean;
 }) {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
@@ -881,6 +885,12 @@ function ProjectImage({
                 key={src}
                 src={src}
                 alt={project.title}
+                /* Extras (i > 0) are only mounted after first hover, so they
+                   are already deferred — load them immediately once mounted
+                   or the crossfade stalls on the first cycle. */
+                loading={i > 0 || priority ? "eager" : "lazy"}
+                fetchPriority={priority && i === 0 ? "high" : undefined}
+                decoding="async"
                 onLoad={() => i === 0 && setLoaded(true)}
                 onError={() => i === 0 && setError(true)}
                 style={{
@@ -1006,9 +1016,9 @@ function Tag({ label }: { label: string }) {
 function LayoutCinematic({ projects }: { projects: Project[] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
-      {projects.map((p) => (
+      {projects.map((p, i) => (
         <article key={p.id}>
-          <ProjectImage project={p} height={420} />
+          <ProjectImage project={p} height={420} priority={i === 0} />
 
           <div
             style={{
@@ -1102,7 +1112,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
           >
             {/* Image */}
             <div style={{ order: imgLeft ? 0 : 1 }}>
-              <ProjectImage project={p} height={340} />
+              <ProjectImage project={p} height={340} priority={i === 0} />
               <div
                 style={{
                   display: "flex",
@@ -1261,11 +1271,11 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-      {sections.map((section) => (
+      {sections.map((section, si) => (
         <div key={section.hero.id}>
           {/* Hero — full width */}
           <article style={{ marginBottom: "0.75rem" }}>
-            <ProjectImage project={section.hero} height={480} />
+            <ProjectImage project={section.hero} height={480} priority={si === 0} />
             <div
               style={{
                 display: "flex",
