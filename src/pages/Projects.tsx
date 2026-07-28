@@ -62,7 +62,8 @@ type DomainKey =
   | "infrastructure"
   | "dataart"
   | "engineering"
-  | "civic";
+  | "civic"
+  | "history";
 
 /* ─────────────────────────────────────────────────────────────
    DOMAIN DEFINITIONS
@@ -100,6 +101,11 @@ const DOMAINS: Record<
     label: "Civic · Public Data",
     accent: "#E05555",
     org: "Independent · Academic",
+  },
+  history: {
+    label: "History & Religion",
+    accent: "#C9A84C",
+    org: "Independent",
   },
 };
 
@@ -834,6 +840,161 @@ const PROJECTS: Project[] = [
     caseStudy: "dc-graveyard",
     source: "Stack: MapLibre GL · Apache ECharts · TanStack Table · TypeScript",
     tags: ["MapLibre GL", "Risk Analysis", "AI Infrastructure", "TypeScript"],
+    hero: false,
+  },
+  {
+    id: "chrono-sankey",
+    index: "28",
+    title: "The Bible, Reordered",
+    editorialTitle: ["Two orders,", "one canon."],
+    subtitle: "Canonical vs. Chronological Order · 66 Books → 14 Eras · Sankey",
+    category: "Data Storytelling · History & Religion",
+    domain: "history",
+    accent: "#C9A84C",
+    accentLabel: "Data Storytelling",
+    description:
+      "The Bible's table of contents is not its timeline — Job sits mid-canon but belongs among the earliest events, and the prophets scatter across five centuries. A Sankey diagram routes all 66 books from their traditional canonical position into 14 chronological eras, making every crossing visible. Published in two Flourish views: a detailed book-level version and an aggregated era-level companion.",
+    insight:
+      "The canon is a library, not a chronicle. Readers assume the books sit in time order — they don't, and one diagram of the crossings communicates that faster than any explanation.",
+    method:
+      "Book-to-era mapping assembled from an ESV chronological reading plan, rendered as a two-column Sankey in Flourish. Ribbon crossings encode the distance between a book's shelf position and its place in time.",
+    image: "/images/work/chrono-sankey.webp",
+    imageCrop: "center",
+    link: "https://public.flourish.studio/visualisation/25256067/",
+    source: "Tool: Flourish · Data: ESV chronological reading plan · 2 views",
+    tags: ["Sankey", "Flourish", "Data Storytelling", "Biblical History"],
+    hero: true,
+  },
+  {
+    id: "jesus-world",
+    index: "29",
+    title: "Jesus's World",
+    editorialTitle: ["An atlas of", "the Gospels."],
+    subtitle: "Interactive Atlas · Ministry Map & Timeline · AD 29–33",
+    category: "Interactive Atlas · History & Religion",
+    domain: "history",
+    accent: "#6FA875",
+    accentLabel: "Interactive Atlas",
+    description:
+      "A single-page atlas of the Gospels: a D3 map of the ministry years AD 29–33, a timeline whose events open through four progressive levels of detail, a Play mode that narrates the whole arc, a data-visualization page, and a scroll-driven Passion Week reader. The narrative geography of the Gospels, made navigable.",
+    insight:
+      "The Gospels are dense with places most readers skim past. Put every named site on a map, tie it to a timeline, and the geography stops being scenery — it becomes the interface to the text.",
+    method:
+      "React 19 + Vite. D3 geographic projection for the ministry map, a four-state progressive-disclosure event system, a CSS-animated depth-glide parallax hero, and a scroll-driven Passion Week reader with a Jerusalem diagram.",
+    image: "/images/work/jesus-world.webp",
+    images: [
+      "/images/work/jesus-world.webp",
+      "/images/work/jesus-world-2.webp",
+    ],
+    imageCrop: "center",
+    link: "https://jesus-world.vercel.app",
+    source: "Stack: React 19 · Vite · D3 · Deployed on Vercel",
+    tags: ["D3", "React 19", "Interactive Atlas", "Scrollytelling", "Timeline"],
+    hero: true,
+  },
+  {
+    id: "pauls-world",
+    index: "30",
+    title: "Paul's World",
+    editorialTitle: ["The journeys,", "traced."],
+    subtitle: "Missionary Journeys & Letters · Interactive Map · AD 46–67",
+    category: "Interactive Atlas · History & Religion",
+    domain: "history",
+    accent: "#5B8DD6",
+    accentLabel: "Interactive Atlas",
+    description:
+      "An interactive map of Paul's missionary journeys across the Mediterranean, AD 46–67. Each journey toggles on and off as its own colored route, and a linked timeline aligns every epistle to the leg of the journey where it was written — the correspondence becomes a travelogue.",
+    insight:
+      "Thirteen letters read differently once they sit on a map. Distance, detour, and imprisonment stop being footnotes and become the structure of the story.",
+    method:
+      "React + Vite with a vector Mediterranean basemap, per-journey route toggles with provincial boundary overlays, and a books-to-timeline rail that places each letter in its journey window.",
+    image: "/images/work/pauls-world.webp",
+    images: [
+      "/images/work/pauls-world.webp",
+      "/images/work/pauls-world-2.webp",
+      "/images/work/pauls-world-3.webp",
+    ],
+    imageCrop: "center",
+    link: "https://pauls-world.vercel.app",
+    source: "Stack: React · Vite · Deployed on Vercel",
+    tags: ["Interactive Map", "React", "Timeline", "Biblical History"],
+    hero: false,
+  },
+  {
+    id: "bible-timeline",
+    index: "31",
+    title: "Bible Timeline",
+    editorialTitle: ["Forty centuries,", "one axis."],
+    subtitle: "ESV Chronological · ~4000 BC – AD 95 · Zoomable Timeline",
+    category: "Interactive Timeline · History & Religion",
+    domain: "history",
+    accent: "#B8933F",
+    accentLabel: "Interactive Timeline",
+    description:
+      "A zoomable timeline of the whole biblical narrative, ~4000 BC to AD 95: era navigation from Primeval History to the Early Church, parallel lanes for events, books, kings, prophets, and figures, and a world-context band that keeps Egypt, Assyria, Babylon, and Rome in frame. Genre-colored books, search, a brush minimap, and dark and parchment themes.",
+    insight:
+      "Most scripture timelines flatten everything into evenly spaced boxes. Kept proportional, the axis itself becomes the argument — centuries of silence and dense, pivotal decades read at a glance.",
+    method:
+      "React + Vite with a d3-zoom time axis. Layered swim-lanes for people, books, and events, era pill navigation, a brush minimap, and a fully token-driven theme system with dark and parchment modes.",
+    image: "/images/work/bible-timeline.webp",
+    images: [
+      "/images/work/bible-timeline.webp",
+      "/images/work/bible-timeline-2.webp",
+    ],
+    imageCrop: "center",
+    link: "https://bible-timeline-pink.vercel.app",
+    source: "Stack: React · Vite · D3 · ESV chronological framework",
+    tags: ["D3", "Timeline", "React", "Data Density", "Theming"],
+    hero: false,
+  },
+  {
+    id: "bible-study-library",
+    index: "32",
+    title: "Bible Study Library",
+    editorialTitle: ["Fifty studies,", "one system."],
+    subtitle: "Resource Library · 48+ Studies · 58+ Word Studies · 3 Apps",
+    category: "Resource Library · History & Religion",
+    domain: "history",
+    accent: "#7C89C0",
+    accentLabel: "Resource Library",
+    description:
+      "A growing library of 48+ interactive study guides — foundational series, first-principles studies, audio listen-mode companions, and three full interactive apps — each built as a self-contained HTML/JS page that runs anywhere with no build step, unified under one library index.",
+    insight:
+      "Fifty standalone pages with one shared design language is a different engineering discipline than one app: the system has to live in conventions and tokens, not in a component framework.",
+    method:
+      "Hand-built HTML/CSS/JS study guides sharing a token-driven design system — guide modes, word-study cards, characteristic filters, and audio companions — published as static pages on GitHub Pages.",
+    image: "/images/work/bible-study-library.webp",
+    imageCrop: "top",
+    link: "https://ptander01.github.io/Bible-Study-Library/",
+    source: "Stack: HTML · CSS · JavaScript · GitHub Pages",
+    tags: ["Design System", "HTML/JS", "Resource Library", "GitHub Pages"],
+    hero: false,
+  },
+  {
+    id: "holy-spirit-study",
+    index: "33",
+    title: "The Holy Spirit in Scripture",
+    editorialTitle: ["Eighteen months,", "ninety-six observations."],
+    subtitle: "Study App · 96 Observations · 10 Characteristics · Genesis → Revelation",
+    category: "Study App · History & Religion",
+    domain: "history",
+    accent: "#C77B3A",
+    accentLabel: "Study App",
+    description:
+      "The capstone of an eighteen-month study: every observation of the Spirit across the canon, coded against ten characteristics and served five ways — a filterable characteristic matrix, a timeline, thematic lenses, an application view, and notes. Any row opens a verse-level deep dive.",
+    insight:
+      "It's a dataset before it's a devotional — 96 rows, ten coded columns, and the same filter-and-facet interface I'd put on any analytics product. Rigor and reverence turn out to be compatible.",
+    method:
+      "Single-file HTML/JS application over a hand-coded observation dataset. Characteristic and testament filters, passage search, observation and matrix view toggles, and per-verse deep-dive pages.",
+    image: "/images/work/holy-spirit-study.webp",
+    images: [
+      "/images/work/holy-spirit-study.webp",
+      "/images/work/holy-spirit-study-2.webp",
+    ],
+    imageCrop: "center",
+    link: "https://ptander01.github.io/Bible-Study-Library/resource-series/holy-spirit-study_32.html",
+    source: "Stack: HTML · CSS · JavaScript · 96-observation coded dataset",
+    tags: ["Data Design", "HTML/JS", "Faceted Filtering", "Word Studies"],
     hero: false,
   },
 ];

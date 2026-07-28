@@ -35,7 +35,7 @@ const workflowSteps = [
     icon: Layers,
     title: "Data Collection & Preparation",
     description:
-      "From satellite imagery tasking to field-collected soil samples, I source, clean, and harmonize data from disparate origins. My background in agricultural science and environmental physics means I understand the physical reality behind the numbers.",
+      "From satellite imagery tasking to field-collected soil samples, I source, clean, and harmonize data from disparate origins. As a licensed remote pilot I can fly the collection mission myself when the imagery doesn't exist yet — and my background in agricultural science and environmental physics means I understand the physical reality behind the numbers.",
     color: "var(--amber)",
   },
   {

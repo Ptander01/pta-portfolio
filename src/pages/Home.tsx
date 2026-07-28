@@ -82,7 +82,7 @@ export default function Home() {
               maxWidth: "34ch",
             }}
           >
-            Spatial data scientist. Presenter. Remote pilot.
+            Spatial data scientist: research, build, present.
           </p>
 
           <div
