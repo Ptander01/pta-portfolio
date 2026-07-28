@@ -12,10 +12,9 @@ import { Link, useLocation } from "wouter";
 
 const navItems = [
   { label: "HOME", href: "/" },
-  { label: "WORK", href: "/work" },
-  { label: "PROJECTS", href: "/projects" },
-  { label: "ABOUT", href: "/about" },
-  { label: "JOURNEY", href: "/journey" },
+  { label: "PORTFOLIO", href: "/projects" },
+  { label: "ABOUT ME", href: "/about" },
+  { label: "RESUME", href: "/resume" },
   { label: "CONTACT", href: "/contact" },
 ];
 

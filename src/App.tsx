@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { AnimatePresence } from "framer-motion";
-import { Route, Switch, useLocation } from "wouter";
+import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/layout/Footer";
 import Navbar from "./components/layout/Navbar";
@@ -10,10 +10,9 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
-import Journey from "./pages/Journey";
 import ProjectDetail from "./pages/ProjectDetail";
 import Projects from "./pages/Projects";
-import Work from "./pages/Work";
+import Resume from "./pages/Resume";
 
 function Router() {
   const [location] = useLocation();
@@ -22,11 +21,15 @@ function Router() {
     <AnimatePresence mode="wait">
       <Switch key={location}>
         <Route path="/" component={Home} />
-        <Route path="/work" component={Work} />
+        {/* Case studies survive; the /work index and /journey galleries were
+            retired into /projects, which supersedes both. Redirect rather than
+            404 so existing links and any shared URLs still land somewhere. */}
         <Route path="/work/:slug" component={ProjectDetail} />
+        <Route path="/work">{() => <Redirect to="/projects" />}</Route>
+        <Route path="/journey">{() => <Redirect to="/projects" />}</Route>
         <Route path="/projects" component={Projects} />
         <Route path="/about" component={About} />
-        <Route path="/journey" component={Journey} />
+        <Route path="/resume" component={Resume} />
         <Route path="/contact" component={Contact} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />

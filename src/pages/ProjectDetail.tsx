@@ -704,13 +704,13 @@ export default function ProjectDetail() {
             <h1 className="heading-lg mb-4" style={{ color: "var(--heading-color)" }}>
               Project Not Found
             </h1>
-            <Link href="/work">
+            <Link href="/projects">
               <span
                 className="inline-flex items-center gap-2 font-display font-medium text-sm"
                 style={{ color: "var(--cyan)" }}
               >
                 <ArrowLeft size={14} />
-                Back to Work
+                Back to Portfolio
               </span>
             </Link>
           </div>
@@ -744,13 +744,13 @@ export default function ProjectDetail() {
 
         <div className="container relative z-10 pt-40 pb-20">
           <FadeIn delay={0.1} duration={0.6}>
-            <Link href="/work">
+            <Link href="/projects">
               <span
                 className="inline-flex items-center gap-2 font-display font-medium text-sm mb-8 block"
                 style={{ color: "var(--text-muted)" }}
               >
                 <ArrowLeft size={14} />
-                Back to Work
+                Back to Portfolio
               </span>
             </Link>
           </FadeIn>

@@ -6,7 +6,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
-interface TimelineEntry {
+export interface TimelineEntry {
   id: string;
   /** Numeric year for positioning (use start year for ranges) */
   startYear: number;
@@ -21,7 +21,8 @@ interface TimelineEntry {
   anchor: string;
 }
 
-const entries: TimelineEntry[] = [
+/** Single source of truth for career history — also consumed by /resume. */
+export const entries: TimelineEntry[] = [
   {
     id: "clemson-bs",
     startYear: 2014,

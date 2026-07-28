@@ -1512,3 +1512,70 @@
     transition: none !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   LANDING (Home)
+   Split layout: identity + nav on one side, hero art on the other.
+   The hero art is portrait, so it is never used as a full-bleed
+   background — a 16:9 crop of it loses the figure entirely.
+   ═══════════════════════════════════════════════════════════════ */
+.home-split {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+/* Mobile: art leads, text follows */
+.home-split > .home-hero {
+  order: -1;
+  min-height: 42vh;
+}
+
+.home-hero-fade {
+  background: linear-gradient(to bottom, var(--page-bg) 0%, transparent 24%);
+}
+
+@media (min-width: 900px) {
+  .home-split {
+    grid-template-columns: 1.05fr 1fr;
+    grid-template-rows: 1fr;
+  }
+  .home-split > .home-hero {
+    order: 0;
+    min-height: 100vh;
+  }
+  .home-hero-fade {
+    background: linear-gradient(to right, var(--page-bg) 0%, transparent 20%);
+  }
+}
+
+/* Nav links — the rule extends on hover. Interaction-driven only. */
+.home-nav-link {
+  color: var(--text-secondary);
+  transition: color 0.25s ease;
+}
+.home-nav-link:hover,
+.home-nav-link:focus-visible {
+  color: var(--cyan);
+}
+
+.home-nav-rule {
+  display: inline-block;
+  width: 18px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+  flex-shrink: 0;
+  transition: width 0.25s ease, opacity 0.25s ease;
+}
+.home-nav-link:hover .home-nav-rule,
+.home-nav-link:focus-visible .home-nav-rule {
+  width: 34px;
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-nav-link,
+  .home-nav-rule {
+    transition: none;
+  }
+}

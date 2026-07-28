@@ -317,7 +317,7 @@ export default function About() {
                   decisions.
                 </p>
                 <a
-                  href="/work"
+                  href="/projects"
                   className="inline-flex items-center gap-2 mt-6 font-display font-medium text-sm transition-colors"
                   style={{ color: "var(--cyan)" }}
                 >

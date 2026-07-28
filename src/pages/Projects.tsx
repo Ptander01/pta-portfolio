@@ -47,7 +47,10 @@ interface Project {
   image: string;
   images?: string[];          // optional extra candidates — crossfade through on hover
   imageCrop: string;
-  link?: string;
+  link?: string;              // external live demo
+  /** Slug of an in-site case study at /work/:slug, where one exists.
+   *  The /work index was retired — this is how those pages stay reachable. */
+  caseStudy?: string;
   source: string;
   tags: string[];
   hero?: boolean;             // gets full-width in Gallery layout
@@ -291,6 +294,7 @@ const PROJECTS: Project[] = [
       "/images/work/dc-satellite-imagery-2.webp",
       "/images/work/dc-satellite-imagery-3.webp",
     ],
+    caseStudy: "satellite-explorer",
     imageCrop: "center",
     source: "Data: Sentinel-2 MSI · NDBI change detection · Quarterly 2023–2025",
     tags: ["Remote Sensing", "Change Detection", "Data Centers", "Meta", "NoVA"],
@@ -313,6 +317,7 @@ const PROJECTS: Project[] = [
     method:
       "Multi-criteria site suitability analysis. Parcel data from county assessors. Transmission lines from EIA. Fiber from FCC Form 477. Scoring: weighted overlay.",
     image: "/assets/projects/dc-parcel-dashboard/hero.webp",
+    caseStudy: "dc-parcel-dashboard",
     imageCrop: "center",
     source: "Data: County assessors · EIA · FCC Form 477 · 2025",
     tags: ["Site Siting", "Parcel Analysis", "AI Infrastructure", "MCDA", "Meta"],
@@ -423,6 +428,7 @@ const PROJECTS: Project[] = [
     method:
       "React 19 + TypeScript + Vite. Custom 3D chart shapes with directional lighting. Three.js globe. All data client-side — no API calls, instant load.",
     image: "/assets/projects/mls-dashboard/cinematic-hero.webp",
+    caseStudy: "mls-dashboard",
     imageCrop: "top",
     link: "https://mls-dashboard-one.vercel.app/",
     source: "Stack: React 19 · Three.js · Recharts · TypeScript · Vercel",
@@ -720,6 +726,7 @@ const PROJECTS: Project[] = [
       "/images/work/agent-flow-visualizer-2.webp",
       "/images/work/agent-flow-visualizer-3.webp",
     ],
+    caseStudy: "agent-flow-visualizer",
     imageCrop: "top",
     link: "https://agentflow-eaqzkikc.manus.space",
     source: "Data: Manus API · 57 tasks · 2,580 messages · 907 files · Mar 10–29, 2026",
@@ -775,6 +782,7 @@ const PROJECTS: Project[] = [
       "/images/work/dc-consensus-model-2.webp",
       "/images/work/dc-consensus-model-3.webp",
     ],
+    caseStudy: "consensus-viewer",
     imageCrop: "center",
     link: "https://aidatacentertracker.vercel.app/",
     source: "Stack: MapLibre GL · Apache ECharts · TanStack Table · TypeScript",
@@ -803,6 +811,30 @@ const PROJECTS: Project[] = [
     source: "Data: Own MRI · SAG T1 MPRAGE, 192 slices · DKT parcellation (ANTsPyNet)",
     tags: ["Three.js", "WebGL", "DICOM", "Medical Imaging", "Segmentation"],
     hero: true,
+  },
+  {
+    id: "dc-graveyard",
+    index: "27",
+    title: "The Data Center Graveyard",
+    editorialTitle: ["Where the buildout", "stalls."],
+    subtitle: "At-Risk & Failed Data Center Projects · 28 Sites · 11 States",
+    category: "AI Infrastructure · Risk Intelligence",
+    domain: "infrastructure",
+    accent: "#FF6B6B",
+    accentLabel: "Risk Intelligence",
+    description:
+      "A risk intelligence dashboard tracking 28 at-risk or failed data center projects across 11 US states — opposition factors, regulatory status, and residual investment potential for sites that stalled, were blocked, or were abandoned outright.",
+    insight:
+      "Everyone maps the data centers that got built. The ones that didn't are where the actual siting constraints show up — local opposition, grid interconnect queues, water. Failure is the more informative dataset.",
+    method:
+      "Project-level tracking across 11 states with stage-gate classification and opposition-factor coding. MapLibre GL for the site map, Apache ECharts for stage and risk breakdowns, TanStack Table for the case profiles.",
+    image: "/assets/projects/dc-graveyard/hero.webp",
+    imageCrop: "center",
+    link: "https://dc-graveyard-dashboard.vercel.app/",
+    caseStudy: "dc-graveyard",
+    source: "Stack: MapLibre GL · Apache ECharts · TanStack Table · TypeScript",
+    tags: ["MapLibre GL", "Risk Analysis", "AI Infrastructure", "TypeScript"],
+    hero: false,
   },
 ];
 
@@ -1343,6 +1375,22 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                 >
                   PTA · {section.hero.index}
                 </span>
+                {section.hero.caseStudy && (
+                  <div style={{ marginTop: 3 }}>
+                    <Link
+                      href={`/work/${section.hero.caseStudy}`}
+                      style={{
+                        fontFamily: "'Space Mono', monospace",
+                        fontSize: "0.5rem",
+                        letterSpacing: "0.1em",
+                        color: "var(--text-muted)",
+                        textDecoration: "none",
+                      }}
+                    >
+                      Case study →
+                    </Link>
+                  </div>
+                )}
                 {section.hero.link && (
                   <div style={{ marginTop: 3 }}>
                     <a
@@ -1418,25 +1466,39 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                     >
                       {p.title}
                     </div>
-                    {p.link && (
-                      <a
-                        href={p.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "inline-block",
-                          marginTop: 3,
-                          fontFamily: "'Space Mono', monospace",
-                          fontSize: "0.5rem",
-                          letterSpacing: "0.1em",
-                          color: p.accent,
-                          textDecoration: "none",
-                          opacity: 0.85,
-                        }}
-                      >
-                        View live ↗
-                      </a>
-                    )}
+                    <div style={{ display: "flex", gap: "0.75rem", marginTop: 3 }}>
+                      {p.caseStudy && (
+                        <Link
+                          href={`/work/${p.caseStudy}`}
+                          style={{
+                            fontFamily: "'Space Mono', monospace",
+                            fontSize: "0.5rem",
+                            letterSpacing: "0.1em",
+                            color: "var(--text-muted)",
+                            textDecoration: "none",
+                          }}
+                        >
+                          Case study →
+                        </Link>
+                      )}
+                      {p.link && (
+                        <a
+                          href={p.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            fontFamily: "'Space Mono', monospace",
+                            fontSize: "0.5rem",
+                            letterSpacing: "0.1em",
+                            color: p.accent,
+                            textDecoration: "none",
+                            opacity: 0.85,
+                          }}
+                        >
+                          View live ↗
+                        </a>
+                      )}
+                    </div>
                     <SourceLine text={p.source} accent={p.accent} />
                   </div>
                 </article>
