@@ -1263,6 +1263,31 @@ const PROJECTS: Project[] = [
     tags: ["xG", "Sports Analytics", "3D", "Soccer", "MLS"],
     hero: false,
   },
+  {
+    id: "scid-access",
+    index: "38",
+    title: "How Far Is Care",
+    editorialTitle: ["Twenty-five centers,", "and the drive to reach them."],
+    subtitle: "Specialty Care Access · Catchment Modeling · Five-Year Change",
+    category: "Healthcare Access · Spatial Epidemiology",
+    domain: "healthcare",
+    tech: ["gis", "statistics", "analytics"],
+    hasStatic: true,
+    hasInteractive: false,
+    accent: "#378ADD",
+    accentLabel: "Healthcare Access",
+    description:
+      "A national specialty-care system organized as hubs and spokes, and the question of who can actually reach it. Catchment areas were built around each center using road-network commute rather than straight-line distance, then population and travel burden were tracked across five fiscal years to find where the served population was growing away from its care.",
+    insight:
+      "Proximity on a map is not access. Once catchments are drawn by drive time instead of distance, territories that look balanced on paper turn out to carry very different travel burdens — and the ones growing fastest are not always the ones nearest a center.",
+    method:
+      "Catchment areas modeled as network-weighted proximity polygons accounting for road commute, not Euclidean distance. Closest-facility network analysis over geocoded patient locations, summarized by territory across FY2019–FY2023. Change expressed in standard deviations to separate real movement from noise, with population change tested against travel burden for correlation.",
+    image: "/images/work/scid-access.webp",
+    imageCrop: "center",
+    source: "Method: Network-weighted catchments · Closest-facility analysis · ArcGIS Pro",
+    tags: ["Healthcare Access", "Network Analysis", "Catchment Modeling", "Spatial Epidemiology"],
+    hero: true,
+  },
 ];
 
 /* ─────────────────────────────────────────────────────────────
