@@ -24,6 +24,78 @@ import {
 } from "lucide-react";
 
 /* ── Philosophy workflow steps ── */
+/** Employers, clients, and venues, grouped honestly — lumping a journal in
+ *  with an employer under one "clients" heading would overclaim.
+ *
+ *  Rendered as typographic wordmarks rather than logo files. That is a
+ *  deliberate default: no third-party marks are bundled, so nothing here
+ *  implies endorsement, and the band stays visually of a piece with the
+ *  rest of the site. `logo` is wired but unset — drop a cleared image into
+ *  public/images/logos and set the field to switch any single row over. */
+type Affiliation = { name: string; logo?: string };
+
+const affiliations: { group: string; items: Affiliation[] }[] = [
+  {
+    group: "Employers",
+    items: [
+      { name: "Meta" },
+      { name: "Booz Allen Hamilton" },
+      { name: "Liberty IT Solutions" },
+      { name: "Clemson University" },
+    ],
+  },
+  {
+    group: "Clients & Programs",
+    items: [
+      { name: "Veterans Health Administration" },
+      { name: "VHA SCI/D National Program Office" },
+      { name: "South Carolina DNR" },
+      { name: "Clemson Cooperative Extension" },
+      { name: "Town Creek Farms" },
+    ],
+  },
+  {
+    group: "Published & Presented",
+    items: [{ name: "ASCIP" }, { name: "ASABE" }, { name: "MDPI · Drones" }],
+  },
+];
+
+/** Anonymized on Patrick's instruction: no names, no dates, no organizations
+ *  beyond the program level. Verbatim fragments kept short and stripped of
+ *  anything identifying — these came from private correspondence he chose to
+ *  share in generalized form. */
+const testimonials = [
+  {
+    quote: "None of them have seen their data like that, ever.",
+    attribution: "Program leadership · federal health program office",
+  },
+  {
+    quote:
+      "The information and data visualizations were extremely helpful to support the field in understanding their current home care throughput.",
+    attribution: "Following a national leadership summit presentation",
+  },
+  {
+    quote:
+      "Your presentation style, tone and pace are very pleasant and effective. This is a non-teachable value-add.",
+    attribution: "Program office lead",
+  },
+  {
+    quote:
+      "I'm not sure how we would go about expanding it without all this data you are generating.",
+    attribution: "On a national service-expansion goal",
+  },
+  {
+    quote:
+      "Will certainly incorporate some of this information in making our business case for expansion of home care services.",
+    attribution: "Clinical program lead",
+  },
+  {
+    quote:
+      "Thank you for all your great work, support, and leadership of the geospatial data products and analyses.",
+    attribution: "National program office",
+  },
+];
+
 const workflowSteps = [
   {
     icon: Search,
@@ -496,6 +568,98 @@ export default function About() {
               </p>
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══════ AFFILIATIONS ═══════ */}
+      <section
+        className="relative py-24 noise-bg"
+        style={{ background: "var(--surface-sunken)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <span
+              className="label-mono inline-block mb-3"
+              style={{ color: "var(--emerald)", fontSize: "0.7rem" }}
+            >
+              WORKED WITH
+            </span>
+            <h2
+              className="heading-lg mb-10"
+              style={{ color: "var(--heading-color)" }}
+            >
+              Organizations and programs.
+            </h2>
+          </FadeIn>
+
+          {affiliations.map((g) => (
+            <FadeIn key={g.group} duration={0.6}>
+              <div style={{ marginBottom: "2.5rem" }}>
+                <div
+                  className="label-mono"
+                  style={{
+                    color: "var(--text-muted)",
+                    fontSize: "0.6rem",
+                    marginBottom: "1rem",
+                  }}
+                >
+                  {g.group}
+                </div>
+                <ul className="affiliation-row">
+                  {g.items.map((a) => (
+                    <li key={a.name} className="affiliation">
+                      {a.logo ? (
+                        <img src={a.logo} alt={a.name} loading="lazy" />
+                      ) : (
+                        <span>{a.name}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+          ))}
+        </div>
+      </section>
+
+      {/* ═══════ FEEDBACK ═══════ */}
+      <section
+        className="relative py-24 noise-bg"
+        style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <span
+              className="label-mono inline-block mb-3"
+              style={{ color: "var(--amber)", fontSize: "0.7rem" }}
+            >
+              WHAT CLIENTS SAID
+            </span>
+            <h2
+              className="heading-lg mb-4"
+              style={{ color: "var(--heading-color)" }}
+            >
+              Feedback from the work.
+            </h2>
+            <p
+              className="body-lg mb-10"
+              style={{ color: "var(--text-muted)", maxWidth: "48ch" }}
+            >
+              Shared without names, dates, or attribution beyond the program
+              level.
+            </p>
+          </FadeIn>
+
+          <div className="testimonial-grid">
+            {testimonials.map((t) => (
+              <FadeIn key={t.attribution} duration={0.6}>
+                <figure className="testimonial">
+                  <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+                  <figcaption className="label-mono">{t.attribution}</figcaption>
+                </figure>
+              </FadeIn>
+            ))}
+          </div>
         </div>
       </section>
     </PageTransition>

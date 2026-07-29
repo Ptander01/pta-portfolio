@@ -1741,3 +1741,75 @@
 .citation-link { transition: color 0.2s ease; }
 .citation-link:hover,
 .citation-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ══ Affiliations band (About) ══
+   Wordmarks, not logo files — see the note in About.tsx. Muted at rest and
+   brought up on hover so the row reads as one texture rather than a stack of
+   competing brands. Chrome/controls zone: glass + lip, no added grain. */
+.affiliation-row {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.affiliation {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  padding: 12px 20px;
+  border-radius: 14px;
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  transition: color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.affiliation:hover {
+  color: var(--heading-color);
+  box-shadow: var(--lip-hover);
+  transform: translateY(-2px);
+}
+.affiliation img {
+  height: 26px;
+  width: auto;
+  display: block;
+  /* Neutralize incoming brand colour so a dropped-in logo still matches the
+     row; hover restores it. */
+  filter: grayscale(1) opacity(0.65);
+  transition: filter 0.25s ease;
+}
+.affiliation:hover img { filter: grayscale(0) opacity(1); }
+
+/* ══ Testimonials (About) ══ */
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1rem;
+}
+.testimonial {
+  margin: 0;
+  padding: 1.5rem 1.65rem;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur, 18px));
+  height: 100%;
+}
+.testimonial blockquote {
+  margin: 0 0 0.9rem;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 1.125rem;
+  line-height: 1.55;
+  color: var(--heading-color);
+}
+.testimonial figcaption {
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .affiliation:hover { transform: none; }
+}
