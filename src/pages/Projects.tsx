@@ -31,7 +31,7 @@ import { Link } from "wouter";
 ───────────────────────────────────────────────────────────── */
 type LayoutMode = "cinematic" | "editorial" | "gallery" | "domain";
 
-interface Project {
+export interface Project {
   id: string;
   index: string;
   title: string;
@@ -65,7 +65,7 @@ interface Project {
   hasInteractive: boolean;
 }
 
-type DomainKey =
+export type DomainKey =
   | "environmental"
   | "healthcare"
   | "infrastructure"
@@ -76,7 +76,7 @@ type DomainKey =
 /* ─────────────────────────────────────────────────────────────
    DOMAIN DEFINITIONS
 ───────────────────────────────────────────────────────────── */
-const DOMAINS: Record<
+export const DOMAINS: Record<
   DomainKey,
   { label: string; accent: string; org: string }
 > = {
@@ -171,7 +171,7 @@ const LAYOUTS: Record<
    PROJECT DATA
    Update `image` field once images are in public/images/work/
 ───────────────────────────────────────────────────────────── */
-const PROJECTS: Project[] = [
+export const PROJECTS: Project[] = [
   {
     id: "ocean-currents",
     index: "01",
@@ -198,6 +198,7 @@ const PROJECTS: Project[] = [
       "/images/work/mapping-ocean-currents-3.webp",
     ],
     imageCrop: "center",
+    link: "https://www.arcgis.com/apps/mapviewer/index.html?webmap=7855eb712c7045d49c995eb8f841ecf1",
     source: "Data: NOAA Ocean Current Velocity · Method: Vector particle streams",
     tags: ["Oceanography", "Vector Fields", "NOAA", "Physical Geography"],
     hero: true,
@@ -290,6 +291,7 @@ const PROJECTS: Project[] = [
       "/images/work/societal-health-metrics-3.webp",
     ],
     imageCrop: "center",
+    link: "https://public.tableau.com/views/Regional_15626006455980/ObesityDark?:embed=y&:display_count=yes&publish=yes&:origin=viz_share_link",
     source: "Data: County Health Rankings 2024 · ACS · CDC PLACES",
     tags: ["Public Health", "County-Level", "Census", "3D Render", "Equity"],
     hero: true,
@@ -808,6 +810,7 @@ const PROJECTS: Project[] = [
       "/images/work/visualizing-urban-growth-3.webp",
     ],
     imageCrop: "center",
+    link: "https://rpubs.com/ptander01/769636",
     source: "Data: INSPIRE building footprints · Method: R, tmap, tmaptools",
     tags: ["Urban Growth", "R", "tmap", "INSPIRE"],
     hero: false,
@@ -1425,15 +1428,22 @@ function ProjectImage({
   }, []);
 
   return (
-    <div
+    // The whole image is the way into the piece's own page — that is how
+    // Patrick's previous site worked, and wrapping here covers all four
+    // layouts at once instead of patching each card's link row.
+    <Link
+      href={`/projects/${project.id}`}
+      aria-label={`${project.title} — open project page`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       style={{
+        display: "block",
         position: "relative",
         border: "0.5px solid rgba(100,160,220,0.1)",
         borderTopColor: "rgba(100,160,220,0.18)",
         overflow: "hidden",
         background: "#0A0E14",
+        cursor: "pointer",
       }}
     >
       {/* Accent bar — carries the domain color the corner brackets used to.
@@ -1534,7 +1544,7 @@ function ProjectImage({
           pointerEvents: "none",
         }}
       />
-    </div>
+    </Link>
   );
 }
 

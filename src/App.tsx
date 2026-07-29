@@ -11,6 +11,7 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Home from "./pages/Home";
 import ProjectDetail from "./pages/ProjectDetail";
+import PieceDetail from "@/pages/PieceDetail";
 import Projects from "./pages/Projects";
 import Resume from "./pages/Resume";
 
@@ -27,6 +28,7 @@ function Router() {
         <Route path="/work/:slug" component={ProjectDetail} />
         <Route path="/work">{() => <Redirect to="/projects" />}</Route>
         <Route path="/journey">{() => <Redirect to="/projects" />}</Route>
+        <Route path="/projects/:id" component={PieceDetail} />
         <Route path="/projects" component={Projects} />
         <Route path="/about" component={About} />
         <Route path="/resume" component={Resume} />
