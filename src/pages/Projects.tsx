@@ -66,8 +66,7 @@ type DomainKey =
   | "environmental"
   | "healthcare"
   | "infrastructure"
-  | "dataart"
-  | "engineering"
+  | "sports"
   | "civic"
   | "history";
 
@@ -79,32 +78,27 @@ const DOMAINS: Record<
   { label: string; accent: string; org: string }
 > = {
   environmental: {
-    label: "Environmental Science",
+    label: "Environmental",
     accent: "#00C897",
     org: "Clemson · NRCS",
   },
   healthcare: {
-    label: "Healthcare · Medical Imaging",
+    label: "Healthcare",
     accent: "#378ADD",
     org: "Booz Allen · VHA · Personal",
   },
   infrastructure: {
     label: "AI Infrastructure",
     accent: "#E8A030",
-    org: "Meta",
+    org: "Meta · Personal",
   },
-  dataart: {
-    label: "Data Art · Sports",
+  sports: {
+    label: "Sports",
     accent: "#00E5FF",
     org: "MLS · Personal",
   },
-  engineering: {
-    label: "Full-Stack Engineering",
-    accent: "#7F77DD",
-    org: "Independent",
-  },
   civic: {
-    label: "Civic · Public Data",
+    label: "Civic & Public Data",
     accent: "#E05555",
     org: "Independent · Academic",
   },
@@ -382,7 +376,7 @@ const PROJECTS: Project[] = [
     editorialTitle: ["Where knowledge", "concentrates."],
     subtitle: "US PhD Concentration · CONUS Hexbin · ACS 2024",
     category: "Census · Data Art",
-    domain: "dataart",
+    domain: "civic",
     tech: ["gis", "dataviz"],
     interactive: false,
     accent: "#00C897",
@@ -406,7 +400,7 @@ const PROJECTS: Project[] = [
     editorialTitle: ["The shape", "of a team."],
     subtitle: "Passing Network × Centrality Analysis · Inter Miami CF",
     category: "Network Analysis · Sports",
-    domain: "dataart",
+    domain: "sports",
     tech: ["statistics", "dataviz"],
     interactive: false,
     accent: "#00E5FF",
@@ -430,7 +424,7 @@ const PROJECTS: Project[] = [
     editorialTitle: ["The season", "in ribbons."],
     subtitle: "MLS Standing Flows · 33 Matchweeks · 30 Teams",
     category: "Temporal Analysis · Data Art",
-    domain: "dataart",
+    domain: "sports",
     tech: ["analytics", "dataviz"],
     interactive: false,
     accent: "#E8A030",
@@ -454,7 +448,7 @@ const PROJECTS: Project[] = [
     editorialTitle: ["Inside", "the pipeline."],
     subtitle: "Geospatial Code Swirl · Self-Portrait as Workflow",
     category: "Personal Work · Data Art",
-    domain: "dataart",
+    domain: "infrastructure",
     tech: ["gis", "dataviz"],
     interactive: false,
     accent: "#F5DEB3",
@@ -478,7 +472,7 @@ const PROJECTS: Project[] = [
     editorialTitle: ["Analytics as", "craft."],
     subtitle: "Full-Stack Sports Analytics · 881 Players · 30 Teams · 2025 Season",
     category: "Full-Stack Engineering",
-    domain: "engineering",
+    domain: "sports",
     tech: ["fullstack", "analytics", "webgl3d"],
     interactive: true,
     accent: "#7F77DD",
@@ -1590,6 +1584,9 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
     sections.push({ hero: h, pair: supporting.slice(si, si + 2) });
     si += 2;
   });
+  // Whatever the interleave didn't consume still has to render — including
+  // the case where a filter leaves supporting pieces but no hero at all.
+  const leftover = supporting.slice(si);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -1697,82 +1694,95 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
 
           {/* Supporting pair — 2 column */}
           {section.pair.length > 0 && (
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: `repeat(${section.pair.length}, 1fr)`,
-                gap: "0.75rem",
-                marginBottom: "3rem",
-              }}
-            >
-              {section.pair.map((p) => (
-                <article key={p.id}>
-                  <ProjectImage project={p} height={260} />
-                  <div style={{ marginTop: 6 }}>
-                    <div
-                      style={{
-                        fontFamily: "'Space Mono', monospace",
-                        fontSize: "0.5rem",
-                        letterSpacing: "0.15em",
-                        textTransform: "uppercase",
-                        color: p.accent,
-                        opacity: 0.7,
-                        marginBottom: 3,
-                      }}
-                    >
-                      <AccentRule color={p.accent} />
-                      {p.accentLabel}
-                    </div>
-                    <div
-                      style={{
-                        fontFamily: "'Cinzel', serif",
-                        fontSize: "0.9375rem",
-                        fontWeight: 700,
-                        color: "#E8F0FE",
-                      }}
-                    >
-                      {p.title}
-                    </div>
-                    <div style={{ display: "flex", gap: "0.75rem", marginTop: 3 }}>
-                      {p.caseStudy && (
-                        <Link
-                          href={`/work/${p.caseStudy}`}
-                          style={{
-                            fontFamily: "'Space Mono', monospace",
-                            fontSize: "0.5rem",
-                            letterSpacing: "0.1em",
-                            color: "var(--text-muted)",
-                            textDecoration: "none",
-                          }}
-                        >
-                          Case study →
-                        </Link>
-                      )}
-                      {p.link && (
-                        <a
-                          href={p.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            fontFamily: "'Space Mono', monospace",
-                            fontSize: "0.5rem",
-                            letterSpacing: "0.1em",
-                            color: p.accent,
-                            textDecoration: "none",
-                            opacity: 0.85,
-                          }}
-                        >
-                          View live ↗
-                        </a>
-                      )}
-                    </div>
-                    <SourceLine text={p.source} accent={p.accent} />
-                  </div>
-                </article>
-              ))}
-            </div>
+            <SupportingGrid projects={section.pair} />
           )}
         </div>
+      ))}
+
+      {/* Any pieces past the last hero's two slots — and, when a filter
+          leaves no hero at all, every piece. Without this the layout
+          silently dropped whatever the hero interleave didn't consume. */}
+      {leftover.length > 0 && <SupportingGrid projects={leftover} />}
+    </div>
+  );
+}
+
+/** The 2-up supporting card row, shared by the hero interleave and the
+ *  leftover drain below it. */
+function SupportingGrid({ projects }: { projects: Project[] }) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${Math.min(projects.length, 2)}, 1fr)`,
+        gap: "0.75rem",
+        marginBottom: "3rem",
+      }}
+    >
+      {projects.map((p) => (
+        <article key={p.id}>
+          <ProjectImage project={p} height={260} />
+          <div style={{ marginTop: 6 }}>
+            <div
+              style={{
+                fontFamily: "'Space Mono', monospace",
+                fontSize: "0.5rem",
+                letterSpacing: "0.15em",
+                textTransform: "uppercase",
+                color: p.accent,
+                opacity: 0.7,
+                marginBottom: 3,
+              }}
+            >
+              <AccentRule color={p.accent} />
+              {p.accentLabel}
+            </div>
+            <div
+              style={{
+                fontFamily: "'Cinzel', serif",
+                fontSize: "0.9375rem",
+                fontWeight: 700,
+                color: "#E8F0FE",
+              }}
+            >
+              {p.title}
+            </div>
+            <div style={{ display: "flex", gap: "0.75rem", marginTop: 3 }}>
+              {p.caseStudy && (
+                <Link
+                  href={`/work/${p.caseStudy}`}
+                  style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.1em",
+                    color: "var(--text-muted)",
+                    textDecoration: "none",
+                  }}
+                >
+                  Case study →
+                </Link>
+              )}
+              {p.link && (
+                <a
+                  href={p.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Space Mono', monospace",
+                    fontSize: "0.5rem",
+                    letterSpacing: "0.1em",
+                    color: p.accent,
+                    textDecoration: "none",
+                    opacity: 0.85,
+                  }}
+                >
+                  View live ↗
+                </a>
+              )}
+            </div>
+            <SourceLine text={p.source} accent={p.accent} />
+          </div>
+        </article>
       ))}
     </div>
   );
