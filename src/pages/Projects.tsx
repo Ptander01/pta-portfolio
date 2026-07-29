@@ -435,7 +435,12 @@ const PROJECTS: Project[] = [
       "The density of crossings in the first eight weeks reveals that MLS standings are essentially random early in the season — a detail invisible in any final table.",
     method:
       "Sankey-style rank flow across 33 matchweeks. Each ribbon = one club, colored by identity. Paper texture background. Shallow DOF with cast shadows.",
-    image: "/images/work/hero_05_rankflow_closeup_cinematic.png",
+    image: "/images/work/rankflow.webp",
+    images: [
+      "/images/work/rankflow.webp",
+      "/images/work/rankflow-2.webp",
+      "/images/work/rankflow-3.webp",
+    ],
     imageCrop: "center",
     source: "Data: MLS Stats API 2025 · 30 Teams · 33 Matchweeks",
     tags: ["Rank Flow", "Temporal", "MLS", "Data Art", "Paper Texture"],
@@ -2037,60 +2042,38 @@ function FilterPill({
   return (
     <button
       onClick={onClick}
-      style={{
-        fontFamily: "'Space Mono', monospace",
-        fontSize: "0.5625rem",
-        letterSpacing: "0.12em",
-        textTransform: "uppercase",
-        padding: "6px 12px",
-        borderRadius: 14,
-        border: active
-          ? "0.5px solid rgba(0,229,255,0.45)"
-          : "0.5px solid rgba(100,160,220,0.12)",
-        background: active ? "rgba(0,229,255,0.06)" : "transparent",
-        color: active ? "#00E5FF" : "rgba(232,240,254,0.45)",
-        fontWeight: active ? 700 : 400,
-        cursor: "pointer",
-        transition: "all 0.2s ease",
-      }}
-      onMouseEnter={(e) => {
-        if (!active) {
-          (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(100,160,220,0.3)";
-          (e.currentTarget as HTMLElement).style.color =
-            "rgba(232,240,254,0.75)";
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (!active) {
-          (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(100,160,220,0.12)";
-          (e.currentTarget as HTMLElement).style.color =
-            "rgba(232,240,254,0.45)";
-        }
-      }}
+      aria-pressed={active}
+      className={`facet-pill${active ? " facet-pill--on" : ""}`}
     >
       {label}
     </button>
   );
 }
 
-function FilterGroupLabel({ children }: { children: string }) {
+/** One facet: a trigger word whose options cascade out on hover/focus.
+ *  Collapsed by default so the bar reads as three words, not twenty pills. */
+function Facet({
+  name,
+  activeCount,
+  children,
+}: {
+  name: string;
+  activeCount: number;
+  children: React.ReactNode;
+}) {
   return (
-    <span
-      style={{
-        fontFamily: "'Space Mono', monospace",
-        fontSize: "0.5rem",
-        letterSpacing: "0.2em",
-        textTransform: "uppercase",
-        color: "rgba(232,240,254,0.2)",
-        flexShrink: 0,
-        width: 76,
-        paddingTop: 8,
-      }}
+    <div
+      className={`facet${activeCount > 0 ? " facet--active" : ""}`}
+      tabIndex={0}
+      role="group"
+      aria-label={name}
     >
-      {children}
-    </span>
+      <span className="facet-trigger">
+        {name}
+        {activeCount > 0 && <span className="facet-count">· {activeCount}</span>}
+      </span>
+      <div className="facet-options">{children}</div>
+    </div>
   );
 }
 
@@ -2274,9 +2257,15 @@ export default function Projects() {
             gap: 8,
           }}
         >
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <FilterGroupLabel>Industry</FilterGroupLabel>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 10,
+              alignItems: "center",
+              flexWrap: "wrap",
+            }}
+          >
+            <Facet name="Industry" activeCount={industries.size}>
               {(Object.entries(DOMAINS) as [DomainKey, (typeof DOMAINS)[DomainKey]][]).map(
                 ([key, d]) => (
                   <FilterPill
@@ -2287,12 +2276,9 @@ export default function Projects() {
                   />
                 )
               )}
-            </div>
-          </div>
+            </Facet>
 
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <FilterGroupLabel>Technique</FilterGroupLabel>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <Facet name="Technique" activeCount={techs.size}>
               {(Object.entries(TECHS) as [TechKey, string][]).map(([key, label]) => (
                 <FilterPill
                   key={key}
@@ -2301,12 +2287,9 @@ export default function Projects() {
                   onClick={() => setTechs(toggleIn(techs, key))}
                 />
               ))}
-            </div>
-          </div>
+            </Facet>
 
-          <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-            <FilterGroupLabel>Format</FilterGroupLabel>
-            <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+            <Facet name="Format" activeCount={format === "all" ? 0 : 1}>
               {(
                 [
                   ["all", "All"],
@@ -2321,14 +2304,15 @@ export default function Projects() {
                   onClick={() => setFormat(key)}
                 />
               ))}
-              {filtersActive && (
-                <FilterPill
-                  label={`Clear · showing ${filtered.length} of ${PROJECTS.length}`}
-                  active={false}
-                  onClick={clearFilters}
-                />
-              )}
-            </div>
+            </Facet>
+
+            {filtersActive && (
+              <FilterPill
+                label={`Clear · ${filtered.length} of ${PROJECTS.length}`}
+                active={false}
+                onClick={clearFilters}
+              />
+            )}
           </div>
         </section>
 

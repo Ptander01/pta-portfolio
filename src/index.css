@@ -1333,6 +1333,130 @@
   box-shadow: var(--lip-out);
 }
 
+/* ══ Gallery facet filters ══
+   Same glass + neumorphic-lip language as the main pill nav (chrome/controls
+   zone). Each facet is a trigger pill; its options cascade out horizontally
+   on hover or keyboard focus, so the default state is three words rather
+   than twenty pills.
+
+   The cascade must live here, not in inline styles: it needs :hover,
+   :focus-within, and a reduced-motion query, none of which inline styles
+   can express. */
+.facet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.facet-trigger {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  backdrop-filter: var(--glass-blur, blur(18px));
+  white-space: nowrap;
+  cursor: default;
+  transition: color 0.2s ease, box-shadow 0.25s ease;
+}
+.facet:hover .facet-trigger,
+.facet:focus-within .facet-trigger {
+  color: var(--cyan);
+  box-shadow: var(--lip-hover);
+}
+/* A facet holding a selection stays lit while collapsed, so an active
+   filter is never invisible behind a closed cascade. */
+.facet--active .facet-trigger {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+
+.facet-count {
+  margin-left: 6px;
+  opacity: 0.75;
+  font-size: 0.5rem;
+}
+
+.facet-options {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition:
+    max-width 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.28s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.facet:hover .facet-options,
+.facet:focus-within .facet-options {
+  max-width: 64rem;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Each option rides in on a slight stagger, so the row unfurls rather
+   than appearing all at once. */
+.facet-options > * {
+  opacity: 0;
+  transform: translateX(-8px) scale(0.96);
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.facet:hover .facet-options > *,
+.facet:focus-within .facet-options > * {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+.facet-options > *:nth-child(1) { transition-delay: 0.04s; }
+.facet-options > *:nth-child(2) { transition-delay: 0.07s; }
+.facet-options > *:nth-child(3) { transition-delay: 0.10s; }
+.facet-options > *:nth-child(4) { transition-delay: 0.13s; }
+.facet-options > *:nth-child(5) { transition-delay: 0.16s; }
+.facet-options > *:nth-child(6) { transition-delay: 0.19s; }
+.facet-options > *:nth-child(7) { transition-delay: 0.22s; }
+.facet-options > *:nth-child(8) { transition-delay: 0.25s; }
+
+.facet-pill {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 7px 13px;
+  border-radius: 14px;
+  border: none;
+  color: var(--text-muted);
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.facet-pill:hover { color: var(--heading-color); box-shadow: var(--lip-hover); }
+.facet-pill--on {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+
+/* Touch and keyboard users get no hover: pin every cascade open so the
+   filters are never unreachable. */
+@media (hover: none) {
+  .facet-options { max-width: 64rem; opacity: 1; transform: none; }
+  .facet-options > * { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .facet-options,
+  .facet-options > * { transition-duration: 0.01ms; transform: none; }
+}
+
 /* ── Bordered italic pull-quote ── */
 .pull-quote {
   margin-top: 14px;
@@ -1534,8 +1658,30 @@
   min-height: 42vh;
 }
 
+/* The fade blends the art into the page. A two-stop gradient across this
+   much area banded visibly in 8-bit — it read as the hero image being
+   "choppy" when the image is in fact clean. Extra midpoints shorten each
+   step, and a faint dither layer (::after) breaks up whatever remains.
+   This is the page-ground grain doing a second job, not a new texture —
+   see Texture Zoning in the Design Decision Log. */
 .home-hero-fade {
-  background: linear-gradient(to bottom, var(--page-bg) 0%, transparent 24%);
+  background: linear-gradient(
+    to bottom,
+    var(--page-bg) 0%,
+    color-mix(in srgb, var(--page-bg) 60%, transparent) 10%,
+    color-mix(in srgb, var(--page-bg) 25%, transparent) 17%,
+    transparent 24%
+  );
+}
+.home-hero-fade::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
 }
 
 @media (min-width: 900px) {
@@ -1548,7 +1694,13 @@
     min-height: 100vh;
   }
   .home-hero-fade {
-    background: linear-gradient(to right, var(--page-bg) 0%, transparent 20%);
+    background: linear-gradient(
+      to right,
+      var(--page-bg) 0%,
+      color-mix(in srgb, var(--page-bg) 60%, transparent) 8%,
+      color-mix(in srgb, var(--page-bg) 25%, transparent) 14%,
+      transparent 20%
+    );
   }
 }
 
