@@ -68,6 +68,53 @@ const technicalWriting = [
   },
 ];
 
+/** Licences and certificates. The FAA rating is listed first because it is the
+ *  only one that is a live, renewable licence rather than course completion —
+ *  and it is what backs the remote-pilot capability described on /about. */
+const credentials = [
+  {
+    year: "Current",
+    title: "FAA Part 107 — Remote Pilot Certificate (sUAS)",
+    authors: "Federal Aviation Administration",
+    venue: "Commercial small unmanned aircraft operations",
+    href: null,
+    kind: "Licence",
+  },
+  {
+    year: "2017",
+    title: "Cartography",
+    authors: "ESRI",
+    venue: "Online certificate · map design and symbology",
+    href: null,
+    kind: "Certificate",
+  },
+  {
+    year: "2017",
+    title: "Python Automation for GIS",
+    authors: "ESRI",
+    venue: "Online certificate · scripting and geoprocessing automation",
+    href: null,
+    kind: "Certificate",
+  },
+  {
+    year: "2017",
+    title: "Imaging and Remote Sensing",
+    authors: "ESRI",
+    venue: "Online certificate · imagery analysis",
+    href: null,
+    kind: "Certificate",
+  },
+  {
+    year: "2016",
+    title: "Geospatial Certificate",
+    authors: "Clemson University — Center for Geospatial Technologies",
+    venue:
+      "Semester-long interdisciplinary course · database management, spatial analysis, remote sensing, LiDAR",
+    href: null,
+    kind: "Certificate",
+  },
+];
+
 const speaking = [
   {
     year: "2023",
@@ -365,6 +412,13 @@ export default function Resume() {
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10" style={{ maxWidth: 860 }}>
+          <div id="credentials" style={{ scrollMarginTop: "6rem" }}>
+            <CitationList
+              heading="Licences &amp; Certificates"
+              items={credentials}
+              accent="var(--coral)"
+            />
+          </div>
           <div id="publications" style={{ scrollMarginTop: "6rem" }}>
             <CitationList
               heading="Publications"

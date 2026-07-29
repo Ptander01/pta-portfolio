@@ -29,10 +29,10 @@ export const entries: TimelineEntry[] = [
     endYear: 2014,
     label: "2014",
     role: "B.S. Agricultural Science",
-    org: "Clemson University",
+    org: "Clemson University · Minor in Business Management · GPA 3.6/4.0",
     color: "var(--emerald)",
     description:
-      "Graduated with a foundation in agricultural systems, environmental physics, and business — the starting point for a career built on solving tangible, real-world problems.",
+      "A wholistic agribusiness education — soil science, erosion control, mobile power, hydraulics, fabrication, livestock housing, economics, and precision agriculture. The starting point for a career built on solving tangible, real-world problems.",
     skills: ["Agricultural Science", "Environmental Physics", "Business"],
     anchor: "#soil-to-server",
   },
@@ -74,15 +74,38 @@ export const entries: TimelineEntry[] = [
     anchor: "#spatial-awakening",
   },
   {
+    // Ran alongside the Clemson research years. Restored 2026-07-29 — it was
+    // missing from both the timeline and the "authoritative" career table in
+    // Portfolio-Docs, which left the licensed-remote-pilot capability with no
+    // employment history behind it.
+    id: "freelance-uav",
+    startYear: 2018,
+    endYear: 2020,
+    label: "2018–2020",
+    role: "Freelance Drone Pilot",
+    org: "Independent · FAA Part 107",
+    color: "var(--cyan)",
+    description:
+      "Flew UAV missions for local clients as a licensed remote pilot, delivering imagery, video, and photogrammetric 3D models. The habit of collecting my own data rather than inheriting someone else's started here.",
+    skills: [
+      "FAA Part 107",
+      "UAV Operations",
+      "Photogrammetry",
+      "Orthomosaics",
+      "3D Modeling",
+    ],
+    anchor: "#soil-to-server",
+  },
+  {
     id: "clemson-ms",
     startYear: 2020,
     endYear: 2020,
     label: "2020",
     role: "M.S. Environmental Science",
-    org: "Clemson University",
+    org: "Clemson University · GPA 3.7/4.0",
     color: "var(--emerald)",
     description:
-      "Discovered the power of spatial data through GIS, remote sensing, and photogrammetry. Published three academic papers in spatial data analysis and environmental science.",
+      "Emphasis in GIS and remote sensing for natural resources, statistics, and energy efficiency. Discovered the power of spatial data through GIS, remote sensing, and photogrammetry, and published three academic papers in spatial data analysis and environmental science.",
     skills: [
       "GIS",
       "Remote Sensing",

@@ -1848,3 +1848,40 @@
   border-radius: 3px;
   padding: 5px 10px;
 }
+
+/* ══ Skills & domains (About) ══
+   Grouped lists, not proficiency bars — see the note in About.tsx. */
+.skill-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1rem;
+}
+.skill-group {
+  height: 100%;
+  padding: 1.4rem 1.5rem;
+  border-radius: 14px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur, 18px));
+}
+.skill-group__label {
+  font-size: 0.5625rem;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  margin: 0 0 0.9rem;
+}
+.skill-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.skill-group li {
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--border-subtle);
+}
+.skill-group li:first-child { border-top: none; }

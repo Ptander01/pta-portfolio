@@ -32,6 +32,61 @@ import {
  *  implies endorsement, and the band stays visually of a piece with the
  *  rest of the site. `logo` is wired but unset — drop a cleared image into
  *  public/images/logos and set the field to switch any single row over. */
+/** Grouped lists rather than proficiency bars. The old site used bars, and
+ *  they were dropped deliberately: "Statistics — 85%" invites the reader to
+ *  argue with a number that cannot be defended, which undercuts the
+ *  credibility the rest of the page is building. A grouped list says more and
+ *  claims less. */
+const skillGroups = [
+  {
+    label: "Spatial & Remote Sensing",
+    items: [
+      "GIS · ArcGIS Pro",
+      "Network analysis",
+      "Remote sensing",
+      "Photogrammetry",
+      "LiDAR & point clouds",
+      "UAV survey — FAA Part 107",
+      "Cartography",
+    ],
+  },
+  {
+    label: "Analysis & Statistics",
+    items: [
+      "Spatial statistics",
+      "Change detection over time",
+      "Significance testing",
+      "Geographically weighted regression",
+      "Clustering & hot-spot analysis",
+      "R",
+      "Python",
+    ],
+  },
+  {
+    label: "Building & Delivery",
+    items: [
+      "React · TypeScript",
+      "D3 · MapLibre GL",
+      "Tableau",
+      "Dashboard architecture",
+      "Automation scripting",
+      "Technical writing",
+      "Public speaking",
+    ],
+  },
+  {
+    label: "Domains",
+    items: [
+      "Healthcare access",
+      "AI infrastructure",
+      "Environmental science",
+      "Agriculture",
+      "Civic & public data",
+      "Sports analytics",
+    ],
+  },
+];
+
 type Affiliation = { name: string; logo?: string };
 
 const affiliations: { group: string; items: Affiliation[] }[] = [
@@ -185,7 +240,10 @@ export default function About() {
               style={{ color: "var(--text-muted)" }}
             >
               A career built on curiosity, spatial thinking, and the relentless
-              drive to turn complex data into actionable intelligence.
+              drive to turn complex data into actionable intelligence. I combine
+              a scientific background in analytics with the artistic display of
+              clean, simple information — focused attention to detail, driven by
+              big-picture questions.
             </p>
           </FadeIn>
         </div>
@@ -565,6 +623,84 @@ export default function About() {
                 full-stack development to novel contexts, creating tools that
                 don&rsquo;t just display data, but tell a compelling, actionable
                 story.
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* ═══════ SKILLS & DOMAINS ═══════ */}
+      <section
+        className="relative py-24 noise-bg"
+        style={{ background: "var(--page-bg)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <span
+              className="label-mono inline-block mb-3"
+              style={{ color: "var(--cyan)", fontSize: "0.7rem" }}
+            >
+              WHAT I WORK WITH
+            </span>
+            <h2
+              className="heading-lg mb-10"
+              style={{ color: "var(--heading-color)" }}
+            >
+              Skills and domains.
+            </h2>
+          </FadeIn>
+          <div className="skill-grid">
+            {skillGroups.map((g) => (
+              <FadeIn key={g.label} duration={0.6}>
+                <div className="skill-group">
+                  <h3 className="label-mono skill-group__label">{g.label}</h3>
+                  <ul>
+                    {g.items.map((s) => (
+                      <li key={s}>{s}</li>
+                    ))}
+                  </ul>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════ OFF THE CLOCK ═══════ */}
+      <section
+        className="relative py-24 noise-bg"
+        style={{ background: "var(--surface-sunken)" }}
+      >
+        <div className="container relative z-10">
+          <FadeIn duration={0.6}>
+            <span
+              className="label-mono inline-block mb-3"
+              style={{ color: "var(--amber)", fontSize: "0.7rem" }}
+            >
+              OFF THE CLOCK
+            </span>
+            <h2
+              className="heading-lg mb-6"
+              style={{ color: "var(--heading-color)" }}
+            >
+              Pendleton, South Carolina.
+            </h2>
+          </FadeIn>
+          <FadeIn duration={0.6}>
+            <div style={{ maxWidth: "62ch" }}>
+              <p className="body-lg" style={{ color: "var(--text-muted)" }}>
+                My wife and I own a home in Pendleton, South Carolina, and we had
+                our first child in 2022. We&rsquo;re heavily involved in our local
+                church as small group leaders and mentors to young adults.
+              </p>
+              <p
+                className="body-lg"
+                style={{ color: "var(--text-muted)", marginTop: "1.25rem" }}
+              >
+                Outside of work I&rsquo;m a fitness and outdoors enthusiast and a
+                relentless book worm. A fair amount of what ends up on this site
+                started as curiosity on a walk — the solar and terrain studies
+                are literally the farm next door.
               </p>
             </div>
           </FadeIn>
