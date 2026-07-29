@@ -57,9 +57,12 @@ interface Project {
   /** Controlled technique vocabulary — drives the TECHNIQUE filter facet.
    *  Distinct from freeform `tags`, which stay display-only. */
   tech: TechKey[];
-  /** True when a live interactive product exists (link or deployed app),
-   *  false for static renders. Drives the FORMAT filter facet. */
-  interactive: boolean;
+  /** The FORMAT facet is two independent flags, not one either/or. Plenty of
+   *  these pieces are a cinematic still of something that is *also* live —
+   *  a Tableau workbook, a hosted HTML build, a dashboard tab — and those
+   *  should answer to both filters rather than being forced to pick one. */
+  hasStatic: boolean;
+  hasInteractive: boolean;
 }
 
 type DomainKey =
@@ -178,7 +181,8 @@ const PROJECTS: Project[] = [
     category: "Physical Oceanography",
     domain: "environmental",
     tech: ["gis", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00E5FF",
     accentLabel: "Oceanography",
     description:
@@ -207,7 +211,8 @@ const PROJECTS: Project[] = [
     category: "Environmental Science",
     domain: "environmental",
     tech: ["remote-sensing", "gis"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#00C897",
     accentLabel: "Environmental",
     description:
@@ -236,7 +241,8 @@ const PROJECTS: Project[] = [
     category: "Agricultural GIS",
     domain: "environmental",
     tech: ["remote-sensing", "gis", "analytics"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#FF6B2B",
     accentLabel: "Agricultural GIS",
     description:
@@ -250,6 +256,8 @@ const PROJECTS: Project[] = [
       "/images/work/solar-agriculture.webp",
       "/images/work/solar-agriculture-2.webp",
       "/images/work/solar-agriculture-3.webp",
+      "/images/work/solar-agriculture-4.webp",
+      "/images/work/solar-agriculture-5.webp",
     ],
     imageCrop: "center",
     source: "Data: NREL Solar Resource · USDA parcel data · Summer Solstice 2025",
@@ -265,7 +273,8 @@ const PROJECTS: Project[] = [
     category: "Public Health · Spatial Analysis",
     domain: "healthcare",
     tech: ["statistics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#378ADD",
     accentLabel: "Public Health",
     description:
@@ -294,7 +303,8 @@ const PROJECTS: Project[] = [
     category: "Humanitarian GIS",
     domain: "healthcare",
     tech: ["analytics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#4A90D9",
     accentLabel: "Humanitarian",
     description:
@@ -323,7 +333,8 @@ const PROJECTS: Project[] = [
     category: "AI Infrastructure · Remote Sensing",
     domain: "infrastructure",
     tech: ["remote-sensing", "gis", "fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -353,7 +364,8 @@ const PROJECTS: Project[] = [
     category: "AI Infrastructure · Spatial Analysis",
     domain: "infrastructure",
     tech: ["gis", "fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -378,7 +390,8 @@ const PROJECTS: Project[] = [
     category: "Census · Data Art",
     domain: "civic",
     tech: ["gis", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00C897",
     accentLabel: "Census · Data Art",
     description:
@@ -402,7 +415,8 @@ const PROJECTS: Project[] = [
     category: "Network Analysis · Sports",
     domain: "sports",
     tech: ["statistics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00E5FF",
     accentLabel: "Network Analysis",
     description:
@@ -426,7 +440,8 @@ const PROJECTS: Project[] = [
     category: "Temporal Analysis · Data Art",
     domain: "sports",
     tech: ["analytics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#E8A030",
     accentLabel: "Temporal Analysis",
     description:
@@ -455,7 +470,8 @@ const PROJECTS: Project[] = [
     category: "Personal Work · Data Art",
     domain: "infrastructure",
     tech: ["gis", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#F5DEB3",
     accentLabel: "Personal",
     description:
@@ -479,7 +495,8 @@ const PROJECTS: Project[] = [
     category: "Full-Stack Engineering",
     domain: "sports",
     tech: ["fullstack", "analytics", "webgl3d"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#7F77DD",
     accentLabel: "Full-Stack",
     description:
@@ -505,7 +522,8 @@ const PROJECTS: Project[] = [
     category: "Environmental Science",
     domain: "environmental",
     tech: ["gis", "analytics"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00C897",
     accentLabel: "Environmental",
     description:
@@ -534,7 +552,8 @@ const PROJECTS: Project[] = [
     category: "Climate · Data Viz",
     domain: "environmental",
     tech: ["statistics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#4A90D9",
     accentLabel: "Climate",
     description:
@@ -563,7 +582,8 @@ const PROJECTS: Project[] = [
     category: "GIS · Cartography",
     domain: "environmental",
     tech: ["gis", "remote-sensing", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#E8A030",
     accentLabel: "Cartography",
     description:
@@ -592,7 +612,8 @@ const PROJECTS: Project[] = [
     category: "Civic · Data Viz",
     domain: "civic",
     tech: ["statistics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#7F77DD",
     accentLabel: "Civic",
     description:
@@ -620,7 +641,8 @@ const PROJECTS: Project[] = [
     category: "Public Safety · Spatial Analysis",
     domain: "civic",
     tech: ["gis", "statistics"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#E05555",
     accentLabel: "Public Safety",
     description:
@@ -649,7 +671,8 @@ const PROJECTS: Project[] = [
     category: "Environmental · Hazards",
     domain: "environmental",
     tech: ["gis", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#FF6B2B",
     accentLabel: "Hazards",
     description:
@@ -677,7 +700,8 @@ const PROJECTS: Project[] = [
     category: "GIS · Seismic Analysis",
     domain: "environmental",
     tech: ["gis", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#8B4040",
     accentLabel: "Seismic",
     description:
@@ -706,7 +730,8 @@ const PROJECTS: Project[] = [
     category: "Civic · Mobility Data",
     domain: "civic",
     tech: ["analytics", "dataviz"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00C897",
     accentLabel: "Mobility",
     description:
@@ -736,7 +761,8 @@ const PROJECTS: Project[] = [
     category: "Civic · Data Viz",
     domain: "civic",
     tech: ["statistics", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#4A90D9",
     accentLabel: "Data Viz",
     description:
@@ -763,9 +789,10 @@ const PROJECTS: Project[] = [
     editorialTitle: ["A city,", "by building age."],
     subtitle: "Building Age Analysis in R · INSPIRE Building Footprints",
     category: "GIS · Urban Analysis",
-    domain: "environmental",
+    domain: "civic",
     tech: ["remote-sensing", "gis"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#7FC8C0",
     accentLabel: "Urban GIS",
     description:
@@ -794,7 +821,8 @@ const PROJECTS: Project[] = [
     category: "AI Infrastructure · Meta",
     domain: "infrastructure",
     tech: ["fullstack", "dataviz"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
@@ -825,7 +853,8 @@ const PROJECTS: Project[] = [
     category: "Remote Sensing",
     domain: "environmental",
     tech: ["remote-sensing", "dataviz"],
-    interactive: false,
+    hasStatic: true,
+    hasInteractive: false,
     accent: "#00E5FF",
     accentLabel: "Remote Sensing",
     description:
@@ -854,7 +883,8 @@ const PROJECTS: Project[] = [
     category: "AI Infrastructure · Geospatial Intelligence",
     domain: "infrastructure",
     tech: ["gis", "fullstack", "analytics"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#00C897",
     accentLabel: "AI Infrastructure",
     description:
@@ -885,7 +915,8 @@ const PROJECTS: Project[] = [
     category: "Medical Imaging · Volumetric Analysis",
     domain: "healthcare",
     tech: ["webgl3d", "aiml", "dataviz"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#378ADD",
     accentLabel: "Medical Imaging",
     description:
@@ -910,7 +941,8 @@ const PROJECTS: Project[] = [
     category: "AI Infrastructure · Risk Intelligence",
     domain: "infrastructure",
     tech: ["gis", "fullstack", "analytics"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#FF6B6B",
     accentLabel: "Risk Intelligence",
     description:
@@ -936,7 +968,8 @@ const PROJECTS: Project[] = [
     category: "Data Storytelling · History & Religion",
     domain: "history",
     tech: ["dataviz"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#C9A84C",
     accentLabel: "Data Storytelling",
     description:
@@ -961,7 +994,8 @@ const PROJECTS: Project[] = [
     category: "Interactive Atlas · History & Religion",
     domain: "history",
     tech: ["gis", "dataviz", "fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#6FA875",
     accentLabel: "Interactive Atlas",
     description:
@@ -991,7 +1025,8 @@ const PROJECTS: Project[] = [
     category: "Interactive Atlas · History & Religion",
     domain: "history",
     tech: ["gis", "dataviz", "fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#5B8DD6",
     accentLabel: "Interactive Atlas",
     description:
@@ -1021,7 +1056,8 @@ const PROJECTS: Project[] = [
     category: "Interactive Timeline · History & Religion",
     domain: "history",
     tech: ["dataviz", "fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#B8933F",
     accentLabel: "Interactive Timeline",
     description:
@@ -1051,7 +1087,8 @@ const PROJECTS: Project[] = [
     category: "Resource Library · History & Religion",
     domain: "history",
     tech: ["fullstack"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#7C89C0",
     accentLabel: "Resource Library",
     description:
@@ -1081,7 +1118,8 @@ const PROJECTS: Project[] = [
     category: "Study App · History & Religion",
     domain: "history",
     tech: ["dataviz", "analytics"],
-    interactive: true,
+    hasStatic: true,
+    hasInteractive: true,
     accent: "#C77B3A",
     accentLabel: "Study App",
     description:
@@ -1100,6 +1138,129 @@ const PROJECTS: Project[] = [
     link: "https://ptander01.github.io/Bible-Study-Library/resource-series/holy-spirit-study_32.html",
     source: "Stack: HTML · CSS · JavaScript · 96-observation coded dataset",
     tags: ["Data Design", "HTML/JS", "Faceted Filtering", "Word Studies"],
+    hero: false,
+  },
+  {
+    id: "tcf-elevation",
+    index: "34",
+    title: "The Shape of the Ground",
+    editorialTitle: ["Bare earth,", "and everything on it."],
+    subtitle: "Town Creek Farms · DEM vs DSM · Canopy Structure from UAV Survey",
+    category: "Terrain Analysis · Agriculture",
+    domain: "environmental",
+    tech: ["remote-sensing", "gis"],
+    hasStatic: true,
+    hasInteractive: false,
+    accent: "#8FA860",
+    accentLabel: "Terrain Analysis",
+    description:
+      "The same farm surveyed twice over: a digital elevation model stripped to bare earth, and a digital surface model that keeps every tree, roofline, and equipment shed standing. Subtracting one from the other leaves canopy height — the vegetation structure of the property as a measurable layer rather than a look.",
+    insight:
+      "Bare earth and surface are the same flight, differently interpreted. The gap between them is the part of a property nobody has a number for until someone subtracts.",
+    method:
+      "UAV photogrammetric survey processed to a dense point cloud, then classified into ground and non-ground returns. DEM from ground points, DSM from first returns; canopy height model as the difference.",
+    image: "/images/work/tcf-elevation.webp",
+    images: [
+      "/images/work/tcf-elevation.webp",
+      "/images/work/tcf-elevation-2.webp",
+      "/images/work/tcf-elevation-3.webp",
+      "/images/work/tcf-elevation-4.webp",
+    ],
+    imageCrop: "center",
+    source: "Data: Own UAV survey · Point cloud classification · DEM / DSM / CHM",
+    tags: ["DEM", "DSM", "Canopy Height", "Photogrammetry", "Agriculture"],
+    hero: true,
+  },
+  {
+    id: "tcf-illumination",
+    index: "35",
+    title: "Where the Light Falls, Hour by Hour",
+    editorialTitle: ["The day,", "in twelve panels."],
+    subtitle: "Town Creek Farms · Hourly Illumination Model · Terrain-Shadowed",
+    category: "Solar Modeling · Agriculture",
+    domain: "environmental",
+    tech: ["gis", "remote-sensing", "analytics"],
+    hasStatic: true,
+    hasInteractive: false,
+    accent: "#E8A030",
+    accentLabel: "Solar Modeling",
+    description:
+      "Direct illumination modeled hour by hour across a working farm, with the terrain casting its own shadows. Laid out as a grid, the day reads as a sequence — the north slope holding shade long after the ridge has been lit, and the low ground going dark first.",
+    insight:
+      "A daily solar total hides the thing that actually matters to a grower: *when* a given acre is lit. Shade at 8am and shade at 2pm are different problems.",
+    method:
+      "Hourly solar position computed for the site and cast against the UAV-derived surface model, so terrain and canopy both occlude. Rendered as an hourly small-multiple grid.",
+    image: "/images/work/tcf-illumination.webp",
+    images: [
+      "/images/work/tcf-illumination.webp",
+      "/images/work/tcf-illumination-2.webp",
+    ],
+    imageCrop: "center",
+    source: "Method: Hourly solar position · Terrain-shadowed illumination model",
+    tags: ["Solar", "Illumination", "Small Multiples", "Agriculture", "GIS"],
+    hero: false,
+  },
+  {
+    id: "uav-photogrammetry",
+    index: "36",
+    title: "Flying the Survey",
+    editorialTitle: ["Photographs,", "turned into ground."],
+    subtitle: "UAV Photogrammetry · Dense Point Cloud → Classified Surface",
+    category: "Photogrammetry · Data Capture",
+    domain: "environmental",
+    tech: ["remote-sensing", "gis", "webgl3d"],
+    hasStatic: true,
+    hasInteractive: false,
+    accent: "#5FBFD0",
+    accentLabel: "Photogrammetry",
+    description:
+      "The step before every terrain product: fly the site, and turn overlapping photographs into a dense point cloud that can be classified, meshed, and measured. Shown deconstructed — orthomosaic, point cloud, classified ground, and derived surface pulled apart into the layers they actually are.",
+    insight:
+      "Most spatial work starts with someone else's data. Flying it yourself means the resolution, the timing, and the accuracy are decisions rather than constraints you inherited.",
+    method:
+      "Licensed remote-pilot UAV survey with overlapping imagery, processed through structure-from-motion into a dense point cloud, then classified and meshed into orthomosaic and elevation products.",
+    image: "/images/work/uav-photogrammetry.webp",
+    images: [
+      "/images/work/uav-photogrammetry.webp",
+      "/images/work/uav-photogrammetry-2.webp",
+      "/images/work/uav-photogrammetry-3.webp",
+      "/images/work/uav-photogrammetry-4.webp",
+    ],
+    imageCrop: "center",
+    source: "Method: Structure-from-motion · Dense cloud · Point classification",
+    tags: ["UAV", "Photogrammetry", "Point Cloud", "Remote Pilot", "LiDAR"],
+    hero: true,
+  },
+  {
+    id: "mls-shotmap",
+    index: "37",
+    title: "Every Shot, Weighted",
+    editorialTitle: ["Twenty-one shots,", "one expected goal."],
+    subtitle: "3D Shot Map × xG · Inter Miami 4–0 Toronto FC · 21 Shots",
+    category: "Sports Analytics · Expected Goals",
+    domain: "sports",
+    tech: ["dataviz", "statistics", "analytics"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#FF4D6D",
+    accentLabel: "Expected Goals",
+    description:
+      "All 21 shots from a 4–0 result, plotted as glass spheres sized by expected goal value with neon arcs tracing each shot's path toward goal. Inter Miami generated 1.03 xG from 13 shots and converted four of them — a scoreline well ahead of the underlying numbers.",
+    insight:
+      "A 4–0 scoreline and 1.03 expected goals are two different stories about the same ninety minutes. Shot quality explains which one was likelier to repeat.",
+    method:
+      "Shot-level event data with xG values, positioned in 3D on the pitch surface. Sphere volume encodes xG; trajectory arcs encode shot path and outcome. Built as a view within the MLS analytics dashboard.",
+    image: "/images/work/mls-shotmap.webp",
+    images: [
+      "/images/work/mls-shotmap.webp",
+      "/images/work/mls-shotmap-2.webp",
+      "/images/work/mls-shotmap-3.webp",
+      "/images/work/mls-shotmap-4.webp",
+    ],
+    imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/",
+    source: "Data: MLS shot events with xG · 3D pitch projection",
+    tags: ["xG", "Sports Analytics", "3D", "Soccer", "MLS"],
     hero: false,
   },
 ];
@@ -2105,7 +2266,8 @@ export default function Projects() {
     (p) =>
       (industries.size === 0 || industries.has(p.domain)) &&
       (techs.size === 0 || p.tech.some((t) => techs.has(t))) &&
-      (format === "all" || (format === "interactive") === p.interactive)
+      (format === "all" ||
+        (format === "interactive" ? p.hasInteractive : p.hasStatic))
   );
 
   const filtersActive =
