@@ -1735,3 +1735,9 @@
     transition: none;
   }
 }
+
+/* Citation titles on /resume — underline on hover only, so a dense list of
+   links doesn't read as a wall of rules. */
+.citation-link { transition: color 0.2s ease; }
+.citation-link:hover,
+.citation-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }

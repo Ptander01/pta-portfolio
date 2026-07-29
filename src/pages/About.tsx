@@ -6,6 +6,7 @@
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
+import { Link } from "wouter";
 import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
@@ -424,8 +425,14 @@ export default function About() {
                 sensing, and photogrammetry unlocked a new way of seeing the
                 world. I realized that the complex environmental physics I had
                 been calculating by hand could be modeled, visualized, and
-                scaled. This led to three academic publications and a pivot into
-                healthcare analytics.
+                scaled. This led to{" "}
+                <Link
+                  href="/resume#publications"
+                  style={{ color: "var(--cyan)", textDecoration: "none" }}
+                >
+                  three academic publications
+                </Link>{" "}
+                and a pivot into healthcare analytics.
               </p>
               <p
                 className="body-lg"
