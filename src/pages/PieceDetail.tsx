@@ -19,7 +19,7 @@
 import { Link, useParams } from "wouter";
 import { useEffect } from "react";
 import PageTransition from "@/components/animations/PageTransition";
-import { PROJECTS, DOMAINS } from "./Projects";
+import { PROJECTS, DOMAINS } from "@/lib/projects";
 import { narratives } from "@/lib/narratives";
 import NotFound from "./NotFound";
 
