@@ -246,7 +246,11 @@ export const PROJECTS: Project[] = [
       "/images/work/societal-health-metrics-3.webp",
     ],
     imageCrop: "center",
-    link: "https://public.tableau.com/views/Regional_15626006455980/ObesityDark?:embed=y&:display_count=yes&publish=yes&:origin=viz_share_link",
+    /* Moved off the legacy /views/…?:embed=y share URL onto the canonical
+       /app/profile/… form Tableau serves today. Both resolve, but the embed
+       URL is the one Tableau has been migrating away from. Confirmed against
+       the rendered page ("Regional", 116 views). */
+    link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/Regional_15626006455980/ObesityDark",
     source: "Data: County Health Rankings 2024 · ACS · CDC PLACES",
     tags: ["Public Health", "County-Level", "Census", "3D Render", "Equity"],
     hero: true,
@@ -476,9 +480,16 @@ export const PROJECTS: Project[] = [
       "Every chart has a name, a story, and a how-to-read explanation. Data without explanation is just decoration.",
     method:
       "React 19 + TypeScript + Vite. Custom 3D chart shapes with directional lighting. Three.js globe. All data client-side — no API calls, instant load.",
-    image: "/assets/projects/mls-dashboard/cinematic-hero.webp",
+    /* Was cinematic-hero.webp — which is the same 3D shot map picture that
+       piece 37 (mls-shotmap) already uses, re-encoded under a second path.
+       Two cards, one image. Swapped for the dashboard render, which is a
+       product-level view rather than one analysis, and so suits the parent
+       card now that attendance, budget, player stats and travel each have
+       their own piece. */
+    image: "/assets/projects/mls-dashboard/gallery-methods.webp",
     images: [
-      "/assets/projects/mls-dashboard/cinematic-hero.webp",
+      "/assets/projects/mls-dashboard/gallery-methods.webp",
+      "/assets/projects/mls-dashboard/gallery-rankings.webp",
       "/images/work/mls-home-away.webp",
     ],
     caseStudy: "mls-dashboard",
@@ -1341,6 +1352,173 @@ export const PROJECTS: Project[] = [
     imageCrop: "center",
     source: "Client: VHA SCI/D · 142 facilities · 36,999 patients · 2,565,124 encounters",
     tags: ["Utilization", "Dashboards", "County-Level", "Home Care", "VHA"],
+    hero: false,
+  },
+  {
+    id: "mls-attendance",
+    index: "41",
+    title: "What a Visiting Club Is Worth",
+    editorialTitle: ["Who fills", "the stadium."],
+    subtitle: "Attendance Analytics · Road Draw vs Home Baseline · Avg 26,496",
+    category: "Sports Analytics · Attendance",
+    domain: "sports",
+    tech: ["analytics", "dataviz", "statistics"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#00E5FF",
+    accentLabel: "Attendance",
+    description:
+      "Two questions about the same turnstile count. One panel asks how each host city responds to a particular club visiting, measured against that city's own season average, so a positive bar means the visitor pulled a crowd the home side does not normally draw. The other reverses it, showing how one club's home attendance moves with each opponent it hosts.",
+    insight:
+      "Raw attendance mostly measures the size of the market. Measuring each gate against the home club's own season average separates the draw of the visiting team from the size of the building it walked into.",
+    method:
+      "Per-match attendance differenced against each club's own season mean, so every bar is a deviation rather than a level. Built as a view within the MLS analytics dashboard.",
+    image: "/images/work/mls-attendance.webp",
+    images: [
+      "/images/work/mls-attendance.webp",
+      "/images/work/mls-attendance-2.webp",
+    ],
+    imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/",
+    source: "Data: MLS 2025 match analytics · Per-match attendance",
+    tags: ["Attendance", "Sports Analytics", "Soccer", "MLS", "Dashboards"],
+    hero: false,
+  },
+  {
+    id: "mls-budget",
+    index: "42",
+    title: "What a Roster Costs",
+    editorialTitle: ["One salary cap,", "many ways around it."],
+    subtitle: "Team Budget · Designated Players / TAM / Regular · MLSPA Disclosure",
+    category: "Sports Analytics · Salary",
+    domain: "sports",
+    tech: ["analytics", "dataviz"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#5FD38D",
+    accentLabel: "Salary Analytics",
+    description:
+      "Every club's wage bill, stacked by the mechanism that paid it — Designated Players, who sit outside the cap, Targeted Allocation Money, which buys above the cap but below DP level, and regular roster players signed within it. Selecting a club breaks its spend down by position and lists its highest earners against goals and minutes.",
+    insight:
+      "The interesting number is not what a club spends but which instrument it spends through. Two clubs with the same total can have completely different squads underneath, depending on how much of it is concentrated in three exempt contracts.",
+    method:
+      "Published salary disclosure joined to roster and performance data, aggregated by club, mechanism, and position. Cost-per-goal is derived rather than published.",
+    image: "/images/work/mls-budget.webp",
+    imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/",
+    source: "Data: MLSPA 2025 salary disclosure · Roster and performance joins",
+    tags: ["Salary Cap", "Sports Analytics", "Soccer", "MLS", "Dashboards"],
+    hero: true,
+  },
+  {
+    id: "mls-player-stats",
+    index: "43",
+    title: "Volume Against Finishing",
+    editorialTitle: ["Who shoots,", "and who scores."],
+    subtitle: "Player Comparison · Configurable Axes · Season Leaders",
+    category: "Sports Analytics · Player Metrics",
+    domain: "sports",
+    tech: ["analytics", "dataviz", "statistics"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#00E5FF",
+    accentLabel: "Player Metrics",
+    description:
+      "A scatter of every player in the league with both axes under the reader's control — shots against goals by default, but any pair of season metrics can be swapped in. Alongside it, the season's scoring leaders ranked by total. Players who sit far off the diagonal are the ones worth naming.",
+    insight:
+      "A leaderboard answers who scored most. A scatter answers whether they scored most because they were accurate or because they shot more than anyone else, which is the difference between a finisher and a volume shooter.",
+    method:
+      "Player-season aggregates with selectable X and Y encodings, so the same view supports a range of comparisons instead of hard-coding one.",
+    image: "/images/work/mls-player-stats.webp",
+    imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/",
+    source: "Data: MLS player-season aggregates · Shots, goals, minutes",
+    tags: ["Player Analytics", "Scatter", "Soccer", "MLS", "Dashboards"],
+    hero: false,
+  },
+  {
+    id: "mls-travel",
+    index: "44",
+    title: "The Cost of the Away Leg",
+    editorialTitle: ["Miles travelled,", "points dropped."],
+    subtitle: "Travel Burden × Away Performance · PPG Drop by Club",
+    category: "Sports Analytics · Travel",
+    domain: "sports",
+    tech: ["analytics", "dataviz", "gis", "statistics"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#E8A030",
+    accentLabel: "Travel Burden",
+    description:
+      "Total away miles travelled against the points-per-game a club loses on the road, one marker per team, sized by the size of that drop. A league spread across a continent asks some clubs to fly a great deal further than others, and this view tests whether that shows up in results.",
+    insight:
+      "This is a geography question wearing a sports jersey. The distance a club travels is fixed by the map before a season starts, which makes it one of the few genuinely exogenous variables in league performance.",
+    method:
+      "Season fixture lists converted to great-circle distances between home venues, summed per club, and paired with the difference between home and away points-per-game.",
+    image: "/images/work/mls-travel.webp",
+    imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/",
+    source: "Data: MLS fixture list · Venue coordinates · Home/away PPG",
+    tags: ["Travel", "Sports Analytics", "Geography", "MLS", "Dashboards"],
+    hero: false,
+  },
+  {
+    id: "hawaii-topo",
+    index: "45",
+    title: "Sea Floor to Summit",
+    editorialTitle: ["Fourteen thousand feet,", "and the water around it."],
+    subtitle: "Hawai'i Island · Stacked Contours · 100–14,000 m · Blender",
+    category: "Cartographic Rendering · Terrain",
+    domain: "environmental",
+    tech: ["gis", "webgl3d", "dataviz"],
+    hasStatic: true,
+    hasInteractive: false,
+    accent: "#00C897",
+    accentLabel: "Terrain Rendering",
+    description:
+      "Hawai'i Island built as physical contour terraces, each elevation band cut and stacked so the volcanoes read as what they are — the exposed top of a much larger structure. Mauna Kea and Mauna Loa carry the interval bunching that makes their slopes legible; bathymetry continues the surface out past the coastline instead of stopping at it.",
+    insight:
+      "Most terrain renders stop at the shoreline, which quietly implies the island ends there. Carrying the bathymetry outward puts the visible 14,000 feet in proportion to the seamount holding it up.",
+    method:
+      "Elevation and bathymetry rasters banded into discrete contour intervals, extruded as stacked layers and rendered in Blender. Full cartographic furniture — graticule with coordinates on the frame, north arrow, scale bar, and a hypsometric ramp spanning 100 to 14,000 m.",
+    image: "/images/work/hawaii-topo.webp",
+    images: [
+      "/images/work/hawaii-topo.webp",
+      "/images/work/hawaii-topo-2.webp",
+    ],
+    imageCrop: "center",
+    source: "Data: Elevation and bathymetry rasters · Rendered in Blender",
+    tags: ["Terrain", "Cartography", "Bathymetry", "Blender", "3D"],
+    hero: true,
+  },
+  {
+    id: "earthquakes-global",
+    index: "46",
+    title: "A Century of Tremors",
+    editorialTitle: ["Every quake,", "1900 to 2014."],
+    subtitle: "Global Seismicity · Magnitude × Depth × Time · 1900–2014",
+    category: "Seismicity · Data Visualization",
+    domain: "environmental",
+    tech: ["dataviz", "analytics", "gis"],
+    hasStatic: true,
+    hasInteractive: true,
+    accent: "#E8A030",
+    accentLabel: "Seismicity",
+    description:
+      "A hundred and fourteen years of recorded earthquakes, read three ways at once: where they happened, how magnitude relates to depth, and how the count changes over time. Plotted globally, the events draw the plate boundaries without anyone having to add them as a layer.",
+    insight:
+      "The rising count through the twentieth century is mostly a record of instrumentation, not of geology. Occurrence data measures how well we were listening as much as how often the ground moved.",
+    method:
+      "Global earthquake catalogue filtered by magnitude, mapped by epicentre with depth and magnitude encoded together, and aggregated into an annual frequency series.",
+    image: "/images/work/earthquakes-global.webp",
+    images: [
+      "/images/work/earthquakes-global.webp",
+      "/images/work/earthquakes-global-2.webp",
+    ],
+    imageCrop: "center",
+    link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/Earthquakes_15628627194090/Dashboard1",
+    source: "Data: Global earthquake catalogue, 1900–2014 · Magnitude and depth",
+    tags: ["Seismicity", "Tableau", "Global", "Time Series", "Hazard"],
     hero: false,
   },
 ];
