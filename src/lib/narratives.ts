@@ -37,6 +37,28 @@ export const narratives: Record<string, Narrative> = {
       "I noticed that the solar irradiance values are exceptionally conservative, possibly by as much as 40%. Many credible sources, including NOAA and National Renewable Energy Laboratory models, suggest greater resource availability up to 1.5 kWh/m²/day. However, I like the ESRI numbers for two reasons. First, since our specific area of interest gets twice the annual precipitation as the national average, I believe the lower value better reflects atmospheric transitivity — see what I did there. Second, it's easy to want the values to be higher, since renewable energy is cool and exciting. I have found in my 33 years of grand life-wisdom that it's usually wise to temper my enthusiasm and prevent an optimistic bias that over-represents the potential success of a burgeoning technology.",
       "On symbology: for continuity in comparing the results, I changed the stretch symbology of each day from the max and min of its own values to the max and min of the entire annual range. This allows greater variation in the symbology throughout the year, while keeping the actual quantification of the colour scheme consistent across the whole graphic.",
       "A fun fact for our lat/long/altitude: daylight duration ranges from a minimum of 9.5 hours in the winter to 14.3 hours in the summer. Meanwhile the maximum altitude of the solar path ranges from 31.9° above the horizon in winter to 78.8° in summer.",
+      "The wider study this belongs to was an illumination study, done to quantify the solar resource available to the area of interest. The process involved UAV remote sensing techniques and photogrammetry, in order to construct digital models of both the elevation and the built environment.",
+    ],
+    credits: [
+      {
+        label: "What the images show",
+        lines: [
+          "1 · High-resolution orthomosaic imagery of an example study area, from drone aerial images",
+          "2 · The Digital Surface Model constructed via photogrammetry",
+          "3 · Shaded relief on the modelled elevation surface, considering illumination source angle and shadows at hourly intervals within a day — the solar path for our region was mapped as hourly azimuth and altitude coordinates for each of the four seasons",
+          "4–7 · Modelled daily solar illumination on the spring equinox (3/21), summer solstice (6/21), autumn equinox (9/21) and winter solstice (12/21)",
+          "8 · Modelled average annual illumination",
+          "9 · Modelled solar energy resource availability for the study area (kW/m²/hr)",
+        ],
+      },
+      {
+        label: "Atmospheric parameters",
+        lines: [
+          "Solar radiation calculations are extremely sensitive to atmospheric model assumptions — the radiation reaching the surface is only a portion of what arrives at the top of the atmosphere. Two inversely related parameters drive the model: diffuse proportion, the fraction of global normal radiation flux that is diffused, and transmittivity, the ratio of energy reaching the surface to that received at the upper limit of the atmosphere.",
+          "Diffuse proportion was set to 0.3, modelling a generally clear sky where incoming diffuse flux varies with zenith angle. Transmittivity was set to 0.5, modelling relatively clear conditions.",
+          "These conditions were determined from two datasets. MODIS satellite imagery at 1 km resolution measured average cloud observations at the sample coordinates twice per day over the most recent 15-year period, totalling in excess of 10,950 observations: mean climatological cloud frequency was 51%, with interannual variability expressed as a standard deviation of 5% (Wilson & Jetz, 2016). This was cross-validated against average monthly rainfall by zip code between 1952 and 1990, provided by the South Carolina Department of Natural Resources.",
+        ],
+      },
     ],
   },
 
@@ -45,9 +67,20 @@ export const narratives: Record<string, Narrative> = {
     standfirst:
       "How do you make a 3D hillshade out of 2D images that symbolize a hillshade analysis, which was done on 3D point cloud data?",
     paragraphs: [
+      "I've been exploring solar energy concepts for a friend's farm recently, and revisited the hillshade analysis in ArcGIS Pro.",
+      "First I downloaded a LiDAR dataset from USGS 3DEP covering my local area, then converted it into both a 1 m × 1 m DEM and DSM. Then I looked up the solar path on the summer solstice for this area of interest and recorded the hourly altitude and azimuth values from NOAA.",
+      "I ran the hillshade analysis on my custom DSM for every hour the sun was above the horizon — 6am to 7pm — using those hourly solar path coordinates. Then I exported the layout for each raster dataset and converted the images into an animated GIF.",
       "I am continuing my exploration with 3D lighting and shading. Today I took the 14 map exports from ArcGIS Pro that visualized the hourly hillshade illumination results of my neighbour's farm, and arranged them side by side in ascending order. Then I made those images 3D, and played around with tilt, materials, lighting, reflectance, and shadows.",
       "I suppose this falls into that final stage of an analysis — presenting your data. I find it's usually a combination of graphic design, aesthetic, and subjectivity, but I always find myself enjoying taking the time to polish my work. The results tend to be more compelling to the audience, and therefore more influential. I remember learning this from ESRI's Cartography MOOC back when I was in grad school — tip of the hat to John Nelson and Kenneth Field.",
       "Admittedly, I'm never exactly sure what the tension is between a boringly clear presentation and artistically presenting your results in a more creative, less objective way.",
+    ],
+    credits: [
+      {
+        label: "With thanks",
+        lines: [
+          "John Nelson, for both the north arrow and the graphics-layer tip for my property boundary layer.",
+        ],
+      },
     ],
   },
 
@@ -133,6 +166,104 @@ export const narratives: Record<string, Narrative> = {
     paragraphs: [
       "Inspired by Dominic Royé's Intro to GIS with R blog post. Data taken from INSPIRE.",
       "The data was downloaded with a feed.extract(url) function, filtered by province with an RSS link, and imported using dir_ls(). Buffering and geometry work used tmaptools — Geocode_OSM, st_buffer(), st_transform(), and st_intersection(). The map itself was created with the tmap package, an alternative to ggplot2, and colour symbology was handled with colorRampPalette().",
+    ],
+  },
+
+  "uav-photogrammetry": {
+    tone: "formal",
+    paragraphs: [
+      "These images represent data collected by a LiDAR-equipped UAV over Clemson University's campus in 2017.",
+      "The point cloud models are symbolized here by the elevation and compass orientation of each surface — the aspect — of the digital surface models.",
+    ],
+  },
+
+  "toxic-release": {
+    tone: "formal",
+    paragraphs: [
+      "The Environmental Protection Agency (EPA) and Energy Information Administration (EIA) collect data on facility greenhouse gas emissions, toxic releases, and power plant output throughout the U.S. This information is available to the public.",
+      "The dashboard linked above lets you explore that data directly.",
+    ],
+    credits: [
+      {
+        label: "With thanks",
+        lines: [
+          "Compiled with the help of Jon Sherwood and Blake Lytle at the Clemson Center for Geospatial Technologies.",
+        ],
+      },
+    ],
+  },
+
+  "global-temperatures": {
+    tone: "formal",
+    standfirst:
+      "An analysis of surface temperature at 100 locations around the globe.",
+    paragraphs: [
+      "Each data point is presented as a difference from the median temperature, calculated as the 1961–1990 average. Lower temperatures are marked purple, median temperatures yellow, and high temperatures red.",
+      "An interactive version of the dashboard is linked above. Data was provided by Tableau.",
+    ],
+  },
+
+  "vehicle-fuel-efficiency": {
+    tone: "formal",
+    paragraphs: [
+      "An analysis of vehicle fuel efficiency. The dashboard summarizes the results by automotive make, model, class, fuel type, and engine cylinder count.",
+    ],
+  },
+
+  "politics-uk": {
+    tone: "formal",
+    standfirst:
+      "How the presentation of information can influence the message an audience receives.",
+    paragraphs: [
+      "The example data is from a 2015 general election in the United Kingdom. The first half examines the concepts of data classification and normalization for quantitative data. The second half consists of thematic maps that illustrate qualitative data in area-based and point-based symbology, for multiple pieces of information at once.",
+      "The data used includes voter turnout percentages, vote share, and political parties.",
+    ],
+  },
+
+  "northridge-earthquake": {
+    tone: "formal",
+    paragraphs: [
+      "At about 4:30 a.m. on January 17, 1994, a magnitude 6.7 earthquake struck in Southern California. The intense shaking lasted for about 10 to 20 seconds and caused an estimated $20 billion in damage. This was largely attributed to the duration of the shaking and the speed of vibrations within a densely populated area.",
+      "This project was done to visualize the Northridge earthquake and the damage that it caused. I analyzed how fault lines shaped the topography of the San Fernando valley, the location and density of aftershock tremors, the approximate distance the seismic waves traveled, the ground's acceleration and velocity during the event, and the damages associated with that movement.",
+    ],
+  },
+
+  "us-migration-flows": {
+    tone: "field-notes",
+    standfirst:
+      "I've been playing around with ways to visualize flow mapping, and stumbled onto Flowmap City.",
+    paragraphs: [
+      "It's an open-source, in-browser visual analytics tool built specifically for mobility data. To experiment, I uploaded some 2023 state migration data from the US Census Bureau that captured the total number of people who moved from one state to another.",
+      "The pros: the program does a good job of visualizing large datasets. Each flow line is bidirectional, showing the inbound and outbound migration totals. Each flow line and node is also colour-coded and sized proportional to the total count of migrants. All the customization, settings, and filtering sit in a simple interface, with no code.",
+      "The cons: I wish there were a way to make it into a dashboard, with several interactive charts, tables, or graphs that could filter each other — the way Tableau, Power BI, or ArcGIS Insights do.",
+      "The animation shows the net total migration for each relationship between states, with flows and nodes colour-coded and sized proportional to the total population migration values.",
+    ],
+  },
+
+  "earth-from-above": {
+    tone: "formal",
+    paragraphs: [
+      "This project explores the globe using Solargis.",
+    ],
+    credits: [
+      {
+        label: "Output features",
+        lines: [
+          "Satellite imagery",
+          "Land classification",
+          "Air temperatures",
+          "Population density",
+          "Optimal photovoltaic array tilt",
+          "Solar energy radiation",
+        ],
+      },
+    ],
+  },
+
+  chattooga: {
+    tone: "formal",
+    paragraphs: [
+      "An ongoing research project with the Forestry Department at Clemson University.",
     ],
   },
 };
