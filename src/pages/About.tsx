@@ -94,25 +94,36 @@ const affiliations: { group: string; items: Affiliation[] }[] = [
   {
     group: "Employers",
     items: [
-      { name: "Meta" },
-      { name: "Booz Allen Hamilton" },
-      { name: "Liberty IT Solutions" },
-      { name: "Clemson University" },
+      { name: "Meta", logo: "/images/logos/meta.webp" },
+      // Employer of record for the Meta engagement.
+      { name: "Tundra Technical Solutions", logo: "/images/logos/tundra.webp" },
+      { name: "Booz Allen Hamilton", logo: "/images/logos/booz-allen.webp" },
+      { name: "Liberty IT Solutions", logo: "/images/logos/liberty-it.webp" },
+      { name: "Clemson University", logo: "/images/logos/clemson.webp" },
     ],
   },
   {
     group: "Clients & Programs",
     items: [
-      { name: "Veterans Health Administration" },
+      { name: "Veterans Health Administration", logo: "/images/logos/va.webp" },
+      // No mark of its own — stays a wordmark, which the row handles.
       { name: "VHA SCI/D National Program Office" },
-      { name: "South Carolina DNR" },
-      { name: "Clemson Cooperative Extension" },
+      { name: "South Carolina DNR", logo: "/images/logos/sc-dnr.webp" },
+      {
+        name: "Clemson Cooperative Extension",
+        logo: "/images/logos/clemson-extension.webp",
+      },
+      { name: "USDA NRCS", logo: "/images/logos/usda-nrcs.webp" },
       { name: "Town Creek Farms" },
     ],
   },
   {
     group: "Published & Presented",
-    items: [{ name: "ASCIP" }, { name: "ASABE" }, { name: "MDPI · Drones" }],
+    items: [
+      { name: "ASCIP", logo: "/images/logos/ascip.webp" },
+      { name: "ASABE", logo: "/images/logos/asabe.webp" },
+      { name: "MDPI · Drones", logo: "/images/logos/mdpi.webp" },
+    ],
   },
 ];
 
@@ -149,6 +160,16 @@ const testimonials = [
     quote:
       "Thank you for all your great work, support, and leadership of the geospatial data products and analyses.",
     attribution: "National program office",
+  },
+  {
+    /* Not a quotation. The source is an AI-generated summary of a private
+       1:1, so no one actually said these words in this order — putting them
+       in quote marks would misrepresent them. Written as a report of the
+       recognition instead, and `plain` drops the decorative quote marks. */
+    plain: true,
+    quote:
+      "Recognized for building the foundation for more rigorous data analysis and modeling, and for marked improvement in organization, project management, communication, and quality of deliverables.",
+    attribution: "Manager review · Meta",
   },
 ];
 
@@ -818,7 +839,9 @@ export default function About() {
             {testimonials.map((t) => (
               <FadeIn key={t.attribution} duration={0.6}>
                 <figure className="testimonial">
-                  <blockquote>&ldquo;{t.quote}&rdquo;</blockquote>
+                  <blockquote>
+                    {"plain" in t && t.plain ? t.quote : `\u201C${t.quote}\u201D`}
+                  </blockquote>
                   <figcaption className="label-mono">{t.attribution}</figcaption>
                 </figure>
               </FadeIn>

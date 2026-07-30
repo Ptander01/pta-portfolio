@@ -1770,16 +1770,33 @@
   box-shadow: var(--lip-hover);
   transform: translateY(-2px);
 }
+/* Logo chips get a light surface. Every one of these marks is drawn
+   dark-on-white, so on the dark default chip they would read as smudges.
+   A warm off-white plate is how the row stays legible in both themes
+   without touching anyone's brand colours. */
+.affiliation:has(img) {
+  background: #f6f3ec;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  min-height: 60px;
+}
 .affiliation img {
-  height: 26px;
+  height: 30px;
   width: auto;
+  max-width: 200px;
+  object-fit: contain;
   display: block;
-  /* Neutralize incoming brand colour so a dropped-in logo still matches the
-     row; hover restores it. */
-  filter: grayscale(1) opacity(0.65);
+  /* Desaturated at rest so twelve competing brands read as one texture;
+     hover returns the real colour. */
+  filter: grayscale(1) opacity(0.72);
   transition: filter 0.25s ease;
 }
 .affiliation:hover img { filter: grayscale(0) opacity(1); }
+/* Square-ish seals carry less ink per pixel than wide wordmarks — let them
+   run slightly taller so the row reads as evenly weighted. */
+.affiliation img[src*="sc-dnr"],
+.affiliation img[src*="usda"] { height: 40px; }
 
 /* ══ Testimonials (About) ══ */
 .testimonial-grid {
