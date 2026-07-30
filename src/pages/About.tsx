@@ -12,6 +12,7 @@ import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
 import CareerTimeline from "@/components/CareerTimeline";
+import SectionRail from "@/components/SectionRail";
 import {
   ArrowRight,
   Beaker,
@@ -86,6 +87,18 @@ const skillGroups = [
       "Sports analytics",
     ],
   },
+];
+
+/** Headings for the fixed rail. /about is the longest page on the site by a
+ *  wide margin; this is how a reader keeps their place in it. */
+const railSections = [
+  { id: "approach", label: "Approach" },
+  { id: "timeline", label: "Timeline" },
+  { id: "journey", label: "Journey" },
+  { id: "skills", label: "Skills" },
+  { id: "off-clock", label: "Off the clock" },
+  { id: "worked-with", label: "Worked with" },
+  { id: "feedback", label: "Feedback" },
 ];
 
 type Affiliation = { name: string; logo?: string };
@@ -237,6 +250,8 @@ const workflowSteps = [
 export default function About() {
   return (
     <PageTransition>
+      <SectionRail sections={railSections} />
+
       {/* ═══════ ABOUT HERO ═══════ */}
       <section
         className="relative min-h-[50vh] flex items-end overflow-hidden noise-bg"
@@ -318,11 +333,24 @@ export default function About() {
             <div className="lg:col-span-2">
               <FadeIn direction="left" duration={0.7}>
                 <div className="neu-raised rounded-2xl p-8 flex flex-col items-center text-center">
+                  {/* The generic User glyph used to be unconditional, so the
+                      card showed a placeholder avatar even after a real
+                      headshot existed. It is now the fallback only. */}
                   <div
-                    className="neu-concave rounded-full flex items-center justify-center mb-6"
+                    className="neu-concave rounded-full flex items-center justify-center mb-6 overflow-hidden"
                     style={{ width: 160, height: 160 }}
                   >
-                    <User size={64} style={{ color: "var(--cyan)" }} />
+                    <Photo
+                      src="/images/me/headshot.jpg"
+                      alt="Patrick Anderson"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        borderRadius: "50%",
+                      }}
+                      fallback={<User size={64} style={{ color: "var(--cyan)" }} />}
+                    />
                   </div>
                   <h3
                     className="heading-md mb-2"
@@ -398,7 +426,7 @@ export default function About() {
       </section>
 
       {/* ═══════ PHILOSOPHY & APPROACH ═══════ */}
-      <section
+      <section id="approach"
         className="relative py-40 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
@@ -435,12 +463,32 @@ export default function About() {
             </div>
           </FadeIn>
 
+          {/* The claim above is abstract; this is it happening. The San
+              Francisco crime diptych is raw incident points on one side and
+              the finished hotspot surface on the other, which is the whole
+              "messy data to executive intelligence" argument in one frame. */}
+          <FadeIn duration={0.6} delay={0.15}>
+            <figure className="process-figure">
+              <img
+                src="/images/work/process-before-after.webp"
+                alt="Before and after — raw crime incident points beside the finished hotspot surface"
+                loading="lazy"
+                decoding="async"
+                className="process-photo"
+              />
+              <figcaption className="label-mono process-caption">
+                Raw incident points, and the same data read as a surface — from
+                the San Francisco crime analysis
+              </figcaption>
+            </figure>
+          </FadeIn>
+
           {/* Workflow arrow chain */}
           <div className="mt-16 max-w-5xl mx-auto">
             <StaggerChildren staggerDelay={0.12} className="space-y-0">
               {workflowSteps.map((step, index) => (
                 <StaggerItem key={step.title}>
-                  <div className="flex items-start gap-6 mb-2">
+                  <div className="flex items-start gap-6 mb-2 z-stage">
                     {/* Step number + connector line */}
                     <div className="flex flex-col items-center flex-shrink-0" style={{ width: 48 }}>
                       <div
@@ -462,7 +510,7 @@ export default function About() {
                     </div>
 
                     {/* Content card */}
-                    <div className="neu-raised rounded-xl p-6 flex-1 mb-4">
+                    <div className="neu-raised rounded-xl p-6 flex-1 mb-4 z-lift">
                       <div className="flex items-center gap-3 mb-3">
                         <span
                           className="label-mono"
@@ -492,8 +540,8 @@ export default function About() {
 
           {/* Summary callout */}
           <FadeIn delay={0.4} duration={0.7}>
-            <div className="mt-12 max-w-3xl mx-auto text-center">
-              <div className="neu-raised rounded-2xl p-8">
+            <div className="mt-12 max-w-3xl mx-auto text-center z-stage">
+              <div className="neu-raised rounded-2xl p-8 z-lift">
                 <p
                   className="body-lg"
                   style={{ color: "var(--text-muted)" }}
@@ -520,7 +568,7 @@ export default function About() {
       </section>
 
       {/* ═══════ CAREER TIMELINE (Horizontal) ═══════ */}
-      <section
+      <section id="timeline"
         className="relative py-32 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
@@ -549,7 +597,7 @@ export default function About() {
       </section>
 
       {/* ═══════ LONG NARRATIVE ═══════ */}
-      <section
+      <section id="journey"
         className="relative py-40 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
@@ -688,7 +736,7 @@ export default function About() {
       </section>
 
       {/* ═══════ SKILLS & DOMAINS ═══════ */}
-      <section
+      <section id="skills"
         className="relative py-24 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >
@@ -725,7 +773,7 @@ export default function About() {
       </section>
 
       {/* ═══════ OFF THE CLOCK ═══════ */}
-      <section
+      <section id="off-clock"
         className="relative py-24 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
@@ -744,43 +792,49 @@ export default function About() {
               Pendleton, South Carolina.
             </h2>
           </FadeIn>
-          <FadeIn duration={0.6}>
-            <div style={{ maxWidth: "62ch" }}>
-              <p className="body-lg" style={{ color: "var(--text-muted)" }}>
-                My wife and I own a home in Pendleton, South Carolina, and we had
-                our first child in 2022. We&rsquo;re heavily involved in our local
-                church as small group leaders and mentors to young adults.
-              </p>
-              <p
-                className="body-lg"
-                style={{ color: "var(--text-muted)", marginTop: "1.25rem" }}
-              >
-                Outside of work I&rsquo;m a fitness and outdoors enthusiast and a
-                relentless book worm. A fair amount of what ends up on this site
-                started as curiosity on a walk — the solar and terrain studies
-                are literally the farm next door.
-              </p>
-            </div>
-          </FadeIn>
-          {/* Patrick's home office — his pick of the four he sent. Landscape,
-              so it runs wider than the portrait slots. */}
-          <FadeIn duration={0.6}>
-            <figure className="office-figure">
-              <Photo
-                src="/images/me/office.webp"
-                alt="Patrick's home office — dual monitors on a dark navy wall, botanical prints above the desk"
-                className="office-photo"
-              />
-              <figcaption className="label-mono office-caption">
-                The home office in Pendleton — where most of this was built
-              </figcaption>
-            </figure>
-          </FadeIn>
+          {/* Text left, photo right. These were stacked vertically and both
+              left-justified, which left a long ragged column against dead
+              space. Two columns above 900px, stacked below — see .off-clock
+              in index.css. */}
+          <div className="off-clock">
+            <FadeIn duration={0.6}>
+              <div className="off-clock-text">
+                <p className="body-lg" style={{ color: "var(--text-muted)" }}>
+                  My wife and I own a home in Pendleton, South Carolina, and we
+                  had our first child in 2022. We&rsquo;re heavily involved in
+                  our local church as small group leaders and mentors to young
+                  adults.
+                </p>
+                <p
+                  className="body-lg"
+                  style={{ color: "var(--text-muted)", marginTop: "1.25rem" }}
+                >
+                  Outside of work I&rsquo;m a fitness and outdoors enthusiast and
+                  a relentless book worm. A fair amount of what ends up on this
+                  site started as curiosity on a walk — the solar and terrain
+                  studies are literally the farm next door.
+                </p>
+              </div>
+            </FadeIn>
+            {/* Patrick's home office — his pick of the four he sent. */}
+            <FadeIn duration={0.6}>
+              <figure className="office-figure">
+                <Photo
+                  src="/images/me/office.webp"
+                  alt="Patrick's home office — dual monitors on a dark navy wall, botanical prints above the desk"
+                  className="office-photo"
+                />
+                <figcaption className="label-mono office-caption">
+                  The home office in Pendleton — where most of this was built
+                </figcaption>
+              </figure>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
       {/* ═══════ AFFILIATIONS ═══════ */}
-      <section
+      <section id="worked-with"
         className="relative py-24 noise-bg"
         style={{ background: "var(--surface-sunken)" }}
       >
@@ -817,7 +871,7 @@ export default function About() {
       </section>
 
       {/* ═══════ FEEDBACK ═══════ */}
-      <section
+      <section id="feedback"
         className="relative py-24 noise-bg"
         style={{ background: "var(--page-bg)" }}
       >

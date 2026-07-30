@@ -37,7 +37,21 @@ export const narratives: Record<string, Narrative> = {
       "I noticed that the solar irradiance values are exceptionally conservative, possibly by as much as 40%. Many credible sources, including NOAA and National Renewable Energy Laboratory models, suggest greater resource availability up to 1.5 kWh/m²/day. However, I like the ESRI numbers for two reasons. First, since our specific area of interest gets twice the annual precipitation as the national average, I believe the lower value better reflects atmospheric transitivity — see what I did there. Second, it's easy to want the values to be higher, since renewable energy is cool and exciting. I have found in my 33 years of grand life-wisdom that it's usually wise to temper my enthusiasm and prevent an optimistic bias that over-represents the potential success of a burgeoning technology.",
       "On symbology: for continuity in comparing the results, I changed the stretch symbology of each day from the max and min of its own values to the max and min of the entire annual range. This allows greater variation in the symbology throughout the year, while keeping the actual quantification of the colour scheme consistent across the whole graphic.",
       "A fun fact for our lat/long/altitude: daylight duration ranges from a minimum of 9.5 hours in the winter to 14.3 hours in the summer. Meanwhile the maximum altitude of the solar path ranges from 31.9° above the horizon in winter to 78.8° in summer.",
-      "The wider study this belongs to was an illumination study, done to quantify the solar resource available to the area of interest. The process involved UAV remote sensing techniques and photogrammetry, in order to construct digital models of both the elevation and the built environment.",
+    ],
+  },
+
+  /* The seasonal figure list and the atmospheric parameters moved here from
+     solar-agriculture on 2026-07-30, when Town Creek Farms' seasonal solar
+     work became its own piece. They describe this study specifically — the
+     wedge of farmland, the four calendar corners — rather than solar in
+     agriculture generally, which is what piece 03 is about. */
+  "tcf-solar": {
+    tone: "formal",
+    standfirst:
+      "An illumination study, done to quantify the solar resource available to the area of interest.",
+    paragraphs: [
+      "The process involved UAV remote sensing techniques and photogrammetry, in order to construct digital models of both the elevation and the built environment.",
+      "The solar path for our region was mapped as hourly azimuth and altitude coordinates for each of the four seasons, and the radiation model run against the terrain so that the ground casts its own shadows.",
     ],
     credits: [
       {
@@ -45,7 +59,7 @@ export const narratives: Record<string, Narrative> = {
         lines: [
           "1 · High-resolution orthomosaic imagery of an example study area, from drone aerial images",
           "2 · The Digital Surface Model constructed via photogrammetry",
-          "3 · Shaded relief on the modelled elevation surface, considering illumination source angle and shadows at hourly intervals within a day — the solar path for our region was mapped as hourly azimuth and altitude coordinates for each of the four seasons",
+          "3 · Shaded relief on the modelled elevation surface, considering illumination source angle and shadows at hourly intervals within a day",
           "4–7 · Modelled daily solar illumination on the spring equinox (3/21), summer solstice (6/21), autumn equinox (9/21) and winter solstice (12/21)",
           "8 · Modelled average annual illumination",
           "9 · Modelled solar energy resource availability for the study area (kW/m²/hr)",
