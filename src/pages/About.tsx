@@ -755,6 +755,26 @@ export default function About() {
               Skills and domains.
             </h2>
           </FadeIn>
+
+          {/* Counted, not estimated — see the note. A round number would have
+              been easier and is the one thing on this page a reader could
+              trivially check and find wrong. */}
+          <FadeIn duration={0.6}>
+            <div className="code-stat">
+              <div className="code-stat-figure">
+                <span className="code-stat-number">170,900</span>
+                <span className="label-mono code-stat-unit">lines of code</span>
+              </div>
+              <p className="code-stat-note">
+                Across 13 public repositories, every one of them created in
+                2026. Counted from source — TypeScript, JavaScript, Python, R,
+                SQL, CSS and HTML — with dependencies, lockfiles, minified
+                bundles and generated output excluded. A further 440,000 lines
+                of JSON, GeoJSON and CSV are not included here, because data is
+                produced rather than written.
+              </p>
+            </div>
+          </FadeIn>
           <div className="skill-grid">
             {skillGroups.map((g) => (
               <FadeIn key={g.label} duration={0.6}>

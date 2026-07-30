@@ -467,7 +467,6 @@ const projectData: Record<string, ProjectData> = {
     impactMetrics: [
       { value: "36+", label: "Milestones per Site" },
       { value: "4", label: "Metro Areas Covered" },
-      { value: "158K", label: "Lines of Code" },
     ],
   },
   "agent-flow-visualizer": {

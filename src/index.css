@@ -2053,6 +2053,47 @@
 /* Landscape, so it runs wider than the portrait slots. The <figure> only
    shows its caption when the image actually resolved — otherwise an empty
    slot would leave a stranded caption behind. */
+/* Counted-output stat on /about. Glass, per the floating-content zone in the
+   texture table. The figure carries the Space Mono telemetry register the
+   rest of the data language uses. */
+.code-stat {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 2.5rem;
+  margin-bottom: 3rem;
+  padding: 1.5rem 1.75rem;
+  border-radius: 14px;
+  background: var(--pill-bg);
+  backdrop-filter: var(--glass-blur, blur(18px));
+  box-shadow: var(--lip-out);
+}
+.code-stat-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+.code-stat-number {
+  font-family: "Space Mono", monospace;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cyan);
+}
+.code-stat-unit {
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+}
+.code-stat-note {
+  flex: 1 1 22rem;
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+}
+
 /* ══ Section rail ══
    Fixed table of contents for /about. Chrome, so it takes the glass
    treatment per the texture zoning table; the ticks carry the state rather

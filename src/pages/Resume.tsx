@@ -22,6 +22,12 @@ const PDF_HREF = "/resume/Patrick-Anderson-Resume.pdf";
 /** Newest first — `entries` is authored oldest-first for the timeline axis. */
 const history = [...entries].reverse();
 
+/* Split on the same rule the timeline uses: a role has duration, a degree is
+   a point in time. Keeping them in one list made the resume read as though
+   the M.S. were a job, and buried the employment history among credentials. */
+const experience = history.filter((e) => e.startYear !== e.endYear);
+const education = history.filter((e) => e.startYear === e.endYear);
+
 /** Peer-reviewed and academic work. The About page and career timeline both
  *  referred to "three academic publications" in prose without ever linking
  *  them; an unlinked claim is weaker than a citation. Verified against
@@ -333,12 +339,99 @@ export default function Resume() {
         <div className="container relative z-10" style={{ maxWidth: 860 }}>
           <FadeIn duration={0.6}>
             <h2 className="heading-md" style={{ marginBottom: "2.5rem" }}>
-              Experience &amp; Education
+              Experience
             </h2>
           </FadeIn>
 
           <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
-            {history.map((e) => (
+            {experience.map((e) => (
+              <li
+                key={e.id}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "minmax(6.5rem, 8rem) 1fr",
+                  gap: "1.5rem",
+                  padding: "1.5rem 0",
+                  borderTop: "1px solid var(--border-subtle)",
+                }}
+              >
+                <div
+                  className="label-mono"
+                  style={{
+                    color: e.color,
+                    fontSize: "0.65rem",
+                    paddingTop: "0.2rem",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {e.label}
+                </div>
+                <div>
+                  <h3
+                    style={{
+                      fontFamily: "'Cinzel', Georgia, serif",
+                      fontSize: "1.0625rem",
+                      fontWeight: 600,
+                      color: "var(--heading-color)",
+                      margin: 0,
+                    }}
+                  >
+                    {e.role}
+                  </h3>
+                  <div
+                    className="label-mono"
+                    style={{
+                      color: "var(--text-muted)",
+                      fontSize: "0.6rem",
+                      margin: "0.35rem 0 0.75rem",
+                    }}
+                  >
+                    {e.org}
+                  </div>
+                  <p
+                    style={{
+                      fontFamily: "'Lora', Georgia, serif",
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.7,
+                      color: "var(--text-secondary)",
+                      margin: "0 0 0.9rem",
+                    }}
+                  >
+                    {e.description}
+                  </p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
+                    {e.skills.map((s) => (
+                      <span
+                        key={s}
+                        className="label-mono"
+                        style={{
+                          fontSize: "0.55rem",
+                          padding: "0.25rem 0.6rem",
+                          border: "1px solid var(--border-subtle)",
+                          borderRadius: 3,
+                          color: "var(--text-muted)",
+                        }}
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          <FadeIn duration={0.6}>
+            <h2
+              className="heading-md"
+              style={{ marginTop: "4rem", marginBottom: "2.5rem" }}
+            >
+              Education
+            </h2>
+          </FadeIn>
+
+          <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
+            {education.map((e) => (
               <li
                 key={e.id}
                 style={{
