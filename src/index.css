@@ -1508,6 +1508,130 @@
   .facet-options > * { transition-duration: 0.01ms; transform: none; }
 }
 
+/* ══ Career timeline — lit surface treatment ══
+   The flat CSS bars read as a wireframe next to the macro-editorial hero
+   renders, which are all lit, textured and physical. This gives the track the
+   same material language: a dark ground with a lit horizon, rails that emit
+   their own colour, and nodes with a hot core and a cast shadow.
+
+   Deliberately NO perspective or Y-rotation. Horizontal position on this
+   component *is* the year, so a vanishing point would stretch 2014 and crush
+   2026 — it would look like depth while lying about how long each role
+   lasted, which is the one thing the component exists to show. Depth comes
+   from light and shadow only. (Reference image explored 2026-07-30; the
+   perspective was the part that could not ship.)
+
+   `--entry` is set inline per role from its accent colour, which is what
+   lets these rules glow in the right hue without a class per role. */
+.ct-track {
+  border-radius: 10px;
+  background:
+    radial-gradient(120% 80% at 50% 46%, rgba(255, 255, 255, 0.035), transparent 70%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.018), transparent 55%);
+}
+[data-theme="light"] .ct-track {
+  background:
+    radial-gradient(120% 80% at 50% 46%, rgba(120, 100, 70, 0.06), transparent 70%),
+    linear-gradient(to bottom, rgba(120, 100, 70, 0.03), transparent 55%);
+}
+
+/* The horizon: a hairline with a soft bloom above and below it. */
+.ct-axis {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--glass-border) 8%,
+    var(--glass-border) 92%,
+    transparent
+  );
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.06);
+}
+
+/* Duration rails — lit from within, with a shadow cast onto the ground. */
+.ct-bar {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--entry) 92%, white),
+    var(--entry) 45%,
+    color-mix(in srgb, var(--entry) 78%, black)
+  );
+  box-shadow:
+    0 0 10px color-mix(in srgb, var(--entry) 42%, transparent),
+    0 3px 8px rgba(0, 0, 0, 0.5);
+  opacity: 0.82;
+  transition: opacity 0.25s ease, box-shadow 0.3s ease, height 0.2s ease;
+}
+.ct-bar--on {
+  height: 7px;
+  opacity: 1;
+  box-shadow:
+    0 0 22px color-mix(in srgb, var(--entry) 70%, transparent),
+    0 0 44px color-mix(in srgb, var(--entry) 30%, transparent),
+    0 4px 12px rgba(0, 0, 0, 0.55);
+}
+
+/* Start-year node — hot core falling off to the accent, sitting proud of
+   the rail with its own shadow. */
+.ct-cap {
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 38% 34%,
+    color-mix(in srgb, var(--entry) 25%, white),
+    var(--entry) 62%,
+    color-mix(in srgb, var(--entry) 70%, black)
+  );
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--entry) 55%, transparent),
+    0 2px 5px rgba(0, 0, 0, 0.6);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.ct-cap--on {
+  transform: scale(1.35);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--entry) 85%, transparent),
+    0 0 40px color-mix(in srgb, var(--entry) 35%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* Degrees — the same material, cut as a diamond so a credential never reads
+   as a very short job. */
+.ct-diamond {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  transform: rotate(45deg);
+  background: radial-gradient(
+    circle at 36% 32%,
+    color-mix(in srgb, var(--entry) 22%, white),
+    var(--entry) 60%,
+    color-mix(in srgb, var(--entry) 72%, black)
+  );
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--entry) 55%, transparent),
+    0 2px 5px rgba(0, 0, 0, 0.6);
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.ct-diamond--on {
+  transform: rotate(45deg) scale(1.35);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--entry) 85%, transparent),
+    0 0 40px color-mix(in srgb, var(--entry) 35%, transparent),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-bar,
+  .ct-cap,
+  .ct-diamond { transition: none; }
+}
+
 /* ══ Career timeline — mobile vertical list ══
    Rendered instead of the proportional horizontal track below 768px (the
    swap happens in CareerTimeline.tsx, since the track's positions are inline

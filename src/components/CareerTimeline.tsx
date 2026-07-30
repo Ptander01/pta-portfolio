@@ -300,12 +300,9 @@ export default function CareerTimeline() {
   return (
     <div className="w-full">
       {/* ── Horizontal track ── */}
-      <div className="relative" style={{ height: trackHeight }}>
-        {/* Base line */}
-        <div
-          className="absolute left-0 right-0"
-          style={{ top: axisY, height: 2, background: "var(--glass-border)" }}
-        />
+      <div className="relative ct-track" style={{ height: trackHeight }}>
+        {/* Base line — a lit rail rather than a hairline. See .ct-axis. */}
+        <div className="absolute left-0 right-0 ct-axis" style={{ top: axisY }} />
 
         {/* Year tick marks along the bottom */}
         {[2014, 2016, 2018, 2020, 2022, 2024, 2026].map((yr) => (
@@ -366,16 +363,14 @@ export default function CareerTimeline() {
               </span>
               {/* Diamond sitting on the axis */}
               <div
-                className="absolute rounded-sm transition-all duration-200"
-                style={{
-                  left: 0,
-                  top: MILESTONE_BAND - MILESTONE_INSET - 5,
-                  width: isActive ? 12 : 9,
-                  height: isActive ? 12 : 9,
-                  background: entry.color,
-                  transform: "rotate(45deg)",
-                  boxShadow: isActive ? `0 0 12px ${entry.color}` : "none",
-                }}
+                className={`absolute ct-diamond${isActive ? " ct-diamond--on" : ""}`}
+                style={
+                  {
+                    "--entry": entry.color,
+                    left: 0,
+                    top: MILESTONE_BAND - MILESTONE_INSET - 5,
+                  } as React.CSSProperties
+                }
               />
             </div>
           );
@@ -409,27 +404,25 @@ export default function CareerTimeline() {
             >
               {/* Bar */}
               <div
-                className="absolute left-0 right-0 rounded-full transition-all duration-200"
-                style={{
-                  height: isActive ? 6 : 4,
-                  background: entry.color,
-                  opacity: isActive ? 1 : 0.7,
-                  top: isAbove ? LABEL_H : 0,
-                }}
+                className={`absolute left-0 right-0 ct-bar${isActive ? " ct-bar--on" : ""}`}
+                style={
+                  {
+                    "--entry": entry.color,
+                    top: isAbove ? LABEL_H : 0,
+                  } as React.CSSProperties
+                }
               />
 
               {/* Cap on the start year */}
               <div
-                className="absolute rounded-full transition-all duration-200 z-10"
-                style={{
-                  left: 0,
-                  top: (isAbove ? LABEL_H : 0) - (isActive ? 3 : 2),
-                  width: isActive ? 12 : 8,
-                  height: isActive ? 12 : 8,
-                  marginLeft: isActive ? -6 : -4,
-                  background: entry.color,
-                  boxShadow: isActive ? `0 0 12px ${entry.color}` : "none",
-                }}
+                className={`absolute z-10 ct-cap${isActive ? " ct-cap--on" : ""}`}
+                style={
+                  {
+                    "--entry": entry.color,
+                    left: 0,
+                    top: isAbove ? LABEL_H : 0,
+                  } as React.CSSProperties
+                }
               />
 
               {/* Label (company + role) */}
