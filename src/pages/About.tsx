@@ -845,8 +845,14 @@ export default function About() {
           </FadeIn>
 
           <div className="testimonial-grid">
-            {testimonials.map((t) => (
-              <FadeIn key={t.attribution} duration={0.6}>
+            {/* Index, not attribution: two of the twelve quotes share the
+                string "Program office lead · after a national leadership
+                summit", which made them the same React key. All twelve
+                happened to render anyway, but duplicate keys let React omit
+                or duplicate a child, and losing a testimonial silently is
+                exactly the kind of failure this site keeps producing. */}
+            {testimonials.map((t, i) => (
+              <FadeIn key={i} duration={0.6}>
                 <figure className="testimonial">
                   <blockquote>
                     {"plain" in t && t.plain ? t.quote : `\u201C${t.quote}\u201D`}
