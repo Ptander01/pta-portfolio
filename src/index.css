@@ -1885,3 +1885,49 @@
   border-top: 1px solid var(--border-subtle);
 }
 .skill-group li:first-child { border-top: none; }
+
+/* ══ Photos of Patrick ══
+   Each slot collapses cleanly while its file is absent (see Photo.tsx), so
+   these layouts must look deliberate with the image and without it. */
+.about-hero-grid { display: grid; gap: 2.5rem; align-items: end; }
+@media (min-width: 900px) {
+  /* Only becomes two columns when a portrait is actually present — :has means
+     no JS and no layout shift when the slot is empty. */
+  .about-hero-grid:has(.about-portrait) {
+    grid-template-columns: 1.35fr 0.65fr;
+  }
+}
+.about-portrait {
+  width: 100%;
+  max-width: 22rem;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: var(--glass-shadow);
+}
+.desk-photo {
+  width: 100%;
+  max-width: 17rem;
+  height: auto;
+  display: block;
+  margin-top: 2rem;
+  border-radius: 4px;
+  box-shadow: var(--glass-shadow);
+}
+.resume-headshot {
+  width: 8.5rem;
+  height: 8.5rem;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  box-shadow: var(--glass-shadow);
+}
+.speaking-photo {
+  width: 100%;
+  max-width: 13rem;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--glass-shadow);
+}

@@ -14,6 +14,7 @@
 import PageTransition from "@/components/animations/PageTransition";
 import FadeIn from "@/components/animations/FadeIn";
 import { entries } from "@/components/CareerTimeline";
+import Photo from "@/components/Photo";
 import { useEffect, useState } from "react";
 
 const PDF_HREF = "/resume/Patrick-Anderson-Resume.pdf";
@@ -257,6 +258,15 @@ export default function Resume() {
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10" style={{ maxWidth: 860 }}>
+          {/* Slot: public/images/me/headshot.jpg */}
+          <FadeIn duration={0.6}>
+            <Photo
+              src="/images/me/headshot.jpg"
+              alt="Patrick Anderson"
+              className="resume-headshot"
+              style={{ marginBottom: "1.75rem" }}
+            />
+          </FadeIn>
           <FadeIn duration={0.6}>
             <span
               className="label-mono inline-block mb-4"
@@ -430,6 +440,13 @@ export default function Resume() {
             heading="Technical Writing"
             items={technicalWriting}
             accent="var(--emerald)"
+          />
+          {/* Slot: public/images/me/speaking.jpg — the conference shot belongs
+              next to the talks rather than in a generic photo strip. */}
+          <Photo
+            src="/images/me/speaking.jpg"
+            alt="Patrick Anderson presenting at a conference"
+            className="speaking-photo"
           />
           <CitationList
             heading="Speaking &amp; Presenting"

@@ -7,6 +7,7 @@
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
 import { Link } from "wouter";
+import Photo from "@/components/Photo";
 import StaggerChildren, {
   StaggerItem,
 } from "@/components/animations/StaggerChildren";
@@ -213,7 +214,8 @@ export default function About() {
           }}
         />
 
-        <div className="container relative z-10 pt-40 pb-20">
+        <div className="container relative z-10 pt-40 pb-20 about-hero-grid">
+          <div>
           <FadeIn delay={0.2} duration={0.8}>
             <span
               className="label-mono inline-block mb-4"
@@ -245,6 +247,18 @@ export default function About() {
               clean, simple information — focused attention to detail, driven by
               big-picture questions.
             </p>
+          </FadeIn>
+          </div>
+
+          {/* Slot: fills in when public/images/me/portrait.jpg exists. The
+              grid collapses to one column while it is absent, so the hero
+              looks intentional either way. */}
+          <FadeIn delay={0.5} duration={0.8}>
+            <Photo
+              src="/images/me/portrait.jpg"
+              alt="Patrick Anderson"
+              className="about-portrait"
+            />
           </FadeIn>
         </div>
       </section>
@@ -703,6 +717,14 @@ export default function About() {
                 are literally the farm next door.
               </p>
             </div>
+          </FadeIn>
+          {/* Slot: public/images/me/desk.jpg */}
+          <FadeIn duration={0.6}>
+            <Photo
+              src="/images/me/desk.jpg"
+              alt="A journal, a candle, and a window — where the writing happens"
+              className="desk-photo"
+            />
           </FadeIn>
         </div>
       </section>
