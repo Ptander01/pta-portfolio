@@ -11,7 +11,7 @@
  * component; a media query cannot reach them.
  */
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useIsMobile } from "@/hooks/useMobile";
 
 export interface TimelineEntry {
@@ -174,6 +174,45 @@ function pct(year: number) {
   return ((year - TIMELINE_START) / SPAN) * 100;
 }
 
+/* Vertical rhythm, in px, measured from the axis outward. */
+const ROW_H = 78;           // one lane: bar + the label stacked beyond it
+const LABEL_H = 60;
+const MILESTONE_BAND = 58;  // reserved above the axis for degrees
+const MILESTONE_INSET = 12; // clearance so degree labels clear the lane-0 bar
+const TICK_BAND = 30;       // reserved below the axis for year ticks
+
+/**
+ * Greedy interval packing — assign each role the first lane it does not
+ * collide in.
+ *
+ * Lanes used to be `idx % 2`: even entries above the axis, odd below, with no
+ * reference to dates at all. That put Clemson Extension (2015–2020) and the
+ * Freelance Drone Pilot years (2018–2020) both below the line, so the FAA bar
+ * painted straight over the Extension bar's last two years and the role
+ * looked two years shorter than it was. Three roles genuinely overlap across
+ * 2018–2020, so two lanes were never going to be enough regardless of how
+ * they were assigned.
+ *
+ * The comparison is strict: two bars that merely touch at a year go in
+ * different lanes, because sharing one would render them as a single
+ * continuous bar (Booz Allen ending and Meta beginning in 2025).
+ */
+function packLanes(roles: TimelineEntry[]): Map<string, number> {
+  const laneEnds: number[] = [];
+  const laneOf = new Map<string, number>();
+
+  [...roles]
+    .sort((a, b) => a.startYear - b.startYear)
+    .forEach((role) => {
+      let lane = laneEnds.findIndex((end) => role.startYear > end);
+      if (lane === -1) lane = laneEnds.length;
+      laneEnds[lane] = role.endYear;
+      laneOf.set(role.id, lane);
+    });
+
+  return laneOf;
+}
+
 export default function CareerTimeline() {
   const [active, setActive] = useState<string | null>(null);
   const isMobile = useIsMobile();
@@ -184,6 +223,18 @@ export default function CareerTimeline() {
     const el = document.querySelector(anchor);
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
+
+  /* Degrees are point events (start === end) and take the milestone band on
+     the axis; everything with real duration competes for a lane. */
+  const milestones = entries.filter((e) => e.startYear === e.endYear);
+  const roles = entries.filter((e) => e.startYear !== e.endYear);
+  const laneOf = useMemo(() => packLanes(roles), []);
+
+  const laneCount = Math.max(...Array.from(laneOf.values()), 0) + 1;
+  const aboveRows = Math.ceil(laneCount / 2); // lanes 0, 2, 4… sit above
+  const belowRows = Math.floor(laneCount / 2);
+  const axisY = MILESTONE_BAND + Math.max(aboveRows - 1, 0) * ROW_H + LABEL_H;
+  const trackHeight = axisY + TICK_BAND + belowRows * ROW_H + LABEL_H;
 
   if (isMobile) {
     return (
@@ -249,14 +300,11 @@ export default function CareerTimeline() {
   return (
     <div className="w-full">
       {/* ── Horizontal track ── */}
-      <div className="relative" style={{ height: 180 }}>
+      <div className="relative" style={{ height: trackHeight }}>
         {/* Base line */}
         <div
-          className="absolute top-1/2 left-0 right-0 -translate-y-1/2"
-          style={{
-            height: 2,
-            background: "var(--glass-border)",
-          }}
+          className="absolute left-0 right-0"
+          style={{ top: axisY, height: 2, background: "var(--glass-border)" }}
         />
 
         {/* Year tick marks along the bottom */}
@@ -264,7 +312,7 @@ export default function CareerTimeline() {
           <div
             key={yr}
             className="absolute -translate-x-1/2"
-            style={{ left: `${pct(yr)}%`, top: "calc(50% + 16px)" }}
+            style={{ left: `${pct(yr)}%`, top: axisY + 14 }}
           >
             <div
               className="w-px mx-auto mb-1"
@@ -272,42 +320,92 @@ export default function CareerTimeline() {
             />
             <span
               className="label-mono block text-center"
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.55rem",
-              }}
+              style={{ color: "var(--text-muted)", fontSize: "0.55rem" }}
             >
               {yr}
             </span>
           </div>
         ))}
 
-        {/* Duration bars */}
-        {entries.map((entry, idx) => {
-          const left = pct(entry.startYear);
-          const width = Math.max(
-            pct(entry.endYear) - pct(entry.startYear),
-            2.5 // minimum width for point events
-          );
-          const isAbove = idx % 2 === 0;
+        {/* Degrees — point events, marked on the axis itself in their own
+            band. A credential is a milestone, not a duration; giving them
+            bars would mean either starting the axis in 2010 for a four-year
+            B.S. or dropping another interval into 2018–2020, already the
+            most congested stretch. Patrick's call, 2026-07-30. */}
+        {milestones.map((entry) => {
           const isActive = active === entry.id;
+          return (
+            <div
+              key={entry.id}
+              className="absolute cursor-pointer"
+              style={{
+                left: `${pct(entry.startYear)}%`,
+                top: axisY - MILESTONE_BAND + MILESTONE_INSET,
+                width: 150,
+                marginLeft: -6,
+              }}
+              onMouseEnter={() => setActive(entry.id)}
+              onMouseLeave={() => setActive(null)}
+              onClick={() => goToAnchor(entry.anchor)}
+            >
+              <p
+                className="font-display font-semibold leading-tight transition-opacity duration-200"
+                style={{
+                  color: "var(--heading-color)",
+                  fontSize: "0.68rem",
+                  opacity: isActive ? 1 : 0.75,
+                }}
+              >
+                {entry.role}
+              </p>
+              <span
+                className="label-mono"
+                style={{ color: entry.color, fontSize: "0.55rem" }}
+              >
+                {entry.label}
+              </span>
+              {/* Diamond sitting on the axis */}
+              <div
+                className="absolute rounded-sm transition-all duration-200"
+                style={{
+                  left: 0,
+                  top: MILESTONE_BAND - MILESTONE_INSET - 5,
+                  width: isActive ? 12 : 9,
+                  height: isActive ? 12 : 9,
+                  background: entry.color,
+                  transform: "rotate(45deg)",
+                  boxShadow: isActive ? `0 0 12px ${entry.color}` : "none",
+                }}
+              />
+            </div>
+          );
+        })}
+
+        {/* Role duration bars, one per packed lane */}
+        {roles.map((entry) => {
+          const lane = laneOf.get(entry.id) ?? 0;
+          const isAbove = lane % 2 === 0;
+          const row = Math.floor(lane / 2);
+          const isActive = active === entry.id;
+
+          const barY = isAbove
+            ? axisY - MILESTONE_BAND - row * ROW_H
+            : axisY + TICK_BAND + row * ROW_H;
+          const groupTop = isAbove ? barY - LABEL_H : barY;
 
           return (
             <div
               key={entry.id}
               className="absolute group cursor-pointer"
               style={{
-                left: `${left}%`,
-                width: `${width}%`,
-                top: isAbove ? 0 : "50%",
-                height: "50%",
+                left: `${pct(entry.startYear)}%`,
+                width: `${pct(entry.endYear) - pct(entry.startYear)}%`,
+                top: groupTop,
+                height: LABEL_H + 6,
               }}
               onMouseEnter={() => setActive(entry.id)}
               onMouseLeave={() => setActive(null)}
-              onClick={() => {
-                const el = document.querySelector(entry.anchor);
-                if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-              }}
+              onClick={() => goToAnchor(entry.anchor)}
             >
               {/* Bar */}
               <div
@@ -316,26 +414,21 @@ export default function CareerTimeline() {
                   height: isActive ? 6 : 4,
                   background: entry.color,
                   opacity: isActive ? 1 : 0.7,
-                  top: isAbove ? "auto" : 0,
-                  bottom: isAbove ? 0 : "auto",
-                  transform: isAbove
-                    ? "translateY(calc(-50% - 1px))"
-                    : "translateY(calc(50% + 1px))",
+                  top: isAbove ? LABEL_H : 0,
                 }}
               />
 
-              {/* Dot on the main line */}
+              {/* Cap on the start year */}
               <div
-                className="absolute left-0 -translate-x-1/2 rounded-full transition-all duration-200 z-10"
+                className="absolute rounded-full transition-all duration-200 z-10"
                 style={{
+                  left: 0,
+                  top: (isAbove ? LABEL_H : 0) - (isActive ? 3 : 2),
                   width: isActive ? 12 : 8,
                   height: isActive ? 12 : 8,
+                  marginLeft: isActive ? -6 : -4,
                   background: entry.color,
-                  top: isAbove ? "auto" : -4,
-                  bottom: isAbove ? -4 : "auto",
-                  boxShadow: isActive
-                    ? `0 0 12px ${entry.color}`
-                    : "none",
+                  boxShadow: isActive ? `0 0 12px ${entry.color}` : "none",
                 }}
               />
 
@@ -343,18 +436,14 @@ export default function CareerTimeline() {
               <div
                 className="absolute left-0 transition-opacity duration-200"
                 style={{
-                  bottom: isAbove ? "calc(50% + 12px)" : "auto",
-                  top: isAbove ? "auto" : "calc(50% + 12px)",
-                  maxWidth: 160,
+                  top: isAbove ? 0 : 12,
+                  maxWidth: 170,
                   opacity: isActive ? 1 : 0.75,
                 }}
               >
                 <p
                   className="font-display font-semibold leading-tight"
-                  style={{
-                    color: "var(--heading-color)",
-                    fontSize: "0.7rem",
-                  }}
+                  style={{ color: "var(--heading-color)", fontSize: "0.7rem" }}
                 >
                   {entry.org}
                 </p>

@@ -1893,8 +1893,16 @@
   filter: grayscale(1) brightness(0.4) opacity(0.85);
   transition: filter 0.25s ease;
 }
+/* `brightness(0) invert(0.82)` used to sit here. brightness(0) crushes every
+   pixel to black before the invert lifts it back to one flat grey — so any
+   mark whose meaning lives in internal contrast came out as a featureless
+   disc. SC DNR's seal, Liberty's eagle and ASCIP's flame were all unreadable
+   blobs; wordmarks and line art (Meta, Clemson, USDA, ASABE, MDPI) survived,
+   which is why it went unnoticed. `invert(1)` flips luminance instead of
+   destroying it: dark ink still reads light against the dark ground, and the
+   tones *within* a seal stay distinct from each other. */
 [data-theme="dark"] .affiliation img {
-  filter: grayscale(1) brightness(0) invert(0.82);
+  filter: grayscale(1) invert(1) brightness(1.05) opacity(0.88);
 }
 .affiliation:hover img,
 [data-theme="dark"] .affiliation:hover img { filter: none; }
@@ -2071,6 +2079,36 @@
   display: block;
   border-radius: 4px;
   box-shadow: var(--glass-shadow);
+}
+
+/* Guest book — the warmth the old site carried on its closing page. Sits in
+   the Contact hero, above the form. The photo slot is empty until
+   journal.jpg lands, so this has to read correctly with no image at all:
+   hence flex + gap rather than a fixed two-column grid, which would leave a
+   hole where the picture is meant to be. */
+.guest-book {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 2.25rem;
+  margin-top: 2.75rem;
+}
+.guest-book-note {
+  flex: 1 1 20rem;
+  max-width: 34rem;
+}
+.guest-book-note p {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  margin-bottom: 0.9rem;
+}
+.guest-book-sign {
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-style: italic;
+  font-size: 1.0625rem !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0 !important;
 }
 .resume-headshot {
   width: 8.5rem;

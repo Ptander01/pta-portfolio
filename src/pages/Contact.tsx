@@ -95,20 +95,52 @@ export default function Contact() {
               className="body-lg max-w-xl"
               style={{ color: "var(--text-muted)" }}
             >
-              Interested in collaborating or have questions about my work?
-              I&rsquo;d love to hear from you.
+              Most of what is on this site started as a question somebody asked
+              me — usually a practical one, and more often than not about a map.
+              If something here made you curious, if you think I have got
+              something wrong, or if you have a problem that needs the kind of
+              work in the portfolio, write to me.
             </p>
           </FadeIn>
-          {/* Slot: public/images/me/journal.jpg — the journal-and-candle shot
-              that fronted the old site's guest book. Hidden until dropped in. */}
-          <FadeIn delay={0.7} duration={0.8}>
-            <Photo
-              src="/images/me/journal.jpg"
-              alt="An open journal beside a candle at a window"
-              className="journal-photo"
-              style={{ marginTop: "2.25rem" }}
-            />
-          </FadeIn>
+
+          {/* The old site closed with a guest book rather than a contact form.
+              This block is the warmth that carried — the journal photo fronted
+              it, and the note explains why the photo is here at all. Slot:
+              public/images/me/journal.jpg, hidden until the file is dropped in
+              (see public/images/me/README.md). */}
+          <div className="guest-book">
+            <FadeIn delay={0.7} duration={0.8}>
+              <Photo
+                src="/images/me/journal.jpg"
+                alt="An open journal beside a candle at a window"
+                className="journal-photo"
+              />
+            </FadeIn>
+            <FadeIn delay={0.8} duration={0.8}>
+              <div className="guest-book-note">
+                <span
+                  className="label-mono block mb-3"
+                  style={{ color: "var(--amber)", fontSize: "0.65rem" }}
+                >
+                  THE GUEST BOOK
+                </span>
+                <p>
+                  The last version of this site ended with a guest book instead
+                  of a contact form — somewhere to sign your name rather than
+                  file a request. I liked that better than a form, and I have
+                  kept it in spirit: the note below reaches me directly, and so
+                  does the email.
+                </p>
+                <p>
+                  I answer everything that is not a pitch, though not always
+                  quickly — I write back properly or not at all.
+                </p>
+                <p className="guest-book-sign">
+                  &mdash; Patrick, Pendleton, South Carolina
+                </p>
+              </div>
+            </FadeIn>
+          </div>
         </div>
       </section>
 
