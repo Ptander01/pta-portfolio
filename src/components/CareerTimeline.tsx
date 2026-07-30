@@ -2,9 +2,17 @@
  * CareerTimeline — Minimal horizontal timeline visualization
  * Hover reveals popup with description + tech/skills
  * Click navigates to the relevant narrative section on the About page
+ *
+ * Below 768px the horizontal track is replaced by a vertical list. The track
+ * positions entries proportionally by year, so at 375px the seven role labels
+ * overlapped each other five times over and the last one ran off-screen —
+ * the career arc, which is the point of the component, became unreadable.
+ * Positions are inline `left: %` styles, so this has to branch in the
+ * component; a media query cannot reach them.
  */
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/useMobile";
 
 export interface TimelineEntry {
   id: string;
@@ -168,8 +176,75 @@ function pct(year: number) {
 
 export default function CareerTimeline() {
   const [active, setActive] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const activeEntry = entries.find((e) => e.id === active) ?? null;
+
+  const goToAnchor = (anchor: string) => {
+    const el = document.querySelector(anchor);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  if (isMobile) {
+    return (
+      <div className="w-full">
+        <ol className="ct-list">
+          {entries.map((entry) => {
+            const isOpen = active === entry.id;
+            return (
+              <li
+                key={entry.id}
+                className="ct-list-item"
+                style={{ borderLeftColor: entry.color }}
+              >
+                <button
+                  className="ct-list-head"
+                  aria-expanded={isOpen}
+                  onClick={() => setActive(isOpen ? null : entry.id)}
+                >
+                  <span
+                    className="label-mono ct-list-years"
+                    style={{ color: entry.color }}
+                  >
+                    {entry.label}
+                  </span>
+                  <span className="ct-list-role">{entry.role}</span>
+                  <span className="ct-list-org">{entry.org}</span>
+                </button>
+
+                {isOpen && (
+                  <div className="ct-list-detail">
+                    <p className="ct-list-desc">{entry.description}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {entry.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="neu-concave rounded-md px-2.5 py-1 font-mono"
+                          style={{
+                            color: "var(--text-secondary)",
+                            fontSize: "0.65rem",
+                          }}
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                    <button
+                      onClick={() => goToAnchor(entry.anchor)}
+                      className="inline-flex items-center gap-1.5 font-display font-medium text-xs"
+                      style={{ color: entry.color }}
+                    >
+                      Read more &rarr;
+                    </button>
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

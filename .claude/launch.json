@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "portfolio",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["pnpm@9", "dev"],
+      "port": 3100,
+      "autoPort": true
+    }
+  ]
+}

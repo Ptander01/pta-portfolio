@@ -264,6 +264,15 @@
     background-color: var(--page-bg);
     transition: background-color 0.3s ease, color 0.3s ease;
   }
+  /* Decorative bleeds — the theme toggle's radial glow is inset -50px on the
+     right — were pushing the document 22px wider than the viewport on phones,
+     giving every page a horizontal scroll. `clip` rather than `hidden`: it
+     kills the scroll without turning the root into a scroll container, which
+     would break `position: sticky` on the navbar. */
+  html,
+  body {
+    overflow-x: clip;
+  }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -1452,9 +1461,107 @@
   .facet-options { max-width: 64rem; opacity: 1; transform: none; }
   .facet-options > * { opacity: 1; transform: none; }
 }
+
+/* Phones: the cascade runs horizontally, and all three pinned open need
+   ~1500px of row against a 375px viewport — everything past the fold was
+   clipped by the body overflow guard, which made the filters unreachable,
+   the exact failure the rule above exists to prevent. Stack the facets and
+   wrap their options instead.
+
+   Open/closed is driven from Facet in Projects.tsx via an inline style, not
+   from here: the `:hover` / `:focus-within` rules above outrank any class,
+   and a :hover that sticks after a tap would fight the toggle. What stays in
+   CSS is only what the inline style doesn't touch. */
+@media (max-width: 767px) {
+  .facet {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    gap: 6px;
+  }
+  /* The trigger is a real <button> on mobile — strip the UA chrome so it
+     matches the <span> it replaces. */
+  .facet-trigger {
+    border: none;
+    cursor: pointer;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .facet-options {
+    flex-wrap: wrap;
+    /* Must exceed the pill padding growth below, or stacked rows' touch
+       areas overlap and taps land on the wrong filter. */
+    row-gap: 10px;
+  }
+  .facet-options > * { opacity: 1; transform: none; }
+  /* 28px is not a tappable control. Grown to 40 rather than the full 44:
+     these are 9px Space Mono micro-labels, and a 44px capsule around one
+     reads as a button that lost its text. */
+  .facet-pill {
+    min-height: 40px;
+    padding: 7px 15px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .facet-options,
   .facet-options > * { transition-duration: 0.01ms; transform: none; }
+}
+
+/* ══ Career timeline — mobile vertical list ══
+   Rendered instead of the proportional horizontal track below 768px (the
+   swap happens in CareerTimeline.tsx, since the track's positions are inline
+   percentages). Chronology reads top-to-bottom; each entry's accent colour
+   moves to the left spine, which is the only place the per-role colour can
+   live once the duration bars are gone. */
+.ct-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ct-list-item {
+  border-left: 2px solid;
+  padding-left: 14px;
+}
+.ct-list-head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  /* 44px min target — the desktop timeline's hit areas were duration bars a
+     few pixels tall, which is not tappable. */
+  min-height: 44px;
+  padding: 4px 0;
+}
+.ct-list-years {
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+}
+.ct-list-role {
+  font-family: "Cinzel", serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+  color: var(--heading-color);
+}
+.ct-list-org {
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+.ct-list-detail {
+  padding: 10px 0 4px;
+}
+.ct-list-desc {
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 10px;
 }
 
 /* ── Bordered italic pull-quote ── */
@@ -1981,4 +2088,33 @@
   border-radius: 4px;
   margin-bottom: 1.5rem;
   box-shadow: var(--glass-shadow);
+}
+
+/* ═══════════════════════════════════════════════════
+   MOBILE
+   Breakpoint-dependent rules must live here: the site styles
+   overwhelmingly through inline styles, which cannot express a
+   media query. See also the facet-filter and career-timeline
+   blocks above, which carry their own mobile treatments.
+   ═══════════════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* iOS Safari zooms the viewport in when a focused field's text is under
+     16px, and does not zoom back out afterwards. All four contact fields
+     were 14px, so tapping any of them left the visitor stranded zoomed-in
+     mid-form. 16px is the threshold, not a preference. */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  /* The landing page's four links are the whole navigation — there is no
+     navbar on `/` — and their hit areas were 20px tall. Grow the target, not
+     the type, so the landing's typographic scale is untouched. Only
+     min-height is set here: the element already carries inline
+     `display: inline-flex; align-items: center`, and inline styles win, so
+     restating them would look load-bearing while doing nothing. */
+  .home-nav-link {
+    min-height: 44px;
+  }
 }
