@@ -207,13 +207,14 @@ export const PROJECTS: Project[] = [
       "Small farms rarely have access to the kind of spatial solar analysis that determines whether a photovoltaic investment will pay off. This is what it looks like when they do.",
     method:
       "Global horizontal irradiance (kWh/m²/day) from NREL data. False color thermal mapping. Solar position calculated for Summer Solstice at site coordinates.",
-    image: "/images/work/solar-agriculture.webp",
+    image: "/images/work/solar-agriculture-01.webp",
     images: [
-      "/images/work/solar-agriculture.webp",
-      "/images/work/solar-agriculture-2.webp",
-      "/images/work/solar-agriculture-3.webp",
-      "/images/work/solar-agriculture-4.webp",
-      "/images/work/solar-agriculture-5.webp",
+      "/images/work/solar-agriculture-01.webp",
+      "/images/work/solar-agriculture-02.webp",
+      "/images/work/solar-agriculture-03.webp",
+      "/images/work/solar-agriculture-04.webp",
+      "/images/work/solar-agriculture-05.webp",
+      "/images/work/solar-agriculture-06.webp",
     ],
     imageCrop: "center",
     source: "Data: NREL Solar Resource · USDA parcel data · Summer Solstice 2025",
@@ -239,11 +240,13 @@ export const PROJECTS: Project[] = [
       "A table of county health rankings communicates nothing. A 3D map where you can literally see the height of the gap between the Mississippi Delta and coastal Massachusetts changes what the data means.",
     method:
       "County Health Rankings composite index. 3D extrusion by health score. Teal to yellow color scale. Shallow DOF macro render on dark surface.",
-    image: "/images/work/societal-health-metrics.webp",
+    image: "/images/work/societal-health-01.webp",
     images: [
-      "/images/work/societal-health-metrics.webp",
-      "/images/work/societal-health-metrics-2.webp",
-      "/images/work/societal-health-metrics-3.webp",
+      "/images/work/societal-health-01.webp",
+      "/images/work/societal-health-02.webp",
+      "/images/work/societal-health-03.webp",
+      "/images/work/societal-health-04.webp",
+      "/images/work/societal-health-05.webp",
     ],
     imageCrop: "center",
     /* Moved off the legacy /views/…?:embed=y share URL onto the canonical
@@ -274,12 +277,7 @@ export const PROJECTS: Project[] = [
       "Migration data is usually presented as numbers. Rendering it as movement — as something that has direction, momentum, and weight — restores the human reality the statistics compress.",
     method:
       "UNHCR forced displacement dataset 2023. Origin-destination flow lines. Particle density encodes volume. Great circle routing on globe projection.",
-    image: "/images/work/refugee-displacement.webp",
-    images: [
-      "/images/work/refugee-displacement.webp",
-      "/images/work/refugee-displacement-2.webp",
-      "/images/work/refugee-displacement-3.webp",
-    ],
+    image: "/images/work/refugee-displacement-01.webp",
     imageCrop: "center",
     source: "Data: UNHCR Global Trends 2023 · Method: OD flow visualization",
     tags: ["Humanitarian", "Migration", "UNHCR", "Flow Mapping", "Global"],
@@ -363,11 +361,10 @@ export const PROJECTS: Project[] = [
       "The near-total absence of doctoral concentration across the interior of the country — visible as a flat teal plain between the coasts — is the story no bar chart tells as clearly as geography does.",
     method:
       "ACS 2024 educational attainment by county aggregated to H3 hexbin resolution 5. Sequential color scale. Physically-based crystal rendering with subsurface scattering.",
-    image: "/images/work/hexbin_annotated_dark.webp",
+    image: "/images/work/hexbin-01.webp",
     images: [
-      "/images/work/hexbin_annotated_dark.webp",
-      "/images/work/hexbin-2.webp",
-      "/images/work/hexbin-3.webp",
+      "/images/work/hexbin-01.webp",
+      "/images/work/hexbin-02.webp",
     ],
     imageCrop: "center",
     /* Served from this site rather than a separate GitHub Pages deploy: it is
@@ -528,11 +525,15 @@ export const PROJECTS: Project[] = [
       "Emissions data is public, but almost nobody looks at it spatially. Once you map it, the corridor of concentrated industrial output along the Ohio River becomes impossible to unsee.",
     method:
       "EPA Greenhouse Gas Reporting Program and EIA facility datasets. Proportional-symbol mapping by reported CO2e. Compiled with Jon Sherwood and Blake Lytle, Clemson Center for Geospatial Technologies.",
-    image: "/images/work/facility-emissions.webp",
+    image: "/images/work/toxic-release-01.webp",
     images: [
-      "/images/work/facility-emissions.webp",
-      "/images/work/facility-emissions-2.webp",
-      "/images/work/facility-emissions-3.webp",
+      "/images/work/toxic-release-01.webp",
+      "/images/work/toxic-release-02.webp",
+      "/images/work/toxic-release-03.webp",
+      "/images/work/toxic-release-04.webp",
+      "/images/work/toxic-release-05.webp",
+      "/images/work/toxic-release-06.webp",
+      "/images/work/toxic-release-07.webp",
     ],
     link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/PowerPlantToxicity/Dashboard1",
     imageCrop: "center",
@@ -559,11 +560,15 @@ export const PROJECTS: Project[] = [
       "The chart doesn't need commentary. The color shift from blue to pink makes the trend load-bearing before you've read a single number.",
     method:
       "Monthly surface temperature anomaly relative to the 1961–1990 average. Source: Met Office Hadley Centre. Built in Tableau.",
-    image: "/images/work/temperature-analysis.webp",
+    image: "/images/work/global-temperatures-01.webp",
     images: [
-      "/images/work/temperature-analysis.webp",
-      "/images/work/temperature-analysis-2.webp",
-      "/images/work/temperature-analysis-3.webp",
+      "/images/work/global-temperatures-01.webp",
+      "/images/work/global-temperatures-02.webp",
+      "/images/work/global-temperatures-03.webp",
+      "/images/work/global-temperatures-04.webp",
+      "/images/work/global-temperatures-05.webp",
+      "/images/work/global-temperatures-06.webp",
+      "/images/work/global-temperatures-07.webp",
     ],
     link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/Globaltemperatures_15626828212560/GlobalTemperatures",
     imageCrop: "center",
@@ -649,11 +654,18 @@ export const PROJECTS: Project[] = [
       "A dot map of crime just shows where people are. A Gi* hotspot map shows where crime clusters beyond what population density alone would predict — a very different, much more useful, question.",
     method:
       "Hexbin spatial aggregation. Getis-Ord Gi* hotspot statistic. Built with R (sf, spdep) and GIS.",
-    image: "/images/work/fighting-crime-sf.webp",
+    image: "/images/work/sf-crime-01.webp",
     images: [
-      "/images/work/fighting-crime-sf.webp",
-      "/images/work/fighting-crime-sf-2.webp",
-      "/images/work/fighting-crime-sf-3.webp",
+      "/images/work/sf-crime-01.webp",
+      "/images/work/sf-crime-02.webp",
+      "/images/work/sf-crime-03.webp",
+      "/images/work/sf-crime-04.webp",
+      "/images/work/sf-crime-05.webp",
+      "/images/work/sf-crime-06.webp",
+      "/images/work/sf-crime-07.webp",
+      "/images/work/sf-crime-08.webp",
+      "/images/work/sf-crime-09.webp",
+      "/images/work/sf-crime-10.webp",
     ],
     imageCrop: "center",
     source: "Method: Getis-Ord Gi* · Built in R",
@@ -679,10 +691,10 @@ export const PROJECTS: Project[] = [
       "Individually, a storm track is a line on a map. Layered together across seasons, the tracks reveal the geography of risk — which coastlines get hit again and again.",
     method:
       "Historical Atlantic and Gulf storm track data. Multi-track path rendering by system, color-coded for legibility.",
-    image: "/images/work/storm-tracking.webp",
+    image: "/images/work/storm-tracking-01.webp",
     images: [
-      "/images/work/storm-tracking.webp",
-      "/images/work/storm-tracking-2.webp",
+      "/images/work/storm-tracking-01.webp",
+      "/images/work/storm-tracking-02.webp",
     ],
     imageCrop: "center",
     source: "Data: Historical Atlantic storm track records",
@@ -708,13 +720,15 @@ export const PROJECTS: Project[] = [
       "The damage from an earthquake doesn't come from how far the ground actually moves — it comes from how fast it accelerates. Mapping P-wave and S-wave travel distance in one-second intervals makes that distinction physical instead of abstract.",
     method:
       "Fault line overlay on high-resolution elevation data. 188 seismograph stations recording magnitude, depth, and timestamp. 3D aftershock spheres sized and colored by magnitude. Seismic wave travel-distance buffer rings.",
-    image: "/images/work/tremors-in-north-ridge.webp",
+    image: "/images/work/northridge-earthquake-01.webp",
     images: [
-      "/images/work/tremors-in-north-ridge.webp",
-      "/images/work/tremors-in-north-ridge-2.webp",
-      "/images/work/tremors-in-north-ridge-3.webp",
+      "/images/work/northridge-earthquake-01.webp",
+      "/images/work/northridge-earthquake-02.webp",
     ],
-    imageCrop: "center",
+    /* The subsurface aftershock cloud lives in the bottom third of this
+       render, and a centred crop cut it off at gallery aspect ratios.
+       object-position pulls the visible window down without a new asset. */
+    imageCrop: "center 78%",
     source: "Data: 1994 Northridge Earthquake seismograph network · 188 stations",
     tags: ["Earthquake", "Seismic", "California", "Hazards"],
     hero: true,
@@ -738,11 +752,12 @@ export const PROJECTS: Project[] = [
       "The full national dataset is honest but unreadable — 2,500 overlapping relationships. Filtering to one state's flows is what turns the data into a story anyone can follow.",
     method:
       "US Census Bureau 2023 state-to-state migration data. Bidirectional flow mapping via Flow Map City, an open-source in-browser mobility analytics tool.",
-    image: "/images/work/us-state-migration-flows.webp",
+    image: "/images/work/us-migration-flows-01.webp",
     images: [
-      "/images/work/us-state-migration-flows.webp",
-      "/images/work/us-state-migration-flows-2.webp",
-      "/images/work/us-state-migration-flows-3.webp",
+      "/images/work/us-migration-flows-01.webp",
+      "/images/work/us-migration-flows-02.webp",
+      "/images/work/us-migration-flows-03.webp",
+      "/images/work/us-migration-flows-04.webp",
     ],
     imageCrop: "center",
     /* Patrick's own published map. Was pointing at flowmap.city's homepage —
@@ -773,11 +788,13 @@ export const PROJECTS: Project[] = [
       "Fuel efficiency data is usually presented as a flat table. Breaking it out by class and cylinder count surfaces the comparisons that actually inform a purchase decision.",
     method:
       "Interactive dashboard summarizing vehicle fuel efficiency data by make, model, class, fuel type, and cylinder count.",
-    image: "/images/work/vehicle-fuel-efficiency.webp",
+    image: "/images/work/vehicle-fuel-efficiency-01.webp",
     images: [
-      "/images/work/vehicle-fuel-efficiency.webp",
-      "/images/work/vehicle-fuel-efficiency-2.webp",
-      "/images/work/vehicle-fuel-efficiency-3.webp",
+      "/images/work/vehicle-fuel-efficiency-01.webp",
+      "/images/work/vehicle-fuel-efficiency-02.webp",
+      "/images/work/vehicle-fuel-efficiency-03.webp",
+      "/images/work/vehicle-fuel-efficiency-04.webp",
+      "/images/work/vehicle-fuel-efficiency-05.webp",
     ],
     link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/Should-I-buy-the-hummer-or-the-prius_10_0_15760823655170/FuelEfficiencyComparision",
     imageCrop: "center",
@@ -1488,8 +1505,9 @@ export const PROJECTS: Project[] = [
       "Most terrain renders stop at the shoreline, which quietly implies the island ends there. Carrying the bathymetry outward puts the visible 14,000 feet in proportion to the seamount holding it up.",
     method:
       "Elevation and bathymetry rasters banded into discrete contour intervals, extruded as stacked layers and rendered in Blender. Full cartographic furniture — graticule with coordinates on the frame, north arrow, scale bar, and a hypsometric ramp spanning 100 to 14,000 m.",
-    image: "/images/work/hawaii-topo.webp",
+    image: "/images/work/hawaii-topo-3.webp",
     images: [
+      "/images/work/hawaii-topo-3.webp",
       "/images/work/hawaii-topo.webp",
       "/images/work/hawaii-topo-2.webp",
     ],

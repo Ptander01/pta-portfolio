@@ -90,24 +90,10 @@ export default function Contact() {
               </span>
             </h1>
           </FadeIn>
-          <FadeIn delay={0.6} duration={0.8}>
-            <p
-              className="body-lg max-w-xl"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Most of what is on this site started as a question somebody asked
-              me — usually a practical one, and more often than not about a map.
-              If something here made you curious, if you think I have got
-              something wrong, or if you have a problem that needs the kind of
-              work in the portfolio, write to me.
-            </p>
-          </FadeIn>
-
-          {/* The old site closed with a guest book rather than a contact form.
-              This block is the warmth that carried — the journal photo fronted
-              it, and the note explains why the photo is here at all. Slot:
-              public/images/me/journal.jpg, hidden until the file is dropped in
-              (see public/images/me/README.md). */}
+          {/* Patrick's own guest-book text from the previous site, restored
+              verbatim 2026-07-30. A version written for him sat here first and
+              he did not recognise the voice — his words, not an approximation
+              of them. Do not "improve" this copy. */}
           <div className="guest-book">
             <FadeIn delay={0.7} duration={0.8}>
               <Photo
@@ -116,7 +102,7 @@ export default function Contact() {
                 className="journal-photo"
               />
             </FadeIn>
-            <FadeIn delay={0.8} duration={0.8}>
+            <FadeIn delay={0.6} duration={0.8}>
               <div className="guest-book-note">
                 <span
                   className="label-mono block mb-3"
@@ -125,19 +111,13 @@ export default function Contact() {
                   THE GUEST BOOK
                 </span>
                 <p>
-                  The last version of this site ended with a guest book instead
-                  of a contact form — somewhere to sign your name rather than
-                  file a request. I liked that better than a form, and I have
-                  kept it in spirit: the note below reaches me directly, and so
-                  does the email.
+                  Thank you so much for stopping by! I am thrilled that you took
+                  the time for a brief glance into my life and work. I welcome
+                  all personal or business correspondence. Sign my guest book to
+                  let me know that you visited, ask any questions, or even
+                  provide feedback. I look forward to hearing from you!
                 </p>
-                <p>
-                  I answer everything that is not a pitch, though not always
-                  quickly — I write back properly or not at all.
-                </p>
-                <p className="guest-book-sign">
-                  &mdash; Patrick, Pendleton, South Carolina
-                </p>
+                <p className="guest-book-sign">&mdash; Patrick</p>
               </div>
             </FadeIn>
           </div>

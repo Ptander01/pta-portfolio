@@ -275,7 +275,7 @@ export default function Resume() {
               Resume
             </span>
             <h1 className="heading-xl" style={{ marginBottom: "1rem" }}>
-              Patrick J Anderson
+              Patrick T Anderson
             </h1>
             <p
               className="body-lg"

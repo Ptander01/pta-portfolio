@@ -69,7 +69,7 @@ export default function Home() {
               textWrap: "balance",
             }}
           >
-            Patrick J Anderson
+            Patrick T Anderson
           </h1>
 
           <p
