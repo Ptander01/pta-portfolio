@@ -480,14 +480,21 @@ export const PROJECTS: Project[] = [
       "Every chart has a name, a story, and a how-to-read explanation. Data without explanation is just decoration.",
     method:
       "React 19 + TypeScript + Vite. Custom 3D chart shapes with directional lighting. Three.js globe. All data client-side — no API calls, instant load.",
-    /* Was cinematic-hero.webp — which is the same 3D shot map picture that
-       piece 37 (mls-shotmap) already uses, re-encoded under a second path.
-       Two cards, one image. Swapped for the dashboard render, which is a
-       product-level view rather than one analysis, and so suits the parent
-       card now that attendance, budget, player stats and travel each have
-       their own piece. */
-    image: "/assets/projects/mls-dashboard/gallery-methods.webp",
+    /* Was cinematic-hero.webp — the same 3D shot map picture piece 37
+       (mls-shotmap) already uses, re-encoded under a second path, so two
+       cards showed one image.
+
+       The hero is now the titanium shield macro. This is a deliberate
+       exception to the "wordmarks, not logo files" rule in the Design
+       Decision Log, made by Patrick on 2026-07-30 after the conflict was
+       flagged: the MLS shield is a registered third-party mark, and using it
+       to front a card risks reading as an official league product rather
+       than independent analysis of published data. Recorded in the Decision
+       Log so it is not silently reversed. The dashboard renders follow it in
+       the crossfade, which is where the product itself is actually shown. */
+    image: "/images/work/mls-logo-macro.webp",
     images: [
+      "/images/work/mls-logo-macro.webp",
       "/assets/projects/mls-dashboard/gallery-methods.webp",
       "/assets/projects/mls-dashboard/gallery-rankings.webp",
       "/images/work/mls-home-away.webp",
