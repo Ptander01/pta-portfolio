@@ -749,7 +749,11 @@ export const PROJECTS: Project[] = [
       "/images/work/us-state-migration-flows-3.webp",
     ],
     imageCrop: "center",
-    link: "https://www.flowmap.city/",
+    /* Patrick's own published map. Was pointing at flowmap.city's homepage —
+       the tool, not the work. He supplied a LinkedIn shortlink; the resolved
+       destination is stored instead, since lnkd.in is a redirector that can
+       break and hides where it goes. */
+    link: "https://app.flowmap.city/public/4785c936-724f-483c-92df-487b7654dfaf",
     source: "Data: US Census Bureau 2023 · Tool: Flow Map City",
     tags: ["Migration", "Census", "Flow Mapping", "Mobility"],
     hero: false,
