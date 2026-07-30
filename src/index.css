@@ -1742,61 +1742,74 @@
 .citation-link:hover,
 .citation-link:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
 
-/* ══ Affiliations band (About) ══
-   Wordmarks, not logo files — see the note in About.tsx. Muted at rest and
-   brought up on hover so the row reads as one texture rather than a stack of
-   competing brands. Chrome/controls zone: glass + lip, no added grain. */
+/* ══ Affiliations wall (About) ══
+   One flat grid that fills the container: auto-fit means the row count
+   follows the viewport instead of the source order, so there are no
+   stranded short rows and it reflows on its own down to mobile.
+
+   Marks arrive trimmed to their ink with the white ground removed, so the
+   cell provides the only padding. They are held to a uniform optical size
+   by capping BOTH axes — a 9:1 wordmark like Booz Allen and a 0.8:1 seal
+   like SC DNR cannot be balanced by matching height alone.
+
+   Rendered as monochrome ink at rest so fourteen competing brands read as
+   one texture, resolving to true colour on hover. That is also what keeps
+   them legible in both themes without putting anything back in a box. */
 .affiliation-row {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: 0.5rem 1.25rem;
+  align-items: center;
+  width: 100%;
 }
 .affiliation {
-  font-family: "Cinzel", Georgia, serif;
-  font-size: 0.9375rem;
-  letter-spacing: 0.02em;
-  color: var(--text-muted);
-  padding: 12px 20px;
-  border-radius: 14px;
-  background: var(--pill-bg);
-  box-shadow: var(--lip-out);
-  transition: color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-}
-.affiliation:hover {
-  color: var(--heading-color);
-  box-shadow: var(--lip-hover);
-  transform: translateY(-2px);
-}
-/* Logo chips get a light surface. Every one of these marks is drawn
-   dark-on-white, so on the dark default chip they would read as smudges.
-   A warm off-white plate is how the row stays legible in both themes
-   without touching anyone's brand colours. */
-.affiliation:has(img) {
-  background: #f6f3ec;
-  padding: 12px 18px;
   display: flex;
   align-items: center;
-  min-height: 60px;
+  justify-content: center;
+  min-height: 104px;
+  padding: 1rem 1.25rem;
+  border-radius: 12px;
+  transition: background 0.25s ease;
 }
+.affiliation:hover { background: rgba(127, 127, 127, 0.07); }
+
 .affiliation img {
-  height: 30px;
+  max-height: 58px;
+  max-width: 100%;
   width: auto;
-  max-width: 200px;
+  height: auto;
   object-fit: contain;
   display: block;
-  /* Desaturated at rest so twelve competing brands read as one texture;
-     hover returns the real colour. */
-  filter: grayscale(1) opacity(0.72);
+  filter: grayscale(1) brightness(0.4) opacity(0.85);
   transition: filter 0.25s ease;
 }
-.affiliation:hover img { filter: grayscale(0) opacity(1); }
-/* Square-ish seals carry less ink per pixel than wide wordmarks — let them
-   run slightly taller so the row reads as evenly weighted. */
+[data-theme="dark"] .affiliation img {
+  filter: grayscale(1) brightness(0) invert(0.82);
+}
+.affiliation:hover img,
+[data-theme="dark"] .affiliation:hover img { filter: none; }
+
+/* Seals carry far less ink per pixel than a wordmark, so matching the cap
+   height across both would leave them looking shrunken. */
 .affiliation img[src*="sc-dnr"],
-.affiliation img[src*="usda"] { height: 40px; }
+.affiliation img[src*="usda"],
+.affiliation img[src*="asabe"],
+.affiliation img[src*="mdpi"] { max-height: 74px; }
+
+/* The two partners with no mark of their own. */
+.affiliation span {
+  font-family: "Cinzel", Georgia, serif;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  text-align: center;
+  text-wrap: balance;
+  color: var(--text-muted);
+  transition: color 0.25s ease;
+}
+.affiliation:hover span { color: var(--heading-color); }
 
 /* ══ Testimonials (About) ══ */
 .testimonial-grid {

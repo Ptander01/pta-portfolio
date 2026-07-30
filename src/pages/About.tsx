@@ -90,41 +90,33 @@ const skillGroups = [
 
 type Affiliation = { name: string; logo?: string };
 
-const affiliations: { group: string; items: Affiliation[] }[] = [
+/** One flat wall rather than three labelled groups — the grouping was doing
+ *  disclosure work the heading now does, and it left short rows stranded.
+ *  Order still runs employers → clients → venues so it reads sensibly, but
+ *  nothing announces the boundary.
+ *
+ *  Marks are trimmed to their ink with the white ground knocked out to
+ *  transparency, so nothing sits in a box. The two without a mark render as
+ *  wordmarks in the same cell. */
+const affiliations: Affiliation[] = [
+  { name: "Meta", logo: "/images/logos/meta.webp" },
+  // Employer of record for the Meta engagement.
+  { name: "Tundra Technical Solutions", logo: "/images/logos/tundra.webp" },
+  { name: "Booz Allen Hamilton", logo: "/images/logos/booz-allen.webp" },
+  { name: "Liberty IT Solutions", logo: "/images/logos/liberty-it.webp" },
+  { name: "Clemson University", logo: "/images/logos/clemson.webp" },
+  { name: "Veterans Health Administration", logo: "/images/logos/va.webp" },
+  { name: "VHA SCI/D National Program Office" },
+  { name: "South Carolina DNR", logo: "/images/logos/sc-dnr.webp" },
   {
-    group: "Employers",
-    items: [
-      { name: "Meta", logo: "/images/logos/meta.webp" },
-      // Employer of record for the Meta engagement.
-      { name: "Tundra Technical Solutions", logo: "/images/logos/tundra.webp" },
-      { name: "Booz Allen Hamilton", logo: "/images/logos/booz-allen.webp" },
-      { name: "Liberty IT Solutions", logo: "/images/logos/liberty-it.webp" },
-      { name: "Clemson University", logo: "/images/logos/clemson.webp" },
-    ],
+    name: "Clemson Cooperative Extension",
+    logo: "/images/logos/clemson-extension.webp",
   },
-  {
-    group: "Clients & Programs",
-    items: [
-      { name: "Veterans Health Administration", logo: "/images/logos/va.webp" },
-      // No mark of its own — stays a wordmark, which the row handles.
-      { name: "VHA SCI/D National Program Office" },
-      { name: "South Carolina DNR", logo: "/images/logos/sc-dnr.webp" },
-      {
-        name: "Clemson Cooperative Extension",
-        logo: "/images/logos/clemson-extension.webp",
-      },
-      { name: "USDA NRCS", logo: "/images/logos/usda-nrcs.webp" },
-      { name: "Town Creek Farms" },
-    ],
-  },
-  {
-    group: "Published & Presented",
-    items: [
-      { name: "ASCIP", logo: "/images/logos/ascip.webp" },
-      { name: "ASABE", logo: "/images/logos/asabe.webp" },
-      { name: "MDPI · Drones", logo: "/images/logos/mdpi.webp" },
-    ],
-  },
+  { name: "USDA NRCS", logo: "/images/logos/usda-nrcs.webp" },
+  { name: "Town Creek Farms" },
+  { name: "ASCIP", logo: "/images/logos/ascip.webp" },
+  { name: "ASABE", logo: "/images/logos/asabe.webp" },
+  { name: "MDPI · Drones", logo: "/images/logos/mdpi.webp" },
 ];
 
 /** Anonymized on Patrick's instruction: no names, no dates, no organization
@@ -804,37 +796,23 @@ export default function About() {
               className="heading-lg mb-10"
               style={{ color: "var(--heading-color)" }}
             >
-              Organizations and programs.
+              Clients, employers, research partners.
             </h2>
           </FadeIn>
 
-          {affiliations.map((g) => (
-            <FadeIn key={g.group} duration={0.6}>
-              <div style={{ marginBottom: "2.5rem" }}>
-                <div
-                  className="label-mono"
-                  style={{
-                    color: "var(--text-muted)",
-                    fontSize: "0.6rem",
-                    marginBottom: "1rem",
-                  }}
-                >
-                  {g.group}
-                </div>
-                <ul className="affiliation-row">
-                  {g.items.map((a) => (
-                    <li key={a.name} className="affiliation">
-                      {a.logo ? (
-                        <img src={a.logo} alt={a.name} loading="lazy" />
-                      ) : (
-                        <span>{a.name}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </FadeIn>
-          ))}
+          <FadeIn duration={0.6}>
+            <ul className="affiliation-row">
+              {affiliations.map((a) => (
+                <li key={a.name} className="affiliation">
+                  {a.logo ? (
+                    <img src={a.logo} alt={a.name} loading="lazy" />
+                  ) : (
+                    <span>{a.name}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </FadeIn>
         </div>
       </section>
 
