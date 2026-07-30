@@ -5,6 +5,7 @@
  */
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
+import Photo from "@/components/Photo";
 import { Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
 
@@ -98,6 +99,16 @@ export default function Contact() {
               I&rsquo;d love to hear from you.
             </p>
           </FadeIn>
+          {/* Slot: public/images/me/journal.jpg — the journal-and-candle shot
+              that fronted the old site's guest book. Hidden until dropped in. */}
+          <FadeIn delay={0.7} duration={0.8}>
+            <Photo
+              src="/images/me/journal.jpg"
+              alt="An open journal beside a candle at a window"
+              className="journal-photo"
+              style={{ marginTop: "2.25rem" }}
+            />
+          </FadeIn>
         </div>
       </section>
 
@@ -161,7 +172,11 @@ export default function Contact() {
                 {/* Resume Download CTA */}
                 <div className="mt-6">
                   <a
-                    href="/Patrick_Anderson_Resume.pdf"
+                    /* Was /Patrick_Anderson_Resume.pdf — underscores and no
+                       directory, which does not exist. Because vercel.json
+                       rewrites misses to /index.html, the download silently
+                       handed over an HTML file named .pdf rather than 404ing. */
+                    href="/resume/Patrick-Anderson-Resume.pdf"
                     download
                     className="neu-raised w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-display font-semibold text-sm transition-all"
                     style={{ color: "var(--cyan)" }}

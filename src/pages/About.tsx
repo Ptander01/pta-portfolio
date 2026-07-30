@@ -718,13 +718,19 @@ export default function About() {
               </p>
             </div>
           </FadeIn>
-          {/* Slot: public/images/me/desk.jpg */}
+          {/* Patrick's home office — his pick of the four he sent. Landscape,
+              so it runs wider than the portrait slots. */}
           <FadeIn duration={0.6}>
-            <Photo
-              src="/images/me/desk.jpg"
-              alt="A journal, a candle, and a window — where the writing happens"
-              className="desk-photo"
-            />
+            <figure className="office-figure">
+              <Photo
+                src="/images/me/office.webp"
+                alt="Patrick's home office — dual monitors on a dark navy wall, botanical prints above the desk"
+                className="office-photo"
+              />
+              <figcaption className="label-mono office-caption">
+                The home office in Pendleton — where most of this was built
+              </figcaption>
+            </figure>
           </FadeIn>
         </div>
       </section>

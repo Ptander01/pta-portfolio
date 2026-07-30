@@ -1905,12 +1905,33 @@
   border-radius: 4px;
   box-shadow: var(--glass-shadow);
 }
-.desk-photo {
+/* Landscape, so it runs wider than the portrait slots. The <figure> only
+   shows its caption when the image actually resolved — otherwise an empty
+   slot would leave a stranded caption behind. */
+.office-figure { margin: 2.25rem 0 0; }
+.office-photo {
   width: 100%;
-  max-width: 17rem;
+  max-width: 44rem;
   height: auto;
   display: block;
-  margin-top: 2rem;
+  border-radius: 4px;
+  box-shadow: var(--glass-shadow);
+}
+.office-caption {
+  display: none;
+  font-size: 0.55rem;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
+  margin-top: 0.6rem;
+}
+.office-figure:has(.office-photo) .office-caption { display: block; }
+
+/* Journal photo — Contact page, mirroring the old site's guest-book image. */
+.journal-photo {
+  width: 100%;
+  max-width: 18rem;
+  height: auto;
+  display: block;
   border-radius: 4px;
   box-shadow: var(--glass-shadow);
 }
