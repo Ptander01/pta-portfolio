@@ -249,7 +249,9 @@ const workflowSteps = [
 
 export default function About() {
   return (
-    <PageTransition>
+    // `rail-inset` pads this page's containers clear of the fixed rail —
+    // without it, content runs underneath the panel.
+    <PageTransition className="rail-inset">
       <SectionRail sections={railSections} />
 
       {/* ═══════ ABOUT HERO ═══════ */}

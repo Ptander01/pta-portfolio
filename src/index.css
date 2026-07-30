@@ -2226,6 +2226,15 @@
    Below 1200px it is display:none — a floating menu on a narrow screen
    either overlaps the prose or eats a third of the width. */
 .section-rail { display: none; }
+
+/* The rail is position:fixed, so it reserves no space and content ran
+   underneath it — the career timeline's last role sat entirely behind the
+   panel. Any page showing the rail carries `rail-inset`, which pads its
+   containers clear of it at the same breakpoint the rail appears. */
+@media (min-width: 1200px) {
+  .rail-inset .container { padding-right: 11.5rem; }
+}
+
 @media (min-width: 1200px) {
   .section-rail {
     display: block;

@@ -179,7 +179,11 @@ const ROW_H = 78;           // one lane: bar + the label stacked beyond it
 const LABEL_H = 60;
 const MILESTONE_BAND = 58;  // reserved above the axis for degrees
 const MILESTONE_INSET = 12; // clearance so degree labels clear the lane-0 bar
-const TICK_BAND = 30;       // reserved below the axis for year ticks
+const TICK_BAND = 46;       /* reserved below the axis for year ticks. Was 30,
+                               which is less than the block actually occupies —
+                               an 8px rule plus margin plus the label — so the
+                               first below-lane bar painted through the 2016,
+                               2018, 2020 and 2026 tick labels. */
 
 /**
  * Greedy interval packing — assign each role the first lane it does not
@@ -387,6 +391,10 @@ export default function CareerTimeline() {
             ? axisY - MILESTONE_BAND - row * ROW_H
             : axisY + TICK_BAND + row * ROW_H;
           const groupTop = isAbove ? barY - LABEL_H : barY;
+          /* Past ~78% there is not 170px of track left for a label to run
+             into, so anchor it to the bar's right end and set it
+             right-aligned. Meta starts at 91.67% and was overflowing. */
+          const nearRight = pct(entry.startYear) > 78;
 
           return (
             <div
@@ -427,9 +435,11 @@ export default function CareerTimeline() {
 
               {/* Label (company + role) */}
               <div
-                className="absolute left-0 transition-opacity duration-200"
+                className="absolute transition-opacity duration-200"
                 style={{
                   top: isAbove ? 0 : 12,
+                  ...(nearRight ? { right: 0 } : { left: 0 }),
+                  textAlign: nearRight ? "right" : "left",
                   maxWidth: 170,
                   opacity: isActive ? 1 : 0.75,
                 }}
