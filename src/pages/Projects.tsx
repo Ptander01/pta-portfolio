@@ -48,6 +48,8 @@ export interface Project {
   images?: string[];          // optional extra candidates — crossfade through on hover
   imageCrop: string;
   link?: string;              // external live demo
+  /** Long-form write-up published elsewhere — rendered as a second CTA. */
+  articleUrl?: string;
   /** Slug of an in-site case study at /work/:slug, where one exists.
    *  The /work index was retired — this is how those pages stay reachable. */
   caseStudy?: string;
@@ -403,7 +405,16 @@ export const PROJECTS: Project[] = [
     method:
       "ACS 2024 educational attainment by county aggregated to H3 hexbin resolution 5. Sequential color scale. Physically-based crystal rendering with subsurface scattering.",
     image: "/images/work/hexbin_annotated_dark.webp",
+    images: [
+      "/images/work/hexbin_annotated_dark.webp",
+      "/images/work/hexbin-2.webp",
+      "/images/work/hexbin-3.webp",
+    ],
     imageCrop: "center",
+    /* Served from this site rather than a separate GitHub Pages deploy: it is
+       one self-contained 117 KB file, and same-origin means it can be embedded
+       in the piece's own page instead of bouncing the visitor off-site. */
+    link: "/interactive/phd-hexbin-spring-map.html",
     source: "Data: ACS 2024 · H3 Hexbin R5 · PBR crystal render",
     tags: ["Census", "Hexbin", "H3", "Education", "Data Art"],
     hero: true,
@@ -427,7 +438,10 @@ export const PROJECTS: Project[] = [
       "Centrality metrics reveal that Redondo — not Messi — is the structural spine of Inter Miami's attack. The eye follows the star. The algorithm follows the passes.",
     method:
       "Betweenness centrality (Freeman 1977, Brandes 2001). Node size = centrality score. Edge luminance = pass volume. Glass refraction + neon plasma tube rendering.",
-    image: "/images/work/passing_network_3d_v6.png",
+    /* Imageless since S-9, and pointing at a PNG that never existed. The art
+       turned up in Favorite Images/MLS_Centrality — it is the passing-network
+       piece exactly, not the shot map that was mistaken for it earlier. */
+    image: "/images/work/passing-network.webp",
     imageCrop: "center",
     source: "Data: MLS Stats API 2025 · NetworkX · Betweenness centrality",
     tags: ["Network Analysis", "Graph Theory", "MLS", "Sports Analytics"],
@@ -508,9 +522,16 @@ export const PROJECTS: Project[] = [
     method:
       "React 19 + TypeScript + Vite. Custom 3D chart shapes with directional lighting. Three.js globe. All data client-side — no API calls, instant load.",
     image: "/assets/projects/mls-dashboard/cinematic-hero.webp",
+    images: [
+      "/assets/projects/mls-dashboard/cinematic-hero.webp",
+      "/images/work/mls-home-away.webp",
+    ],
     caseStudy: "mls-dashboard",
     imageCrop: "top",
     link: "https://mls-dashboard-one.vercel.app/",
+    /* The design-system write-up that accompanies this piece. */
+    articleUrl:
+      "https://www.linkedin.com/pulse/maturing-dashboard-design-system-patrick-anderson-rwhve/",
     source: "Stack: React 19 · Three.js · Recharts · TypeScript · Vercel",
     tags: ["React", "Three.js", "TypeScript", "Full-Stack", "Sports"],
     hero: false,

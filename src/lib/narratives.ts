@@ -94,6 +94,38 @@ export const narratives: Record<string, Narrative> = {
     ],
   },
 
+  hexbin: {
+    tone: "field-notes",
+    standfirst:
+      "Something I've always wanted in my interactive 3D web maps: spring-physics hover — columns near your cursor bounce up with real spring dynamics.",
+    paragraphs: [
+      "Does Esri offer that feature? No. So I built it.",
+      "I generated synthetic American Community Survey census data in a few seconds, aggregated it into hexagon bins, extruded those in 3D by count of observations per bin with MapLibre GL JS, and then got to spend the rest of the time playing with spring mechanics. It exports as a static HTML file with zero dependencies.",
+      "Was it practical? Probably not. But was it necessary? Yes.",
+      "The physics is a damped oscillator per hexagon — stiffness at 0.32, damping at 0.58, a hover height multiplier of 3.5, and an effect radius of 160 pixels. Higher stiffness makes it snappier; lower damping makes it bouncier.",
+      "The architecture underneath is a MapLibre GL JS fill-extrusion layer for the hex columns, per-frame height updates through feature-state, the spring engine running one oscillator per hex, and mouse proximity detection in screen space. MapLibre GL JS 4.7.1, CartoDB Dark Matter basemap tiles, vanilla JavaScript with no framework and no build step, and Float64Array typed arrays to hold 60fps.",
+      "I'd personally love to see this on a 3D correlation heat matrix next.",
+    ],
+    credits: [
+      {
+        label: "Note on the data",
+        lines: [
+          "The interactive build runs on synthetic ACS-style data generated for the demo, not a real census extract — the point of the exercise was the interaction, not the estimate. The static renders in this gallery are the real-data version.",
+        ],
+      },
+    ],
+  },
+
+  "mls-dashboard": {
+    tone: "formal",
+    standfirst:
+      "A full-stack MLS analytics dashboard, and the design system that grew out of maturing it.",
+    paragraphs: [
+      "The dashboard covers a season of Major League Soccer — squad and player analytics, salary against performance, home and away splits, shot quality, and passing structure — built as a single React application over shot-level and match-level event data.",
+      "The more interesting problem turned out not to be the analysis but the consistency. Once a dashboard has enough views, every new chart is a chance to invent a slightly different colour, spacing, or label convention. I wrote about how that got resolved into an actual design system in the article linked above.",
+    ],
+  },
+
   "urban-growth": {
     tone: "formal",
     standfirst:

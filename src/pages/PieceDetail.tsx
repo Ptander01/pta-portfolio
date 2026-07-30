@@ -123,6 +123,16 @@ export default function PieceDetail() {
                 View the interactive version ↗
               </a>
             )}
+            {project.articleUrl && (
+              <a
+                href={project.articleUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="piece-cta"
+              >
+                Read the write-up ↗
+              </a>
+            )}
             {project.caseStudy && (
               <Link href={`/work/${project.caseStudy}`} className="piece-cta">
                 Full case study →
