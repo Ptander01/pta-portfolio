@@ -127,45 +127,76 @@ const affiliations: { group: string; items: Affiliation[] }[] = [
   },
 ];
 
-/** Anonymized on Patrick's instruction: no names, no dates, no organizations
- *  beyond the program level. Verbatim fragments kept short and stripped of
- *  anything identifying — these came from private correspondence he chose to
- *  share in generalized form. */
+/** Anonymized on Patrick's instruction: no names, no dates, no organization
+ *  named below the program level. Sourced from private correspondence he
+ *  chose to share in generalized form.
+ *
+ *  Lightly edited for parallelism, with his agreement — emphatic caps and
+ *  exclamation runs normalized, colleagues' names and internal identifiers
+ *  removed, and each trimmed to the sentence that carries the point.
+ *  Attributions follow one shape (role · context) so the set reads as a
+ *  collection rather than a pile of forwarded email. What was NOT changed is
+ *  the substance: every claim below is one that someone actually made. */
 const testimonials = [
   {
     quote: "None of them have seen their data like that, ever.",
-    attribution: "Program leadership · federal health program office",
+    attribution: "Program leadership · on the home-care dashboard",
   },
   {
     quote:
-      "The information and data visualizations were extremely helpful to support the field in understanding their current home care throughput.",
-    attribution: "Following a national leadership summit presentation",
+      "I never would have thought about this before. Instead of individual addresses, designing it by groups in hot spots — this is really interesting.",
+    attribution: "Program office lead · on a change of analytical approach",
+  },
+  {
+    quote:
+      "The information and data visualizations were extremely helpful in supporting the field to understand their current home care throughput.",
+    attribution: "Program office lead · after a national leadership summit",
+  },
+  {
+    quote:
+      "You not only generated great questions from the Chiefs with what you presented, but expertly navigated answering them and discussing their suggestions.",
+    attribution: "Program office lead · after a national leadership summit",
   },
   {
     quote:
       "Your presentation style, tone and pace are very pleasant and effective. This is a non-teachable value-add.",
-    attribution: "Program office lead",
+    attribution: "Program office lead · on presenting to clinical leadership",
   },
   {
     quote:
-      "I'm not sure how we would go about expanding it without all this data you are generating.",
-    attribution: "On a national service-expansion goal",
+      "Having directionality for both the visits and the home care caseloads allows a lot of information to be communicated quickly.",
+    attribution: "Program leadership · on a flow visualization",
   },
   {
     quote:
-      "Will certainly incorporate some of this information in making our business case for expansion of home care services.",
-    attribution: "Clinical program lead",
+      "That is a really quick turn-around time. I appreciate all the work put into building these reports.",
+    attribution: "Clinical program lead · on delivery speed",
+  },
+  {
+    quote:
+      "I'm not sure how we would go about expanding home care without all this data you are generating.",
+    attribution: "Program leadership · on a national service-expansion goal",
+  },
+  {
+    quote:
+      "We will certainly incorporate some of this in making our business case for expansion of home care services.",
+    attribution: "Clinical program lead · on using the analysis in a proposal",
+  },
+  {
+    quote:
+      "It's great to get everyone on board with these products, so folks can think about how to integrate geospatial data into their work for the year.",
+    attribution: "Program office lead · after an all-team product briefing",
   },
   {
     quote:
       "Thank you for all your great work, support, and leadership of the geospatial data products and analyses.",
-    attribution: "National program office",
+    attribution: "National program office · on the engagement overall",
   },
   {
     /* Not a quotation. The source is an AI-generated summary of a private
-       1:1, so no one actually said these words in this order — putting them
-       in quote marks would misrepresent them. Written as a report of the
-       recognition instead, and `plain` drops the decorative quote marks. */
+       1:1, so no one said these words in this order — quote marks would
+       misrepresent it. Written as a report of the recognition instead, and
+       `plain` suppresses the decorative quotes. */
     plain: true,
     quote:
       "Recognized for building the foundation for more rigorous data analysis and modeling, and for marked improvement in organization, project management, communication, and quality of deliverables.",
