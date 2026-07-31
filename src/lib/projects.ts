@@ -66,32 +66,32 @@ export const DOMAINS: Record<
 > = {
   environmental: {
     label: "Environmental",
-    accent: "#00C897",
+    accent: "var(--domain-environmental)",
     org: "Clemson · NRCS",
   },
   healthcare: {
     label: "Healthcare",
-    accent: "#378ADD",
+    accent: "var(--domain-healthcare)",
     org: "Booz Allen · VHA · Personal",
   },
   infrastructure: {
     label: "AI Infrastructure",
-    accent: "#E8A030",
+    accent: "var(--domain-infrastructure)",
     org: "Meta · Personal",
   },
   sports: {
     label: "Sports",
-    accent: "#00E5FF",
+    accent: "var(--domain-sports)",
     org: "MLS · Personal",
   },
   civic: {
     label: "Civic & Public Data",
-    accent: "#E05555",
+    accent: "var(--domain-civic)",
     org: "Independent · Academic",
   },
   history: {
     label: "History & Religion",
-    accent: "#C9A84C",
+    accent: "var(--domain-history)",
     org: "Independent",
   },
 };
@@ -126,7 +126,7 @@ export const TECHS: Record<TechKey, string> = {
    PROJECT DATA
    Update `image` field once images are in public/images/work/
 ───────────────────────────────────────────────────────────── */
-export const PROJECTS: Project[] = [
+const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "ocean-currents",
     index: "01",
@@ -138,7 +138,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00E5FF",
     accentLabel: "Oceanography",
     description:
       "Ocean current velocity encoded as bioluminescent particle streams over a near-black bathymetric surface. The Gulf Stream's meander emerges as a ribbon of cold light — the physical reality of a 30-million cubic meter per second flow made visible in a single frame.",
@@ -169,7 +168,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#00C897",
     accentLabel: "Environmental",
     description:
       "Longitudinal terrain profile of the Chattooga River Gorge rendered on warm gold paper — elevation ranging 1,008 to 1,714 feet, canopy encoded by color. Framed as a museum artifact. The river that carved the boundary between South Carolina and Georgia, drawn as it would appear in a natural history archive.",
@@ -199,7 +197,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis", "analytics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#FF6B2B",
     accentLabel: "Agricultural GIS",
     description:
       "Solar resource mapped to parcel geometry at the Summer Solstice. Global irradiance rendered as false color thermal overlay — red at peak exposure, blue in shadow. Solar noon at 12:33, max altitude 78.8°, daylight duration 14:29 hours. Five years of farm energy audits distilled into a single image.",
@@ -233,7 +230,6 @@ export const PROJECTS: Project[] = [
     tech: ["statistics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#378ADD",
     accentLabel: "Public Health",
     description:
       "Composite societal health metrics rendered as layered wooden tile geography — county units extruded and colored by a composite index including healthcare access, educational attainment, economic mobility, and environmental quality. The coastal and urban core advantage becomes unmistakably physical.",
@@ -270,7 +266,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#4A90D9",
     accentLabel: "Humanitarian",
     description:
       "Forced migration flows rendered as directional particle streams across a near-black global basemap. Origin and destination encoded by flow intensity. The largest displacement crises — Syria, Ukraine, South Sudan, Afghanistan — emerge as the brightest corridors. Every particle is a person.",
@@ -300,7 +295,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis", "fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
       "Satellite time series monitoring of AI data center construction in the Northern Virginia corridor — the densest concentration of data center infrastructure on earth. Site footprint expansion tracked across quarterly imagery. Ground truth validation of reported capacity announcements against observable construction progress.",
@@ -332,7 +326,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
       "Parcel-level land acquisition analysis across the Northern Virginia AI infrastructure corridor. Site suitability scoring on transmission proximity, fiber availability, zoning class, and environmental constraints. The geography of where AI gets built — and why.",
@@ -378,7 +371,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00C897",
     accentLabel: "Census · Data Art",
     description:
       "Doctoral degree concentration rendered as self-illuminating crystal prisms over a CONUS hexbin surface. Teal aquamarine at baseline density, transitioning through pink and salmon to amber-gold at the highest concentrations. SF Bay Area, Boston, NYC Metro, DC/Beltway, and Research Triangle emerge as the dominant knowledge clusters.",
@@ -411,7 +403,6 @@ export const PROJECTS: Project[] = [
     tech: ["statistics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00E5FF",
     accentLabel: "Network Analysis",
     description:
       "Graph centrality rendered as physical material — glass nodes encode position by color and betweenness centrality by size, connected by neon plasma tube conduits whose luminance encodes pass frequency. Redondo sits at the topological center. Busquets dominates by degree. The network diagram as stadium-lit sculpture.",
@@ -424,6 +415,7 @@ export const PROJECTS: Project[] = [
        piece exactly, not the shot map that was mistaken for it earlier. */
     image: "/images/work/passing-network.webp",
     imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/?tab=pitch",
     source: "Data: MLS Stats API 2025 · NetworkX · Betweenness centrality",
     tags: ["Network Analysis", "Graph Theory", "MLS", "Sports Analytics"],
     hero: false,
@@ -439,7 +431,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "Temporal Analysis",
     description:
       "Season-long standing changes encoded as colored ribbon streams — each team a continuous thread moving through thirty-three matchweeks. The crossings are the story: momentum, collapse, late surges, early implosions. Rendered with shallow depth-of-field on paper texture, the ribbons read as physical objects.",
@@ -454,6 +445,7 @@ export const PROJECTS: Project[] = [
       "/images/work/rankflow-3.webp",
     ],
     imageCrop: "center",
+    link: "https://mls-dashboard-one.vercel.app/?tab=pulse",
     source: "Data: MLS Stats API 2025 · 30 Teams · 33 Matchweeks",
     tags: ["Rank Flow", "Temporal", "MLS", "Data Art", "Paper Texture"],
     hero: false,
@@ -469,7 +461,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#F5DEB3",
     accentLabel: "Personal",
     description:
       "A self-portrait as a data pipeline. The toroidal ring is built from real geospatial code — import geopandas, ST_Distance, spatial_join, model.fit — rendered as warm amber volumetric light. The figure is in profile, focused, calm. The data orbits him. He built it.",
@@ -494,7 +485,6 @@ export const PROJECTS: Project[] = [
     tech: ["fullstack", "analytics", "webgl3d"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#7F77DD",
     accentLabel: "Full-Stack",
     description:
       "Production-grade interactive analytics platform for Major League Soccer. Five analytical views: player performance radar, team salary allocation, attendance gravity, 3D travel arc map, and narrative season timeline. Built in six weeks with React 19, TypeScript, Three.js, and a custom 3D chart design system.",
@@ -542,7 +532,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "analytics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00C897",
     accentLabel: "Environmental",
     description:
       "Facility-level greenhouse gas and toxic release data from the EPA and EIA, mapped by industry group across the Midwest — chemicals, metals, natural gas, petroleum, and power generation. Point size encodes reported CO2e emissions; color encodes industry class.",
@@ -577,7 +566,6 @@ export const PROJECTS: Project[] = [
     tech: ["statistics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#4A90D9",
     accentLabel: "Climate",
     description:
       "Monthly global surface temperature, expressed as departure from the historical median, from 1850 to today. A heatmap by month sits above a scatter of every monthly anomaly — blue giving way to pink as the twentieth century closes.",
@@ -612,7 +600,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "remote-sensing", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#E8A030",
     accentLabel: "Cartography",
     description:
       "Washington's Mount Rainier rendered in 3D from USGS elevation data, 30-meter raster cells, explored across multiple symbology and color-scale treatments — the same terrain, restated in different visual languages.",
@@ -642,7 +629,6 @@ export const PROJECTS: Project[] = [
     tech: ["statistics", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#7F77DD",
     accentLabel: "Civic",
     description:
       "An exploration of how the presentation of information shapes its message, using 2015 UK general election data as the test case — voter turnout, vote share, and party by constituency, worked through both quantitative classification and qualitative area- and point-based thematic mapping.",
@@ -671,7 +657,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "statistics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#E05555",
     accentLabel: "Public Safety",
     description:
       "Hotspot analysis of reported crime across San Francisco, built entirely in R and GIS. Hexbin aggregation with Getis-Ord Gi* statistical confidence extruded into 3D — the Tenderloin and SOMA corridor rise as the city's clearest concentration of statistically significant hotspots.",
@@ -708,7 +693,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#FF6B2B",
     accentLabel: "Hazards",
     description:
       "Historical storm tracks across the Atlantic basin and Gulf of Mexico, each system rendered as a distinct colored thread against a dark basemap — the paths cross, tangle, and fan out from the Caribbean toward the U.S. coastline.",
@@ -737,7 +721,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#8B4040",
     accentLabel: "Seismic",
     description:
       "At 4:30 a.m. on January 17, 1994, a magnitude 6.7 earthquake struck the San Fernando Valley, causing an estimated $20 billion in damage in roughly 10 to 20 seconds of shaking. This project reconstructs the event spatially: how fault lines shaped the valley's topography, the density and depth of 188 recorded aftershocks, and how far seismic waves traveled from the epicenter in the first seconds of the quake.",
@@ -769,7 +752,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00C897",
     accentLabel: "Mobility",
     description:
       "2023 US Census Bureau state-to-state migration totals, rendered as bidirectional flow lines — over 2,500 state-to-state relationships, each flow and node color-coded and sized proportional to migrant count. Filtered down to a single state, the pattern becomes legible.",
@@ -805,7 +787,6 @@ export const PROJECTS: Project[] = [
     tech: ["statistics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#4A90D9",
     accentLabel: "Data Viz",
     description:
       "An interactive dashboard summarizing vehicle fuel efficiency by automotive make, model, vehicle class, fuel type, and engine cylinder count — built to make a dense dataset navigable by the comparisons people actually care about.",
@@ -838,7 +819,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#7FC8C0",
     accentLabel: "Urban GIS",
     description:
       "An R-based exploration of the age of buildings within a city, using INSPIRE building footprint data. Province data was downloaded via RSS feed, buffered and intersected with tmaptools, and rendered with the tmap statistical mapping package — each building colored by construction era.",
@@ -869,7 +849,6 @@ export const PROJECTS: Project[] = [
     tech: ["fullstack", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "AI Infrastructure",
     description:
       "A standalone node-graph visualization of the multi-agent AI orchestration used to build this entire portfolio ecosystem — 57 tasks, 2,580 messages, and 907 file attachments across 7 parallel projects over 20 days. Project nodes cluster into task nodes; a bottom timeline replays the full execution history.",
@@ -901,7 +880,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#00E5FF",
     accentLabel: "Remote Sensing",
     description:
       "A global exploration using SOLARGIS satellite data — land classification, air temperature, population density, and optimal photovoltaic tilt angle, layered across the planet at a scale where climate and infrastructure patterns become visible together.",
@@ -931,7 +909,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "fullstack", "analytics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00C897",
     accentLabel: "AI Infrastructure",
     description:
       "An interactive geospatial dashboard that harmonizes data from 9 vendor sources into a unified consensus view of AI data center construction — 120 campuses and 280 buildings, each cross-referenced across conflicting reports to a single reconciled record.",
@@ -963,7 +940,6 @@ export const PROJECTS: Project[] = [
     tech: ["webgl3d", "aiml", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#378ADD",
     accentLabel: "Medical Imaging",
     description:
       "Built from my own MRI — 192 sagittal T1 slices carried from raw DICOM through skull-stripping, deep-learning segmentation, and mesh generation into a WebGL app you can rotate, slice, and pull apart. Fourteen structure layers, seven subcortical nuclei meshed bilaterally, and a 31-region cortical map traced from my own sulci rather than an atlas average.",
@@ -989,7 +965,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "fullstack", "analytics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#FF6B6B",
     accentLabel: "Risk Intelligence",
     description:
       "A risk intelligence dashboard tracking 28 at-risk or failed data center projects across 11 US states — opposition factors, regulatory status, and residual investment potential for sites that stalled, were blocked, or were abandoned outright.",
@@ -1016,7 +991,6 @@ export const PROJECTS: Project[] = [
     tech: ["dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#C9A84C",
     accentLabel: "Data Storytelling",
     description:
       "The Bible's table of contents is not its timeline — Job sits mid-canon but belongs among the earliest events, and the prophets scatter across five centuries. A Sankey diagram routes all 66 books from their traditional canonical position into 14 chronological eras, making every crossing visible. Published in two Flourish views: a detailed book-level version and an aggregated era-level companion.",
@@ -1042,7 +1016,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz", "fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#6FA875",
     accentLabel: "Interactive Atlas",
     description:
       "A single-page atlas of the Gospels: a D3 map of the ministry years AD 29–33, a timeline whose events open through four progressive levels of detail, a Play mode that narrates the whole arc, a data-visualization page, and a scroll-driven Passion Week reader. The narrative geography of the Gospels, made navigable.",
@@ -1073,7 +1046,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "dataviz", "fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#5B8DD6",
     accentLabel: "Interactive Atlas",
     description:
       "An interactive map of Paul's missionary journeys across the Mediterranean, AD 46–67. Each journey toggles on and off as its own colored route, and a linked timeline aligns every epistle to the leg of the journey where it was written — the correspondence becomes a travelogue.",
@@ -1104,7 +1076,6 @@ export const PROJECTS: Project[] = [
     tech: ["dataviz", "fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#B8933F",
     accentLabel: "Interactive Timeline",
     description:
       "A zoomable timeline of the whole biblical narrative, ~4000 BC to AD 95: era navigation from Primeval History to the Early Church, parallel lanes for events, books, kings, prophets, and figures, and a world-context band that keeps Egypt, Assyria, Babylon, and Rome in frame. Genre-colored books, search, a brush minimap, and dark and parchment themes.",
@@ -1135,7 +1106,6 @@ export const PROJECTS: Project[] = [
     tech: ["fullstack"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#7C89C0",
     accentLabel: "Resource Library",
     description:
       "A growing library of 48+ interactive study guides — foundational series, first-principles studies, audio listen-mode companions, and three full interactive apps — each built as a self-contained HTML/JS page that runs anywhere with no build step, unified under one library index.",
@@ -1166,7 +1136,6 @@ export const PROJECTS: Project[] = [
     tech: ["dataviz", "analytics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#C77B3A",
     accentLabel: "Study App",
     description:
       "The capstone of an eighteen-month study: every observation of the Spirit across the canon, coded against ten characteristics and served five ways — a filterable characteristic matrix, a timeline, thematic lenses, an application view, and notes. Any row opens a verse-level deep dive.",
@@ -1197,7 +1166,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#8FA860",
     accentLabel: "Terrain Analysis",
     description:
       "The same farm surveyed twice over: a digital elevation model stripped to bare earth, and a digital surface model that keeps every tree, roofline, and equipment shed standing. Subtracting one from the other leaves canopy height — the vegetation structure of the property as a measurable layer rather than a look.",
@@ -1228,7 +1196,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "remote-sensing", "analytics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#E8A030",
     accentLabel: "Solar Modeling",
     description:
       "Direct illumination modeled hour by hour across a working farm, with the terrain casting its own shadows. Laid out as a grid, the day reads as a sequence — the north slope holding shade long after the ridge has been lit, and the low ground going dark first.",
@@ -1257,7 +1224,6 @@ export const PROJECTS: Project[] = [
     tech: ["remote-sensing", "gis", "webgl3d"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#5FBFD0",
     accentLabel: "Photogrammetry",
     description:
       "The step before every terrain product: fly the site, and turn overlapping photographs into a dense point cloud that can be classified, meshed, and measured. Shown deconstructed — orthomosaic, point cloud, classified ground, and derived surface pulled apart into the layers they actually are.",
@@ -1288,7 +1254,6 @@ export const PROJECTS: Project[] = [
     tech: ["dataviz", "statistics", "analytics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#FF4D6D",
     accentLabel: "Expected Goals",
     description:
       "All 21 shots from a 4–0 result, plotted as glass spheres sized by expected goal value with neon arcs tracing each shot's path toward goal. Inter Miami generated 1.03 xG from 13 shots and converted four of them — a scoreline well ahead of the underlying numbers.",
@@ -1304,7 +1269,7 @@ export const PROJECTS: Project[] = [
       "/images/work/mls-shotmap-4.webp",
     ],
     imageCrop: "center",
-    link: "https://mls-dashboard-one.vercel.app/",
+    link: "https://mls-dashboard-one.vercel.app/?tab=pitch",
     source: "Data: MLS shot events with xG · 3D pitch projection",
     tags: ["xG", "Sports Analytics", "3D", "Soccer", "MLS"],
     hero: false,
@@ -1320,7 +1285,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "statistics", "analytics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#378ADD",
     accentLabel: "Healthcare Access",
     description:
       "The VA's Spinal Cord Injury and Disorder system runs as 25 hub centers with spokes feeding them, and the question posed was who can actually reach it. Catchments were drawn around each center by road-network commute rather than straight-line distance, then travel burden was tracked across five fiscal years to find where Veterans were drifting further from their care.",
@@ -1349,7 +1313,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "statistics", "analytics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#5B8DD6",
     accentLabel: "Population Analysis",
     description:
       "Veteran population summarized to every hub territory and spoke across five fiscal years, then expressed in standard deviations so that real movement separates from ordinary year-to-year noise. Paired with the VA's rurality classification, the map shows which territories are growing, which are emptying, and how much of each system sits in rural and highly rural ZIP codes.",
@@ -1385,7 +1348,6 @@ export const PROJECTS: Project[] = [
     /* VA-internal dashboard — there is no public link and there never will be,
        so the Format facet must not promise one. Corrected 2026-07-30. */
     hasInteractive: false,
-    accent: "#E8A030",
     accentLabel: "Utilization Analytics",
     description:
       "The demand side of the same system: 2.5 million encounters across 142 facilities and roughly 37,000 patients, broken out by catchment, facility, and month. County-level coverage mapping shows where home-care appointments actually reach — and the long tail of counties with patients but almost no home-care contact.",
@@ -1414,7 +1376,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz", "statistics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00E5FF",
     accentLabel: "Attendance",
     description:
       "Two questions about the same turnstile count. One panel asks how each host city responds to a particular club visiting, measured against that city's own season average, so a positive bar means the visitor pulled a crowd the home side does not normally draw. The other reverses it, showing how one club's home attendance moves with each opponent it hosts.",
@@ -1428,7 +1389,7 @@ export const PROJECTS: Project[] = [
       "/images/work/mls-attendance-2.webp",
     ],
     imageCrop: "center",
-    link: "https://mls-dashboard-one.vercel.app/",
+    link: "https://mls-dashboard-one.vercel.app/?tab=attendance",
     source: "Data: MLS 2025 match analytics · Per-match attendance",
     tags: ["Attendance", "Sports Analytics", "Soccer", "MLS", "Dashboards"],
     hero: false,
@@ -1444,7 +1405,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#5FD38D",
     accentLabel: "Salary Analytics",
     description:
       "Every club's wage bill, stacked by the mechanism that paid it — Designated Players, who sit outside the cap, Targeted Allocation Money, which buys above the cap but below DP level, and regular roster players signed within it. Selecting a club breaks its spend down by position and lists its highest earners against goals and minutes.",
@@ -1454,7 +1414,7 @@ export const PROJECTS: Project[] = [
       "Published salary disclosure joined to roster and performance data, aggregated by club, mechanism, and position. Cost-per-goal is derived rather than published.",
     image: "/images/work/mls-budget.webp",
     imageCrop: "center",
-    link: "https://mls-dashboard-one.vercel.app/",
+    link: "https://mls-dashboard-one.vercel.app/?tab=budget",
     source: "Data: MLSPA 2025 salary disclosure · Roster and performance joins",
     tags: ["Salary Cap", "Sports Analytics", "Soccer", "MLS", "Dashboards"],
     hero: true,
@@ -1470,7 +1430,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz", "statistics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#00E5FF",
     accentLabel: "Player Metrics",
     description:
       "A scatter of every player in the league with both axes under the reader's control — shots against goals by default, but any pair of season metrics can be swapped in. Alongside it, the season's scoring leaders ranked by total. Players who sit far off the diagonal are the ones worth naming.",
@@ -1480,7 +1439,7 @@ export const PROJECTS: Project[] = [
       "Player-season aggregates with selectable X and Y encodings, so the same view supports a range of comparisons instead of hard-coding one.",
     image: "/images/work/mls-player-stats.webp",
     imageCrop: "center",
-    link: "https://mls-dashboard-one.vercel.app/",
+    link: "https://mls-dashboard-one.vercel.app/?tab=players",
     source: "Data: MLS player-season aggregates · Shots, goals, minutes",
     tags: ["Player Analytics", "Scatter", "Soccer", "MLS", "Dashboards"],
     hero: false,
@@ -1496,7 +1455,6 @@ export const PROJECTS: Project[] = [
     tech: ["analytics", "dataviz", "gis", "statistics"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "Travel Burden",
     description:
       "Total away miles travelled against the points-per-game a club loses on the road, one marker per team, sized by the size of that drop. A league spread across a continent asks some clubs to fly a great deal further than others, and this view tests whether that shows up in results.",
@@ -1506,7 +1464,7 @@ export const PROJECTS: Project[] = [
       "Season fixture lists converted to great-circle distances between home venues, summed per club, and paired with the difference between home and away points-per-game.",
     image: "/images/work/mls-travel.webp",
     imageCrop: "center",
-    link: "https://mls-dashboard-one.vercel.app/",
+    link: "https://mls-dashboard-one.vercel.app/?tab=travel",
     source: "Data: MLS fixture list · Venue coordinates · Home/away PPG",
     tags: ["Travel", "Sports Analytics", "Geography", "MLS", "Dashboards"],
     hero: false,
@@ -1522,7 +1480,6 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "webgl3d", "dataviz"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#00C897",
     accentLabel: "Terrain Rendering",
     description:
       "Hawai'i Island built as physical contour terraces, each elevation band cut and stacked so the volcanoes read as what they are — the exposed top of a much larger structure. Mauna Kea and Mauna Loa carry the interval bunching that makes their slopes legible; bathymetry continues the surface out past the coastline instead of stopping at it.",
@@ -1552,14 +1509,13 @@ export const PROJECTS: Project[] = [
     tech: ["dataviz", "analytics", "gis"],
     hasStatic: true,
     hasInteractive: true,
-    accent: "#E8A030",
     accentLabel: "Seismicity",
     description:
       "A hundred and fourteen years of recorded earthquakes, read three ways at once: where they happened, how magnitude relates to depth, and how the count changes over time. Plotted globally, the events draw the plate boundaries without anyone having to add them as a layer.",
     insight:
       "The rising count through the twentieth century is mostly a record of instrumentation, not of geology. Occurrence data measures how well we were listening as much as how often the ground moved.",
     method:
-      "Global earthquake catalogue filtered by magnitude, mapped by epicentre with depth and magnitude encoded together, and aggregated into an annual frequency series.",
+      "Global earthquake catalog filtered by magnitude, mapped by epicenter with depth and magnitude encoded together, and aggregated into an annual frequency series.",
     image: "/images/work/earthquakes-global.webp",
     images: [
       "/images/work/earthquakes-global.webp",
@@ -1567,7 +1523,7 @@ export const PROJECTS: Project[] = [
     ],
     imageCrop: "center",
     link: "https://public.tableau.com/app/profile/patrick.anderson8240/viz/Earthquakes_15628627194090/Dashboard1",
-    source: "Data: Global earthquake catalogue, 1900–2014 · Magnitude and depth",
+    source: "Data: Global earthquake catalog, 1900–2014 · Magnitude and depth",
     tags: ["Seismicity", "Tableau", "Global", "Time Series", "Hazard"],
     hero: false,
   },
@@ -1582,10 +1538,9 @@ export const PROJECTS: Project[] = [
     tech: ["gis", "remote-sensing", "analytics"],
     hasStatic: true,
     hasInteractive: false,
-    accent: "#E8A030",
     accentLabel: "Solar Resource",
     description:
-      "The same wedge of working farmland, modelled at the four points of the year where solar geometry differs most — spring equinox, summer solstice, autumn equinox, winter solstice — and then summed into an annual resource surface. Held to one colour ramp across all four so the seasons can actually be compared rather than each being stretched to its own extremes.",
+      "The same wedge of working farmland, modelled at the four points of the year where solar geometry differs most — spring equinox, summer solstice, autumn equinox, winter solstice — and then summed into an annual resource surface. Held to one color ramp across all four so the seasons can actually be compared rather than each being stretched to its own extremes.",
     insight:
       "A single annual number tells a grower almost nothing. The useful question is which parts of a field stay lit in December, because that is the constraint that decides where a panel or a crop can go.",
     method:
@@ -1607,3 +1562,18 @@ export const PROJECTS: Project[] = [
     hero: true,
   },
 ];
+
+/* Accent is derived, never authored.
+ *
+ * It used to be a per-piece field, and 33 of the 47 had drifted off their
+ * domain's colour: ocean-currents (environmental) was painted the sports
+ * cyan, hexbin (civic) the environmental green, mls-dashboard a purple that
+ * belongs to no domain at all. The Decision Log's reason for keeping the 2px
+ * bar — "that color encodes domain and would otherwise be lost" — was
+ * therefore not true of the data. Deriving it here makes the claim true and
+ * makes the drift impossible to reintroduce, the same way the career
+ * timeline generates its legend from the map that paints the rails. */
+export const PROJECTS: Project[] = RAW_PROJECTS.map((p) => ({
+  ...p,
+  accent: DOMAINS[p.domain].accent,
+}));
