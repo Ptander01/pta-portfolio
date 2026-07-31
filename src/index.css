@@ -2414,6 +2414,17 @@
   .affiliation:hover { transform: none; }
 }
 
+/* ══ Card eyebrow — <Domain> · <Subtype> ══
+   The subtype is stepped back so the domain, which is the half that matches
+   the Industry filter, leads. Below 768px the pair stacks: joined on one line
+   the labels wrapped mid-phrase on nearly every card at 375px. */
+.piece-label-sub { opacity: 0.55; }
+
+@media (max-width: 768px) {
+  .piece-label-sep { display: none; }
+  .piece-label-sub { display: block; }
+}
+
 /* ══ Piece detail (/projects/:id) ══ */
 .piece-cta {
   font-family: "Space Mono", monospace;

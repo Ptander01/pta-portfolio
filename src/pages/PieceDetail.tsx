@@ -76,7 +76,7 @@ export default function PieceDetail() {
               marginBottom: "0.75rem",
             }}
           >
-            {domain.label} · {project.accentLabel} · PTA {project.index}
+            {domain.label} · {project.subtype} · PTA {project.index}
           </div>
 
           <h1
