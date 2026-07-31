@@ -270,8 +270,8 @@ function pct(year: number) {
 }
 
 /* Vertical rhythm, in px, measured from the axis outward. */
-const ROW_H = 78;           // one lane: bar + the label stacked beyond it
-const LABEL_H = 60;
+const ROW_H = 68;           // one lane: bar + the label stacked beyond it
+const LABEL_H = 50;
 const MILESTONE_BAND = 58;  // reserved above the axis for degrees
 const MILESTONE_INSET = 12; // clearance so degree labels clear the lane-0 bar
 const TICK_BAND = 46;       /* reserved below the axis for year ticks. Was 30,
@@ -331,6 +331,41 @@ export default function CareerTimeline() {
   const milestones = entries.filter((e) => e.startYear === e.endYear);
   const roles = entries.filter((e) => e.startYear !== e.endYear);
   const laneOf = useMemo(() => packLanes(roles), []);
+
+
+  /* How much room each label actually has.
+     The label lives inside its bar's group, whose width is the bar's span —
+     8.33% for Meta — so a maxWidth alone cannot help: the parent is the
+     constraint. Meta was being squeezed into 88px and wrapping to eight
+     lines. Expressing the width as a percentage OF THE GROUP lets it
+     overflow the bar and stay responsive, because group width is itself a
+     percentage of the track: a label at (avail / barSpan) × 100 percent of
+     the group is exactly `avail` percent of the track.
+
+     Room is measured to the neighbouring entry IN THE SAME LANE, since
+     lane packing guarantees those are the only labels it can collide with —
+     other lanes sit in their own vertical bands. */
+  const laneRoom = useMemo(() => {
+    const byLane = new Map<number, TimelineEntry[]>();
+    roles.forEach((r) => {
+      const l = laneOf.get(r.id) ?? 0;
+      if (!byLane.has(l)) byLane.set(l, []);
+      byLane.get(l)!.push(r);
+    });
+    const room = new Map<string, { rightPct: number; leftPct: number }>();
+    byLane.forEach((list) => {
+      list.sort((a, b) => a.startYear - b.startYear);
+      list.forEach((r, i) => {
+        const next = list[i + 1];
+        const prev = list[i - 1];
+        room.set(r.id, {
+          rightPct: (next ? pct(next.startYear) : 100) - pct(r.startYear),
+          leftPct: pct(r.endYear) - (prev ? pct(prev.endYear) : 0),
+        });
+      });
+    });
+    return room;
+  }, [laneOf]);
 
   const laneCount = Math.max(...Array.from(laneOf.values()), 0) + 1;
   const aboveRows = Math.ceil(laneCount / 2); // lanes 0, 2, 4… sit above
@@ -487,8 +522,13 @@ export default function CareerTimeline() {
             bars would mean either starting the axis in 2010 for a four-year
             B.S. or dropping another interval into 2018–2020, already the
             most congested stretch. Patrick's call, 2026-07-30. */}
-        {milestones.map((entry) => {
+        {milestones.map((entry, mi) => {
           const isActive = active === entry.id;
+          /* Same reasoning as the role labels, simpler case: a degree marker
+             has no span, so its room runs to the next degree or the edge. */
+          const nextMile = milestones[mi + 1];
+          const mileRoom =
+            (nextMile ? pct(nextMile.startYear) : 100) - pct(entry.startYear);
           return (
             <div
               key={entry.id}
@@ -496,7 +536,9 @@ export default function CareerTimeline() {
               style={{
                 left: `${pct(entry.startYear)}%`,
                 top: axisY - MILESTONE_BAND + MILESTONE_INSET,
-                width: 150,
+                width: `${mileRoom - 3}%`,
+                minWidth: 150,
+                maxWidth: 290,
                 marginLeft: -6,
               }}
               onMouseEnter={() => setActive(entry.id)}
@@ -549,6 +591,7 @@ export default function CareerTimeline() {
              into, so anchor it to the bar's right end and set it
              right-aligned. Meta starts at 91.67% and was overflowing. */
           const nearRight = pct(entry.startYear) > 78;
+          const barSpan = pct(entry.endYear) - pct(entry.startYear);
 
           return (
             <div
@@ -594,7 +637,17 @@ export default function CareerTimeline() {
                   top: isAbove ? 0 : 12,
                   ...(nearRight ? { right: 0 } : { left: 0 }),
                   textAlign: nearRight ? "right" : "left",
-                  maxWidth: 170,
+                  /* % of the group, which resolves to `avail` % of the track.
+                     Capped in px so a role with half the axis to itself does
+                     not get a 500px measure — that reads as a paragraph, not
+                     a label. */
+                  width: `${(
+                    ((nearRight
+                      ? laneRoom.get(entry.id)?.leftPct
+                      : laneRoom.get(entry.id)?.rightPct) ?? barSpan) / barSpan
+                  ) * 100 - 6}%`,
+                  minWidth: 150,
+                  maxWidth: 290,
                   opacity: isActive ? 1 : 0.75,
                 }}
               >
