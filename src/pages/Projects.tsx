@@ -86,6 +86,31 @@ function AccentRule({ color }: { color: string }) {
   );
 }
 
+/** Card eyebrow — `<Domain> · <Subtype>`.
+ *
+ *  The domain half is the Industry facet verbatim, so what a card says and
+ *  what the filter offers are finally the same vocabulary; previously the card
+ *  showed one of 41 freeform strings that the six filter options never
+ *  mentioned. It leads, in the accent, because it is the half a reader can act
+ *  on. The subtype is stepped back — it adds specificity, it does not compete.
+ *
+ *  Rendered inside each layout's existing eyebrow span, so it inherits that
+ *  layout's colour and size rather than imposing its own. */
+function PieceLabel({ project }: { project: Project }) {
+  return (
+    <>
+      {DOMAINS[project.domain].label}
+      {/* Below 768px the two halves stack onto their own lines and the
+          separator is dropped. Joined, 34 of the 37 labels wrapped to two or
+          three lines at 375px — a 9px uppercase micro-label breaking mid-phrase
+          reads as broken rather than as a line break. The rule lives in
+          index.css because no media query can reach an inline style. */}
+      <span className="piece-label-sep" aria-hidden="true"> · </span>
+      <span className="piece-label-sub">{project.subtype}</span>
+    </>
+  );
+}
+
 /** Image frame with accent bar and fallback placeholder.
  *  `priority` marks the first card in a layout — that one loads eagerly so
  *  the above-the-fold image isn't deferred; every other card lazy-loads. */
@@ -337,7 +362,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
                 }}
               >
                 <AccentRule color={p.accent} />
-                {p.accentLabel}
+                <PieceLabel project={p} />
               </div>
               <h2
                 style={{
@@ -454,7 +479,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                 }}
               >
                 <AccentRule color={p.accent} />
-                {p.accentLabel}
+                <PieceLabel project={p} />
               </div>
 
               {/* Editorial headline */}
@@ -594,7 +619,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                   }}
                 >
                   <AccentRule color={section.hero.accent} />
-                  {section.hero.accentLabel}
+                  <PieceLabel project={section.hero} />
                 </span>
                 <span
                   style={{
@@ -713,7 +738,7 @@ function SupportingGrid({ projects }: { projects: Project[] }) {
               }}
             >
               <AccentRule color={p.accent} />
-              {p.accentLabel}
+              <PieceLabel project={p} />
             </div>
             <div
               style={{
@@ -862,7 +887,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                           marginBottom: 6,
                         }}
                       >
-                        {p.accentLabel}
+                        <PieceLabel project={p} />
                       </div>
                       <div
                         style={{
