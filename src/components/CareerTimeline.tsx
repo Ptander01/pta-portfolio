@@ -40,7 +40,7 @@ export const entries: TimelineEntry[] = [
     org: "Clemson University · Minor in Business Management · GPA 3.6/4.0",
     color: "var(--emerald)",
     description:
-      "A wholistic agribusiness education — soil science, erosion control, mobile power, hydraulics, fabrication, livestock housing, economics, and precision agriculture. The starting point for a career built on solving tangible, real-world problems.",
+      "A holistic agribusiness education — soil science, erosion control, mobile power, hydraulics, fabrication, livestock housing, economics, and precision agriculture. The starting point for a career built on solving tangible, real-world problems.",
     skills: ["Agricultural Science", "Environmental Physics", "Business"],
     anchor: "#soil-to-server",
   },
@@ -145,9 +145,15 @@ export const entries: TimelineEntry[] = [
   },
   {
     id: "meta",
+    /* Positioning stays on whole years. The engagement actually ran Jun 2025 –
+       Apr 2026, but narrowing the bar to its true ~10 months squeezes the label
+       box that `b6ace9f` had to widen, and shifting TIMELINE_END to fit a
+       fractional 2026.25 would move every verified axis tick off
+       8.33/16.67/33.33/58.33/91.67. The `label` carries the precision instead —
+       it is what the reader actually sees, here and on /resume. */
     startYear: 2025,
     endYear: 2026,
-    label: "2025–2026",
+    label: "Jun 2025 – Apr 2026",
     role: "Lead Spatial Data Scientist / Remote Sensing Researcher",
     org: "Meta (AI Research Labs)",
     color: "var(--coral)",
@@ -184,7 +190,7 @@ type Scheme = "minimal" | "org" | "type" | "sector";
 
 const SCHEMES: { id: Scheme; label: string }[] = [
   { id: "minimal", label: "None" },
-  { id: "org", label: "Organisation" },
+  { id: "org", label: "Organization" },
   { id: "type", label: "Type" },
   { id: "sector", label: "Sector" },
 ];
@@ -376,7 +382,7 @@ export default function CareerTimeline() {
   const symbology = (
     <div className="ct-symbology">
       <span className="label-mono ct-symbology-label">Symbology</span>
-      <div className="ct-symbology-pills" role="group" aria-label="Colour scheme">
+      <div className="ct-symbology-pills" role="group" aria-label="Color scheme">
         {SCHEMES.map((sc) => (
           <button
             key={sc.id}
