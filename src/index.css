@@ -202,7 +202,11 @@
   --sidebar-ring: #0099cc;
 
   /* Semantic accent tokens */
-  --cyan: #0099cc;
+  /* Was #0099cc, which measured 2.65:1 against the parchment ground at the
+     10px the micro-labels actually use — the whole `label-mono` language sits
+     on this token, so it failed everywhere at once rather than in one place.
+     Same hue and saturation, darkened until it clears 4.5:1. */
+  --cyan: #006f94;
   --amber: #e6952e;
   --emerald: #00a67d;
   --coral: #e05555;
@@ -588,6 +592,68 @@
   --border-subtle:   rgba(100, 160, 220, 0.08);
   --border-mid:      rgba(100, 160, 220, 0.15);
   --border-strong:   rgba(100, 160, 220, 0.28);
+}
+
+/* ── Channel tokens for the gallery ──────────────────────────────────────
+   Projects.tsx and PieceDetail.tsx were written entirely against a dark
+   ground: ~50 literal colours, most of them one foreground (#E8F0FE) stepped
+   through a dozen alphas to build the type hierarchy. Mapping each alpha onto
+   the nearest semantic token (--text-muted and friends) would have collapsed
+   that hierarchy, so the channel is a variable instead and every alpha is
+   preserved verbatim: rgb(var(--fg-rgb) / 0.4).
+
+   Consequence worth knowing: dark mode is unchanged to the pixel — the dark
+   triplets below are exactly the literals they replace. Only the light values
+   are new. */
+:root,
+[data-theme="dark"] {
+  --fg-rgb: 232 240 254;        /* was #E8F0FE */
+  --hairline-rgb: 100 160 220;  /* was the border-token blue */
+  --accent-rgb: 0 229 255;      /* was #00E5FF */
+  /* The gallery sits a step darker than the rest of the site — #070A0E against
+     the #121220 --page-bg. That reads as deliberate (the cinematic layouts want
+     a darker room than a text page), so it keeps its own token rather than
+     being flattened into --page-bg when the literal came out. */
+  --gallery-bg: #070A0E;
+}
+[data-theme="light"] {
+  --fg-rgb: 42 36 26;           /* matches --heading-color #2a241a */
+  --hairline-rgb: 138 123 100;  /* matches --rail-neutral light */
+  --accent-rgb: 0 111 148;      /* keep in step with --cyan light #006f94 */
+  --gallery-bg: var(--page-bg); /* no equivalent "darker room" in parchment */
+}
+
+/* ── Domain accents ──────────────────────────────────────────────────────
+   One colour per domain, and the ONLY place a domain colour is written. The
+   gallery binds to these via DOMAINS in lib/projects.ts, so a card, its
+   filter chip and its legend cannot disagree — the same argument the career
+   timeline's symbology map settled.
+
+   The light values are not the dark ones lightened. The dark set was built
+   for a near-black room and lands at 1.3–1.9:1 on parchment (sports cyan is
+   the worst, at 1.33:1 — effectively invisible). These were solved for two
+   constraints at once: at least 4.5:1 on parchment, and enough mutual
+   separation to stay tellable apart. The naive darkening collapsed amber and
+   gold to 31 RGB units of each other — the same false grouping the timeline
+   symbology fix had to catch — so hue is allowed to shift up to 12° and the
+   set is held above 77. Contrast is also capped at ~7:1 so they stay colours
+   rather than sinking into near-black. */
+:root,
+[data-theme="dark"] {
+  --domain-environmental: #00C897;
+  --domain-healthcare:    #378ADD;
+  --domain-infrastructure:#E8A030;
+  --domain-sports:        #00E5FF;
+  --domain-civic:         #E05555;
+  --domain-history:       #C9A84C;
+}
+[data-theme="light"] {
+  --domain-environmental: #097143;  /* 5.26:1 */
+  --domain-healthcare:    #1152D4;  /* 5.71:1 */
+  --domain-infrastructure:#A55603;  /* 4.62:1 */
+  --domain-sports:        #00778F;  /* 4.50:1 */
+  --domain-civic:         #B11031;  /* 6.08:1 */
+  --domain-history:       #595621;  /* 6.54:1 */
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2355,19 +2421,19 @@
   letter-spacing: 0.16em;
   text-transform: uppercase;
   text-decoration: none;
-  color: rgba(232, 240, 254, 0.55);
-  border-bottom: 1px solid rgba(232, 240, 254, 0.22);
+  color: rgb(var(--fg-rgb) / 0.55);
+  border-bottom: 1px solid rgb(var(--fg-rgb) / 0.22);
   padding-bottom: 3px;
   transition: color 0.2s ease, border-color 0.2s ease;
   cursor: pointer;
 }
-.piece-cta:hover { color: #e8f0fe; border-color: currentColor; }
+.piece-cta:hover { color: rgb(var(--fg-rgb)); border-color: currentColor; }
 
 .piece-body {
   font-family: "Lora", Georgia, serif;
   font-size: 0.9375rem;
   line-height: 1.75;
-  color: rgba(232, 240, 254, 0.6);
+  color: rgb(var(--fg-rgb) / 0.6);
   margin: 0 0 0.75rem;
 }
 .piece-body--tight { font-size: 0.8125rem; line-height: 1.65; }
@@ -2377,8 +2443,8 @@
   font-size: 0.5rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(232, 240, 254, 0.4);
-  border: 0.5px solid rgba(100, 160, 220, 0.16);
+  color: rgb(var(--fg-rgb) / 0.4);
+  border: 0.5px solid rgb(var(--hairline-rgb) / 0.16);
   border-radius: 3px;
   padding: 5px 10px;
 }
