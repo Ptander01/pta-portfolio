@@ -165,6 +165,101 @@ export const entries: TimelineEntry[] = [
   },
 ];
 
+
+/* ── Symbology ──────────────────────────────────────────────────────────
+   Colour on this timeline was doing something it should not: `--emerald`
+   covered both degrees *and* the CAFLS research post, and `--cyan` covered
+   both the freelance drone work and five years at Booz Allen on the VA
+   contract. Two false groupings, the second worse than the first, since
+   those roles have nothing to do with each other.
+
+   Rather than pick one fixed encoding, the reader chooses. The default says
+   nothing at all — one neutral rail, position and label carrying everything
+   — and each scheme after it makes a specific, defensible claim. Shape is
+   independent of all of this: a diamond is always a credential and a bar is
+   always a role, whichever scheme is showing.
+
+   Patrick's idea, and the right one; "symbology" is his word for it. */
+type Scheme = "minimal" | "org" | "type" | "sector";
+
+const SCHEMES: { id: Scheme; label: string }[] = [
+  { id: "minimal", label: "None" },
+  { id: "org", label: "Organisation" },
+  { id: "type", label: "Type" },
+  { id: "sector", label: "Sector" },
+];
+
+/** id → group, per scheme. Kept as data so the legend and the rails can
+ *  never disagree about what a colour means. */
+const GROUPS: Record<Exclude<Scheme, "minimal">, Record<string, string>> = {
+  org: {
+    "clemson-bs": "Clemson",
+    extension: "Clemson",
+    "clemson-cafls": "Clemson",
+    "clemson-ms": "Clemson",
+    "freelance-uav": "Independent",
+    "booz-allen": "Booz Allen · VA",
+    meta: "Meta",
+  },
+  type: {
+    "clemson-bs": "Education",
+    "clemson-ms": "Education",
+    extension: "Role",
+    "clemson-cafls": "Role",
+    "freelance-uav": "Role",
+    "booz-allen": "Role",
+    meta: "Role",
+  },
+  sector: {
+    "clemson-bs": "Academia",
+    "clemson-ms": "Academia",
+    "clemson-cafls": "Academia",
+    extension: "Applied science",
+    "freelance-uav": "Independent",
+    "booz-allen": "Government",
+    meta: "Industry",
+  },
+};
+
+/** group → colour. Every scheme draws from the four existing accents plus
+ *  one gold, rather than inventing a hue per entry. */
+const GROUP_COLOR: Record<string, string> = {
+  Clemson: "var(--emerald)",
+  Independent: "var(--amber)",
+  "Booz Allen · VA": "var(--cyan)",
+  Meta: "var(--coral)",
+  Education: "var(--amber)",
+  Role: "var(--cyan)",
+  Academia: "var(--emerald)",
+  "Applied science": "var(--gold)",
+  Government: "var(--cyan)",
+  Industry: "var(--coral)",
+};
+
+function groupOf(scheme: Scheme, id: string): string | null {
+  return scheme === "minimal" ? null : GROUPS[scheme][id] ?? null;
+}
+
+function colorFor(scheme: Scheme, id: string): string {
+  const g = groupOf(scheme, id);
+  return g ? GROUP_COLOR[g] ?? "var(--rail-neutral)" : "var(--rail-neutral)";
+}
+
+/** Ordered, de-duplicated groups for the active scheme's legend. */
+function legendFor(scheme: Scheme, ids: string[]) {
+  if (scheme === "minimal") return [];
+  const seen = new Set<string>();
+  const out: { label: string; color: string }[] = [];
+  ids.forEach((id) => {
+    const g = groupOf(scheme, id);
+    if (g && !seen.has(g)) {
+      seen.add(g);
+      out.push({ label: g, color: GROUP_COLOR[g] });
+    }
+  });
+  return out;
+}
+
 /* ── Layout constants ── */
 const TIMELINE_START = 2014;
 const TIMELINE_END = 2026;
@@ -219,7 +314,10 @@ function packLanes(roles: TimelineEntry[]): Map<string, number> {
 
 export default function CareerTimeline() {
   const [active, setActive] = useState<string | null>(null);
+  const [scheme, setScheme] = useState<Scheme>("minimal");
   const isMobile = useIsMobile();
+  const hue = (id: string) => colorFor(scheme, id);
+  const legend = legendFor(scheme, entries.map((e) => e.id));
 
   const activeEntry = entries.find((e) => e.id === active) ?? null;
 
@@ -240,9 +338,41 @@ export default function CareerTimeline() {
   const axisY = MILESTONE_BAND + Math.max(aboveRows - 1, 0) * ROW_H + LABEL_H;
   const trackHeight = axisY + TICK_BAND + belowRows * ROW_H + LABEL_H;
 
+  const symbology = (
+    <div className="ct-symbology">
+      <span className="label-mono ct-symbology-label">Symbology</span>
+      <div className="ct-symbology-pills" role="group" aria-label="Colour scheme">
+        {SCHEMES.map((sc) => (
+          <button
+            key={sc.id}
+            className={`ct-scheme${scheme === sc.id ? " ct-scheme--on" : ""}`}
+            aria-pressed={scheme === sc.id}
+            onClick={() => setScheme(sc.id)}
+          >
+            {sc.label}
+          </button>
+        ))}
+      </div>
+      {legend.length > 0 && (
+        <ul className="ct-legend">
+          {legend.map((g) => (
+            <li key={g.label} className="ct-legend-item">
+              <span
+                className="ct-legend-swatch"
+                style={{ "--entry": g.color } as React.CSSProperties}
+              />
+              <span className="label-mono">{g.label}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
   if (isMobile) {
     return (
       <div className="w-full">
+        {symbology}
         <ol className="ct-list">
           {entries.map((entry) => {
             const isOpen = active === entry.id;
@@ -250,7 +380,7 @@ export default function CareerTimeline() {
               <li
                 key={entry.id}
                 className="ct-list-item"
-                style={{ borderLeftColor: entry.color }}
+                style={{ borderLeftColor: hue(entry.id) }}
               >
                 <button
                   className="ct-list-head"
@@ -259,7 +389,7 @@ export default function CareerTimeline() {
                 >
                   <span
                     className="label-mono ct-list-years"
-                    style={{ color: entry.color }}
+                    style={{ color: hue(entry.id) }}
                   >
                     {entry.label}
                   </span>
@@ -287,7 +417,7 @@ export default function CareerTimeline() {
                     <button
                       onClick={() => goToAnchor(entry.anchor)}
                       className="inline-flex items-center gap-1.5 font-display font-medium text-xs"
-                      style={{ color: entry.color }}
+                      style={{ color: hue(entry.id) }}
                     >
                       Read more &rarr;
                     </button>
@@ -303,6 +433,8 @@ export default function CareerTimeline() {
 
   return (
     <div className="w-full">
+      {symbology}
+
       {/* ── Horizontal track ── */}
       <div
         className="relative ct-track"
@@ -369,7 +501,7 @@ export default function CareerTimeline() {
               </p>
               <span
                 className="label-mono"
-                style={{ color: entry.color, fontSize: "0.55rem" }}
+                style={{ color: hue(entry.id), fontSize: "0.55rem" }}
               >
                 {entry.label}
               </span>
@@ -378,7 +510,7 @@ export default function CareerTimeline() {
                 className={`absolute ct-diamond${isActive ? " ct-diamond--on" : ""}`}
                 style={
                   {
-                    "--entry": entry.color,
+                    "--entry": hue(entry.id),
                     left: 0,
                     top: MILESTONE_BAND - MILESTONE_INSET - 5,
                   } as React.CSSProperties
@@ -423,7 +555,7 @@ export default function CareerTimeline() {
                 className={`absolute left-0 right-0 ct-bar${isActive ? " ct-bar--on" : ""}`}
                 style={
                   {
-                    "--entry": entry.color,
+                    "--entry": hue(entry.id),
                     top: isAbove ? LABEL_H : 0,
                   } as React.CSSProperties
                 }
@@ -434,7 +566,7 @@ export default function CareerTimeline() {
                 className={`absolute z-10 ct-cap${isActive ? " ct-cap--on" : ""}`}
                 style={
                   {
-                    "--entry": entry.color,
+                    "--entry": hue(entry.id),
                     left: 0,
                     top: isAbove ? LABEL_H : 0,
                   } as React.CSSProperties
@@ -461,7 +593,7 @@ export default function CareerTimeline() {
                 <p
                   className="leading-tight mt-0.5"
                   style={{
-                    color: entry.color,
+                    color: hue(entry.id),
                     fontSize: "0.6rem",
                     fontFamily: "var(--font-mono)",
                   }}
@@ -488,7 +620,7 @@ export default function CareerTimeline() {
             <div className="flex flex-wrap items-center gap-3 mb-2">
               <span
                 className="label-mono"
-                style={{ color: activeEntry.color, fontSize: "0.6rem" }}
+                style={{ color: hue(activeEntry.id), fontSize: "0.6rem" }}
               >
                 {activeEntry.label}
               </span>
@@ -534,7 +666,7 @@ export default function CareerTimeline() {
                 if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
               }}
               className="inline-flex items-center gap-1.5 font-display font-medium text-xs transition-all hover:gap-2.5"
-              style={{ color: activeEntry.color }}
+              style={{ color: hue(activeEntry.id) }}
             >
               Read more &rarr;
             </button>

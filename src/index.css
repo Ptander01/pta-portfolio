@@ -103,6 +103,10 @@
   --amber: #ffb347;
   --emerald: #00c897;
   --coral: #ff6b6b;
+  /* Fifth accent, added for the timeline's Sector scheme, which needs five
+     distinct hues. Matches the History & Religion domain gold already in the
+     gallery vocabulary rather than inventing a new one. */
+  --gold: #c9a84c;
   --surface: #1e1e2e;
   --surface-raised: #252538;
   --surface-sunken: #161625;
@@ -202,6 +206,7 @@
   --amber: #e6952e;
   --emerald: #00a67d;
   --coral: #e05555;
+  --gold: #a8862f;
   --surface: #eae2d0;
   --surface-raised: #f0e9da;
   --surface-sunken: #e0d6c0;
@@ -1506,6 +1511,96 @@
 @media (prefers-reduced-motion: reduce) {
   .facet-options,
   .facet-options > * { transition-duration: 0.01ms; transform: none; }
+}
+
+/* ══ Career timeline — symbology control ══
+   A control, so it takes the chrome treatment from the texture-zoning table:
+   glass + neumorphic lip, same language as the gallery facet pills. The
+   legend is generated from the same map that colours the rails, so the two
+   cannot drift apart.
+
+   `--rail-neutral` is the un-encoded default: a steel that still takes the
+   lit treatment but makes no claim about grouping. */
+:root { --rail-neutral: #7d8fa6; }
+[data-theme="light"] { --rail-neutral: #8a7b64; }
+
+.ct-symbology {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-bottom: 1.5rem;
+}
+.ct-symbology-label {
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  opacity: 0.75;
+}
+.ct-symbology-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ct-scheme {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 7px 13px;
+  min-height: 32px;
+  border-radius: 16px;
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  backdrop-filter: var(--glass-blur, blur(18px));
+  white-space: nowrap;
+  transition: color 0.2s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+.ct-scheme:hover { color: var(--heading-color); box-shadow: var(--lip-hover); }
+.ct-scheme--on {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+
+.ct-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex-basis: 100%;
+}
+.ct-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+}
+/* The swatch is the rail material in miniature, so the legend reads as the
+   same object rather than a flat colour chip. */
+.ct-legend-swatch {
+  width: 18px;
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--entry) 55%, white) 0%,
+    var(--entry) 55%,
+    color-mix(in srgb, var(--entry) 72%, black) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 8px color-mix(in srgb, var(--entry) 45%, transparent);
+}
+
+@media (max-width: 767px) {
+  .ct-symbology { margin-bottom: 1.1rem; }
 }
 
 /* ══ Career timeline — lit surface treatment ══
