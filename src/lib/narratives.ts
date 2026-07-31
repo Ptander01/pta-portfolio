@@ -35,7 +35,7 @@ export const narratives: Record<string, Narrative> = {
       "I ran the tool four times, on the four corners of the calendar that represent the greatest variations in solar path geometry and solar irradiance availability: the spring equinox, summer solstice, autumn equinox, and winter solstice.",
       "Parameters of note — I told the tool to sum all radiance values (global, meaning direct, diffuse, and indirect). I set the time interval for the entire day, as opposed to hourly or spanning multiple days. I left all of the topographic and radiation parameters at default.",
       "I noticed that the solar irradiance values are exceptionally conservative, possibly by as much as 40%. Many credible sources, including NOAA and National Renewable Energy Laboratory models, suggest greater resource availability up to 1.5 kWh/m²/day. However, I like the ESRI numbers for two reasons. First, since our specific area of interest gets twice the annual precipitation as the national average, I believe the lower value better reflects atmospheric transitivity — see what I did there. Second, it's easy to want the values to be higher, since renewable energy is cool and exciting. I have found in my 33 years of grand life-wisdom that it's usually wise to temper my enthusiasm and prevent an optimistic bias that over-represents the potential success of a burgeoning technology.",
-      "On symbology: for continuity in comparing the results, I changed the stretch symbology of each day from the max and min of its own values to the max and min of the entire annual range. This allows greater variation in the symbology throughout the year, while keeping the actual quantification of the colour scheme consistent across the whole graphic.",
+      "On symbology: for continuity in comparing the results, I changed the stretch symbology of each day from the max and min of its own values to the max and min of the entire annual range. This allows greater variation in the symbology throughout the year, while keeping the actual quantification of the color scheme consistent across the whole graphic.",
       "A fun fact for our lat/long/altitude: daylight duration ranges from a minimum of 9.5 hours in the winter to 14.3 hours in the summer. Meanwhile the maximum altitude of the solar path ranges from 31.9° above the horizon in winter to 78.8° in summer.",
     ],
   },
@@ -169,7 +169,7 @@ export const narratives: Record<string, Narrative> = {
       "A full-stack MLS analytics dashboard, and the design system that grew out of maturing it.",
     paragraphs: [
       "The dashboard covers a season of Major League Soccer — squad and player analytics, salary against performance, home and away splits, shot quality, and passing structure — built as a single React application over shot-level and match-level event data.",
-      "The more interesting problem turned out not to be the analysis but the consistency. Once a dashboard has enough views, every new chart is a chance to invent a slightly different colour, spacing, or label convention. I wrote about how that got resolved into an actual design system in the article linked above.",
+      "The more interesting problem turned out not to be the analysis but the consistency. Once a dashboard has enough views, every new chart is a chance to invent a slightly different color, spacing, or label convention. I wrote about how that got resolved into an actual design system in the article linked above.",
     ],
   },
 
@@ -179,7 +179,7 @@ export const narratives: Record<string, Narrative> = {
       "An exploration of the age of buildings within specific cities, using R and RStudio.",
     paragraphs: [
       "Inspired by Dominic Royé's Intro to GIS with R blog post. Data taken from INSPIRE.",
-      "The data was downloaded with a feed.extract(url) function, filtered by province with an RSS link, and imported using dir_ls(). Buffering and geometry work used tmaptools — Geocode_OSM, st_buffer(), st_transform(), and st_intersection(). The map itself was created with the tmap package, an alternative to ggplot2, and colour symbology was handled with colorRampPalette().",
+      "The data was downloaded with a feed.extract(url) function, filtered by province with an RSS link, and imported using dir_ls(). Buffering and geometry work used tmaptools — Geocode_OSM, st_buffer(), st_transform(), and st_intersection(). The map itself was created with the tmap package, an alternative to ggplot2, and color symbology was handled with colorRampPalette().",
     ],
   },
 
@@ -248,9 +248,9 @@ export const narratives: Record<string, Narrative> = {
       "I've been playing around with ways to visualize flow mapping, and stumbled onto Flowmap City.",
     paragraphs: [
       "It's an open-source, in-browser visual analytics tool built specifically for mobility data. To experiment, I uploaded some 2023 state migration data from the US Census Bureau that captured the total number of people who moved from one state to another.",
-      "The pros: the program does a good job of visualizing large datasets. Each flow line is bidirectional, showing the inbound and outbound migration totals. Each flow line and node is also colour-coded and sized proportional to the total count of migrants. All the customization, settings, and filtering sit in a simple interface, with no code.",
+      "The pros: the program does a good job of visualizing large datasets. Each flow line is bidirectional, showing the inbound and outbound migration totals. Each flow line and node is also color-coded and sized proportional to the total count of migrants. All the customization, settings, and filtering sit in a simple interface, with no code.",
       "The cons: I wish there were a way to make it into a dashboard, with several interactive charts, tables, or graphs that could filter each other — the way Tableau, Power BI, or ArcGIS Insights do.",
-      "The animation shows the net total migration for each relationship between states, with flows and nodes colour-coded and sized proportional to the total population migration values.",
+      "The animation shows the net total migration for each relationship between states, with flows and nodes color-coded and sized proportional to the total population migration values.",
     ],
   },
 

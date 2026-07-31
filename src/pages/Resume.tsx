@@ -85,7 +85,7 @@ const credentials = [
     authors: "Federal Aviation Administration",
     venue: "Commercial small unmanned aircraft operations",
     href: null,
-    kind: "Licence",
+    kind: "License",
   },
   {
     year: "2017",
@@ -517,7 +517,7 @@ export default function Resume() {
         <div className="container relative z-10" style={{ maxWidth: 860 }}>
           <div id="credentials" style={{ scrollMarginTop: "6rem" }}>
             <CitationList
-              heading="Licences &amp; Certificates"
+              heading="Licenses &amp; Certificates"
               items={credentials}
               accent="var(--coral)"
             />

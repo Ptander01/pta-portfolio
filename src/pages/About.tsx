@@ -154,11 +154,6 @@ const testimonials = [
   },
   {
     quote:
-      "The information and data visualizations were extremely helpful in supporting the field to understand their current home care throughput.",
-    attribution: "Program office lead · after a national leadership summit",
-  },
-  {
-    quote:
       "You not only generated great questions from the Chiefs with what you presented, but expertly navigated answering them and discussing their suggestions.",
     attribution: "Program office lead · after a national leadership summit",
   },
@@ -174,11 +169,6 @@ const testimonials = [
   },
   {
     quote:
-      "That is a really quick turn-around time. I appreciate all the work put into building these reports.",
-    attribution: "Clinical program lead · on delivery speed",
-  },
-  {
-    quote:
       "I'm not sure how we would go about expanding home care without all this data you are generating.",
     attribution: "Program leadership · on a national service-expansion goal",
   },
@@ -188,23 +178,18 @@ const testimonials = [
     attribution: "Clinical program lead · on using the analysis in a proposal",
   },
   {
-    quote:
-      "It's great to get everyone on board with these products, so folks can think about how to integrate geospatial data into their work for the year.",
-    attribution: "Program office lead · after an all-team product briefing",
-  },
-  {
-    quote:
-      "Thank you for all your great work, support, and leadership of the geospatial data products and analyses.",
-    attribution: "National program office · on the engagement overall",
-  },
-  {
     /* Not a quotation. The source is an AI-generated summary of a private
        1:1, so no one said these words in this order — quote marks would
        misrepresent it. Written as a report of the recognition instead, and
        `plain` suppresses the decorative quotes. */
     plain: true,
+    /* Trimmed 2026-07-31 to the recognition itself. The original carried a
+       second clause about "marked improvement in organization, project
+       management, communication and quality of deliverables" — in a review
+       that phrasing reads as a prior deficiency corrected, which is not what
+       a reader should take from the one Meta item on the page. */
     quote:
-      "Recognized for building the foundation for more rigorous data analysis and modeling, and for marked improvement in organization, project management, communication, and quality of deliverables.",
+      "Recognized for building the foundation for more rigorous data analysis and modeling.",
     attribution: "Manager review · Meta",
   },
 ];
@@ -358,13 +343,13 @@ export default function About() {
                     className="heading-md mb-2"
                     style={{ color: "var(--heading-color)" }}
                   >
-                    Patrick Anderson
+                    Patrick T Anderson
                   </h3>
                   <p
                     className="label-mono mb-4"
                     style={{ color: "var(--cyan)", fontSize: "0.6rem" }}
                   >
-                    GEOSPATIAL DATA SCIENTIST
+                    LEAD SPATIAL DATA SCIENTIST
                   </p>
                   <div className="flex items-center gap-2 mb-6">
                     <MapPin size={14} style={{ color: "var(--text-muted)" }} />
@@ -402,12 +387,12 @@ export default function About() {
                     className="body-lg mb-6"
                     style={{ color: "var(--text-muted)" }}
                   >
-                    I am a Geospatial Data Scientist and AI Infrastructure
-                    Engineer who specializes in building complex, production-grade
-                    data pipelines and interactive spatial dashboards. With a
-                    foundation in agricultural science and environmental physics, I
-                    spent the early part of my career analyzing energy efficiency
-                    and healthcare utilization.
+                    I am a Lead Spatial Data Scientist who specializes in
+                    building complex, production-grade data pipelines and
+                    interactive spatial dashboards. With a foundation in
+                    agricultural science and environmental physics, I spent the
+                    early part of my career analyzing energy efficiency and
+                    healthcare utilization.
                   </p>
                   <p
                     className="body-lg mb-6"
@@ -921,12 +906,14 @@ export default function About() {
           </FadeIn>
 
           <div className="testimonial-grid">
-            {/* Index, not attribution: two of the twelve quotes share the
-                string "Program office lead · after a national leadership
-                summit", which made them the same React key. All twelve
-                happened to render anyway, but duplicate keys let React omit
-                or duplicate a child, and losing a testimonial silently is
-                exactly the kind of failure this site keeps producing. */}
+            {/* Index, not attribution. Two quotes once shared the string
+                "Program office lead · after a national leadership summit",
+                which made them the same React key; the 2026-07-31 trim removed
+                one of that pair, so no attribution currently collides. The key
+                stays on the index anyway — attributions are prose and the next
+                one added could collide again, and losing a testimonial
+                silently is exactly the kind of failure this site keeps
+                producing. */}
             {testimonials.map((t, i) => (
               <FadeIn key={i} duration={0.6}>
                 <figure className="testimonial">

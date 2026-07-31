@@ -144,8 +144,8 @@ function ProjectImage({
       style={{
         display: "block",
         position: "relative",
-        border: "0.5px solid rgba(100,160,220,0.1)",
-        borderTopColor: "rgba(100,160,220,0.18)",
+        border: "0.5px solid rgb(var(--hairline-rgb) / 0.1)",
+        borderTopColor: "rgb(var(--hairline-rgb) / 0.18)",
         overflow: "hidden",
         background: "#0A0E14",
         cursor: "pointer",
@@ -203,7 +203,12 @@ function ProjectImage({
           style={{
             width: "100%",
             height,
-            background: `linear-gradient(135deg, #0A0E14, ${project.accent}12)`,
+            /* `${project.accent}12` used to append an alpha suffix to a hex
+               literal. Accent is now `var(--domain-*)`, and you cannot
+               concatenate onto a custom property — it would emit the string
+               "var(--domain-sports)12". color-mix does the same job against
+               whatever the variable resolves to, in either theme. */
+            background: `linear-gradient(135deg, var(--gallery-bg), color-mix(in srgb, ${project.accent} 7%, transparent))`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -227,7 +232,7 @@ function ProjectImage({
             style={{
               fontFamily: "'Space Mono', monospace",
               fontSize: 8,
-              color: "rgba(232,240,254,0.15)",
+              color: "rgb(var(--fg-rgb) / 0.15)",
               letterSpacing: "0.15em",
             }}
           >
@@ -268,10 +273,10 @@ function SourceLine({
         fontSize: "0.5rem",
         letterSpacing: "0.18em",
         textTransform: "uppercase",
-        color: "rgba(232,240,254,0.18)",
+        color: "rgb(var(--fg-rgb) / 0.18)",
         paddingTop: "0.625rem",
         marginTop: "0.75rem",
-        borderTop: `0.5px solid rgba(100,160,220,0.07)`,
+        borderTop: `0.5px solid rgb(var(--hairline-rgb) / 0.07)`,
       }}
     >
       {text}
@@ -289,8 +294,8 @@ function Tag({ label }: { label: string }) {
         letterSpacing: "0.12em",
         textTransform: "uppercase",
         padding: "2px 8px",
-        border: "0.5px solid rgba(100,160,220,0.12)",
-        color: "rgba(232,240,254,0.3)",
+        border: "0.5px solid rgb(var(--hairline-rgb) / 0.12)",
+        color: "rgb(var(--fg-rgb) / 0.3)",
         display: "inline-block",
       }}
     >
@@ -339,7 +344,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
                   fontFamily: "'Cinzel', Georgia, serif",
                   fontSize: "clamp(1.25rem, 2.5vw, 1.75rem)",
                   fontWeight: 700,
-                  color: "#E8F0FE",
+                  color: "rgb(var(--fg-rgb))",
                   lineHeight: 1.1,
                 }}
               >
@@ -350,7 +355,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
               style={{
                 fontFamily: "'Space Mono', monospace",
                 fontSize: "0.5rem",
-                color: "rgba(232,240,254,0.2)",
+                color: "rgb(var(--fg-rgb) / 0.2)",
                 letterSpacing: "0.15em",
                 textAlign: "right",
               }}
@@ -415,7 +420,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                     fontSize: "0.5rem",
                     letterSpacing: "0.15em",
                     textTransform: "uppercase",
-                    color: "rgba(232,240,254,0.18)",
+                    color: "rgb(var(--fg-rgb) / 0.18)",
                   }}
                 >
                   {p.category}
@@ -424,7 +429,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                   style={{
                     fontFamily: "'Space Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "rgba(232,240,254,0.15)",
+                    color: "rgb(var(--fg-rgb) / 0.15)",
                   }}
                 >
                   PTA · {p.index}
@@ -460,7 +465,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                   fontWeight: 700,
                   lineHeight: 1.1,
                   letterSpacing: "-0.01em",
-                  color: "#E8F0FE",
+                  color: "rgb(var(--fg-rgb))",
                   marginBottom: "1.25rem",
                 }}
               >
@@ -483,7 +488,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                   fontSize: "0.9375rem",
                   fontWeight: 300,
                   lineHeight: 1.8,
-                  color: "rgba(232,240,254,0.55)",
+                  color: "rgb(var(--fg-rgb) / 0.55)",
                   marginBottom: "1.25rem",
                 }}
               >
@@ -495,11 +500,11 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                 className="pull-quote"
                 style={{
                   borderLeftColor: p.accent,
-                  background: `${p.accent}0F`,
+                  background: `color-mix(in srgb, ${p.accent} 6%, transparent)`,
                   marginBottom: "1.25rem",
                   fontSize: "0.875rem",
                   lineHeight: 1.7,
-                  color: "rgba(232,240,254,0.4)",
+                  color: "rgb(var(--fg-rgb) / 0.4)",
                 }}
               >
                 {p.insight}
@@ -596,7 +601,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                     fontFamily: "'Cinzel', serif",
                     fontSize: "1.0625rem",
                     fontWeight: 700,
-                    color: "#E8F0FE",
+                    color: "rgb(var(--fg-rgb))",
                   }}
                 >
                   {section.hero.title}
@@ -607,7 +612,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                   style={{
                     fontFamily: "'Space Mono', monospace",
                     fontSize: "0.5rem",
-                    color: "rgba(232,240,254,0.2)",
+                    color: "rgb(var(--fg-rgb) / 0.2)",
                   }}
                 >
                   PTA · {section.hero.index}
@@ -654,7 +659,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                 fontFamily: "'Lora', serif",
                 fontSize: "0.875rem",
                 fontWeight: 300,
-                color: "rgba(232,240,254,0.4)",
+                color: "rgb(var(--fg-rgb) / 0.4)",
                 lineHeight: 1.7,
                 marginTop: 6,
                 maxWidth: 640,
@@ -715,7 +720,7 @@ function SupportingGrid({ projects }: { projects: Project[] }) {
                 fontFamily: "'Cinzel', serif",
                 fontSize: "0.9375rem",
                 fontWeight: 700,
-                color: "#E8F0FE",
+                color: "rgb(var(--fg-rgb))",
               }}
             >
               {p.title}
@@ -781,7 +786,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                   gap: 12,
                   paddingBottom: "1rem",
                   marginBottom: "1.5rem",
-                  borderBottom: `0.5px solid ${domain.accent}28`,
+                  borderBottom: `0.5px solid color-mix(in srgb, ${domain.accent} 16%, transparent)`,
                 }}
               >
                 <div
@@ -791,7 +796,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                     borderRadius: "50%",
                     background: domain.accent,
                     flexShrink: 0,
-                    boxShadow: `0 0 8px ${domain.accent}60`,
+                    boxShadow: `0 0 8px color-mix(in srgb, ${domain.accent} 38%, transparent)`,
                   }}
                 />
                 <div>
@@ -800,7 +805,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                       fontFamily: "'Cinzel', serif",
                       fontSize: "1.125rem",
                       fontWeight: 700,
-                      color: "#E8F0FE",
+                      color: "rgb(var(--fg-rgb))",
                     }}
                   >
                     {domain.label}
@@ -839,7 +844,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                           fontFamily: "'Cinzel', serif",
                           fontSize: "0.9375rem",
                           fontWeight: 700,
-                          color: "#E8F0FE",
+                          color: "rgb(var(--fg-rgb))",
                           marginBottom: 4,
                           lineHeight: 1.2,
                         }}
@@ -865,7 +870,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                           fontSize: "0.8125rem",
                           fontWeight: 300,
                           lineHeight: 1.65,
-                          color: "rgba(232,240,254,0.4)",
+                          color: "rgb(var(--fg-rgb) / 0.4)",
                           marginBottom: 8,
                           display: "-webkit-box",
                           WebkitLineClamp: 3,
@@ -928,9 +933,9 @@ function LayoutButton({
         gap: 3,
         padding: "10px 16px",
         border: active
-          ? "0.5px solid rgba(0,229,255,0.45)"
-          : "0.5px solid rgba(100,160,220,0.12)",
-        background: active ? "rgba(0,229,255,0.06)" : "transparent",
+          ? "0.5px solid rgb(var(--accent-rgb) / 0.45)"
+          : "0.5px solid rgb(var(--hairline-rgb) / 0.12)",
+        background: active ? "rgb(var(--accent-rgb) / 0.06)" : "transparent",
         cursor: "pointer",
         transition: "all 0.2s ease",
         minWidth: 120,
@@ -938,12 +943,12 @@ function LayoutButton({
       onMouseEnter={(e) => {
         if (!active)
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(100,160,220,0.25)";
+            "rgb(var(--hairline-rgb) / 0.25)";
       }}
       onMouseLeave={(e) => {
         if (!active)
           (e.currentTarget as HTMLElement).style.borderColor =
-            "rgba(100,160,220,0.12)";
+            "rgb(var(--hairline-rgb) / 0.12)";
       }}
     >
       <div
@@ -957,7 +962,7 @@ function LayoutButton({
           style={{
             fontFamily: "'Space Mono', monospace",
             fontSize: 10,
-            color: active ? "#00E5FF" : "rgba(232,240,254,0.5)",
+            color: active ? "rgb(var(--accent-rgb))" : "rgb(var(--fg-rgb) / 0.5)",
             transition: "color 0.2s ease",
           }}
         >
@@ -969,7 +974,7 @@ function LayoutButton({
             fontSize: "0.625rem",
             letterSpacing: "0.15em",
             textTransform: "uppercase",
-            color: active ? "#00E5FF" : "rgba(232,240,254,0.45)",
+            color: active ? "rgb(var(--accent-rgb))" : "rgb(var(--fg-rgb) / 0.45)",
             fontWeight: active ? 700 : 400,
             transition: "color 0.2s ease",
           }}
@@ -983,8 +988,8 @@ function LayoutButton({
           fontSize: "0.625rem",
           fontWeight: 300,
           color: active
-            ? "rgba(0,229,255,0.6)"
-            : "rgba(232,240,254,0.25)",
+            ? "rgb(var(--accent-rgb) / 0.6)"
+            : "rgb(var(--fg-rgb) / 0.25)",
           letterSpacing: "0.01em",
           transition: "color 0.2s ease",
         }}
@@ -1127,9 +1132,14 @@ export default function Projects() {
 
   return (
     <PageTransition>
+      {/* `--page-bg`, not a literal. A hardcoded #070A0E here overrode the
+          theme for the whole gallery and — via PieceDetail — all 47 piece
+          pages, so choosing light mode turned every other route parchment and
+          left the portfolio black under a light navbar. Inline styles beat the
+          theme the same way they beat media queries. */}
       <div
         style={{
-          background: "#070A0E",
+          background: "var(--gallery-bg)",
           minHeight: "100vh",
           paddingTop: "6rem",
         }}
@@ -1139,7 +1149,7 @@ export default function Projects() {
           style={{
             padding: "0 6vw 3rem",
             marginBottom: "3rem",
-            borderBottom: "0.5px solid rgba(100,160,220,0.07)",
+            borderBottom: "0.5px solid rgb(var(--hairline-rgb) / 0.07)",
           }}
         >
           {/* Back */}
@@ -1150,7 +1160,7 @@ export default function Projects() {
                 fontSize: "0.5625rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "rgba(232,240,254,0.25)",
+                color: "rgb(var(--fg-rgb) / 0.25)",
                 cursor: "pointer",
                 display: "inline-block",
                 marginBottom: "2rem",
@@ -1158,11 +1168,11 @@ export default function Projects() {
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.color =
-                  "rgba(232,240,254,0.6)";
+                  "rgb(var(--fg-rgb) / 0.6)";
               }}
               onMouseLeave={(e) => {
                 (e.currentTarget as HTMLElement).style.color =
-                  "rgba(232,240,254,0.25)";
+                  "rgb(var(--fg-rgb) / 0.25)";
               }}
             >
               ← Patrick Anderson
@@ -1186,7 +1196,7 @@ export default function Projects() {
                   fontSize: "0.5625rem",
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
-                  color: "rgba(0,229,255,0.65)",
+                  color: "rgb(var(--accent-rgb) / 0.65)",
                   marginBottom: "0.875rem",
                   display: "flex",
                   alignItems: "center",
@@ -1210,7 +1220,7 @@ export default function Projects() {
                   fontWeight: 700,
                   lineHeight: 1.05,
                   letterSpacing: "-0.02em",
-                  color: "#E8F0FE",
+                  color: "rgb(var(--fg-rgb))",
                 }}
               >
                 Work that turns
@@ -1218,7 +1228,7 @@ export default function Projects() {
                   style={{
                     fontStyle: "italic",
                     display: "block",
-                    color: "#00E5FF",
+                    color: "rgb(var(--accent-rgb))",
                   }}
                 >
                   data into sight.
@@ -1234,7 +1244,7 @@ export default function Projects() {
                   fontSize: "0.5rem",
                   letterSpacing: "0.2em",
                   textTransform: "uppercase",
-                  color: "rgba(232,240,254,0.2)",
+                  color: "rgb(var(--fg-rgb) / 0.2)",
                   marginBottom: "0.5rem",
                 }}
               >
@@ -1330,7 +1340,7 @@ export default function Projects() {
             <p
               style={{
                 fontFamily: "'Lora', serif",
-                color: "rgba(232,240,254,0.4)",
+                color: "rgb(var(--fg-rgb) / 0.4)",
                 padding: "4rem 0",
               }}
             >
@@ -1366,7 +1376,7 @@ export default function Projects() {
         <footer
           style={{
             padding: "2.5rem 6vw",
-            borderTop: "0.5px solid rgba(100,160,220,0.07)",
+            borderTop: "0.5px solid rgb(var(--hairline-rgb) / 0.07)",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
@@ -1380,7 +1390,7 @@ export default function Projects() {
               fontSize: "0.5rem",
               letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: "rgba(232,240,254,0.15)",
+              color: "rgb(var(--fg-rgb) / 0.15)",
             }}
           >
             Patrick Anderson · PTA Geospatial Intelligence ·{" "}
@@ -1393,7 +1403,7 @@ export default function Projects() {
                 fontSize: "0.5rem",
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
-                color: "rgba(232,240,254,0.2)",
+                color: "rgb(var(--fg-rgb) / 0.2)",
                 cursor: "pointer",
               }}
             >

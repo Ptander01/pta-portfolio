@@ -40,11 +40,13 @@ export default function PieceDetail() {
 
   return (
     <PageTransition>
-      <div style={{ background: "#070A0E", minHeight: "100vh", paddingTop: "6rem" }}>
+      {/* See the note in Projects.tsx — a literal here took all 47 piece pages
+          out of the theme. */}
+      <div style={{ background: "var(--gallery-bg)", minHeight: "100vh", paddingTop: "6rem" }}>
         <header
           style={{
             padding: "0 6vw 2.5rem",
-            borderBottom: "0.5px solid rgba(100,160,220,0.07)",
+            borderBottom: "0.5px solid rgb(var(--hairline-rgb) / 0.07)",
             marginBottom: "3rem",
           }}
         >
@@ -55,7 +57,7 @@ export default function PieceDetail() {
                 fontSize: "0.5625rem",
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "rgba(232,240,254,0.28)",
+                color: "rgb(var(--fg-rgb) / 0.28)",
                 cursor: "pointer",
                 display: "inline-block",
                 marginBottom: "2rem",
@@ -84,7 +86,7 @@ export default function PieceDetail() {
               fontWeight: 700,
               lineHeight: 1.06,
               letterSpacing: "-0.02em",
-              color: "#E8F0FE",
+              color: "rgb(var(--fg-rgb))",
               margin: 0,
               textWrap: "balance",
             }}
@@ -97,7 +99,7 @@ export default function PieceDetail() {
               fontFamily: "'Space Mono', monospace",
               fontSize: "0.6875rem",
               letterSpacing: "0.05em",
-              color: "rgba(232,240,254,0.4)",
+              color: "rgb(var(--fg-rgb) / 0.4)",
               margin: "1rem 0 0",
             }}
           >
@@ -150,7 +152,7 @@ export default function PieceDetail() {
                   fontStyle: "italic",
                   fontSize: "1.375rem",
                   lineHeight: 1.5,
-                  color: "#E8F0FE",
+                  color: "rgb(var(--fg-rgb))",
                   margin: "0 0 1.75rem",
                 }}
               >
@@ -165,7 +167,7 @@ export default function PieceDetail() {
                   fontFamily: "'Lora', Georgia, serif",
                   fontSize: "1rem",
                   lineHeight: 1.8,
-                  color: "rgba(232,240,254,0.72)",
+                  color: "rgb(var(--fg-rgb) / 0.72)",
                   margin: "0 0 1.25rem",
                 }}
               >
@@ -207,7 +209,7 @@ export default function PieceDetail() {
                   style={{
                     fontSize: "0.5rem",
                     letterSpacing: "0.16em",
-                    color: "rgba(232,240,254,0.22)",
+                    color: "rgb(var(--fg-rgb) / 0.22)",
                     marginTop: 6,
                   }}
                 >

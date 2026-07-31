@@ -13,8 +13,8 @@ const contactLinks = [
   {
     icon: Mail,
     label: "EMAIL",
-    value: "patrick.t.anderson1@gmail.com",
-    href: "mailto:patrick.t.anderson1@gmail.com",
+    value: "ptander01@gmail.com",
+    href: "mailto:ptander01@gmail.com",
   },
   {
     icon: Github,
