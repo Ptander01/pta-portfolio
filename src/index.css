@@ -1848,9 +1848,69 @@
   flex-direction: column;
   gap: 10px;
 }
+/* The spine takes the same lit material as the desktop rails — a gradient
+   down its length, a specular edge, and a coloured glow — so the mobile view
+   is the same object rendered differently rather than a plainer fallback. */
 .ct-list-item {
-  border-left: 2px solid;
-  padding-left: 14px;
+  position: relative;
+  padding-left: 16px;
+}
+.ct-list-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 2px;
+  bottom: 2px;
+  width: 3px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--entry) 55%, white) 0%,
+    var(--entry) 55%,
+    color-mix(in srgb, var(--entry) 72%, black) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 0 8px color-mix(in srgb, var(--entry) 38%, transparent);
+  opacity: 0.85;
+  transition: opacity 0.25s ease, box-shadow 0.3s ease;
+}
+.ct-list-item--on::before {
+  opacity: 1;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    0 0 16px color-mix(in srgb, var(--entry) 70%, transparent),
+    0 0 32px color-mix(in srgb, var(--entry) 28%, transparent);
+}
+
+/* Per-row miniature of the 2014–2026 axis. */
+.ct-span {
+  position: relative;
+  height: 4px;
+  margin: 8px 0 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(127, 127, 127, 0.16) 6%,
+    rgba(127, 127, 127, 0.16) 94%,
+    transparent
+  );
+}
+.ct-span-bar {
+  position: absolute;
+  top: 0;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--entry) 55%, white) 0%,
+    var(--entry) 55%,
+    color-mix(in srgb, var(--entry) 72%, black) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 8px color-mix(in srgb, var(--entry) 45%, transparent);
 }
 .ct-list-head {
   display: flex;
@@ -1867,6 +1927,9 @@
 .ct-list-years {
   font-size: 0.55rem;
   letter-spacing: 0.16em;
+  /* Was an inline style; now inherits the row's `--entry` so the symbology
+     control drives it along with the spine and the span bar. */
+  color: var(--entry);
 }
 .ct-list-role {
   font-family: "Cinzel", serif;

@@ -379,23 +379,37 @@ export default function CareerTimeline() {
             return (
               <li
                 key={entry.id}
-                className="ct-list-item"
-                style={{ borderLeftColor: hue(entry.id) }}
+                className={`ct-list-item${isOpen ? " ct-list-item--on" : ""}`}
+                style={{ "--entry": hue(entry.id) } as React.CSSProperties}
               >
                 <button
                   className="ct-list-head"
                   aria-expanded={isOpen}
                   onClick={() => setActive(isOpen ? null : entry.id)}
                 >
-                  <span
-                    className="label-mono ct-list-years"
-                    style={{ color: hue(entry.id) }}
-                  >
-                    {entry.label}
-                  </span>
+                  <span className="label-mono ct-list-years">{entry.label}</span>
                   <span className="ct-list-role">{entry.role}</span>
                   <span className="ct-list-org">{entry.org}</span>
                 </button>
+
+                {/* Where this entry sits on 2014–2026. Stacking the timeline
+                    for mobile threw away the proportional-duration signal,
+                    which was the whole argument for a horizontal axis — this
+                    gives each row its own miniature of it, so a five-year
+                    role still looks longer than a one-year one. Degrees get
+                    a minimum width and read as a marker, not a span. */}
+                <div className="ct-span" aria-hidden="true">
+                  <div
+                    className="ct-span-bar"
+                    style={{
+                      left: `${pct(entry.startYear)}%`,
+                      width: `${Math.max(
+                        pct(entry.endYear) - pct(entry.startYear),
+                        2.5
+                      )}%`,
+                    }}
+                  />
+                </div>
 
                 {isOpen && (
                   <div className="ct-list-detail">
