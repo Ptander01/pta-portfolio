@@ -432,24 +432,22 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
             {/* Image */}
             <div style={{ order: imgLeft ? 0 : 1 }}>
               <ProjectImage project={p} height={340} priority={i === 0} />
+              {/* `p.category` used to sit here, opposite the index. It is the
+                  old 41-string vocabulary, so this card was showing two
+                  competing taxonomies at once — "AI Infrastructure · Remote
+                  Sensing" under the image and "AI Infrastructure · Change
+                  Detection" above the headline. The field stays in the data:
+                  the Decision Log keeps those strings because, with the Data
+                  Art domain retired, `category` is the only place that signal
+                  still lives. It just no longer renders next to a label that
+                  contradicts it. */}
               <div
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
+                  justifyContent: "flex-end",
                   marginTop: 6,
                 }}
               >
-                <span
-                  style={{
-                    fontFamily: "'Space Mono', monospace",
-                    fontSize: "0.5rem",
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    color: "rgb(var(--fg-rgb) / 0.18)",
-                  }}
-                >
-                  {p.category}
-                </span>
                 <span
                   style={{
                     fontFamily: "'Space Mono', monospace",
