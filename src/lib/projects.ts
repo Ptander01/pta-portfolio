@@ -210,6 +210,7 @@ export const PROJECTS: Project[] = [
     image: "/images/work/solar-agriculture-01.webp",
     images: [
       "/images/work/solar-agriculture-01.webp",
+      "/images/work/solar-agriculture-07.webp",
       "/images/work/solar-agriculture-02.webp",
       "/images/work/solar-agriculture-03.webp",
       "/images/work/solar-agriculture-04.webp",
@@ -278,6 +279,11 @@ export const PROJECTS: Project[] = [
     method:
       "UNHCR forced displacement dataset 2023. Origin-destination flow lines. Particle density encodes volume. Great circle routing on globe projection.",
     image: "/images/work/refugee-displacement-01.webp",
+    images: [
+      "/images/work/refugee-displacement-01.webp",
+      "/images/work/refugee-displacement-02.webp",
+      "/images/work/refugee-displacement-03.webp",
+    ],
     imageCrop: "center",
     source: "Data: UNHCR Global Trends 2023 · Method: OD flow visualization",
     tags: ["Humanitarian", "Migration", "UNHCR", "Flow Mapping", "Global"],

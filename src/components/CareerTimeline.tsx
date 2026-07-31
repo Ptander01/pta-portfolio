@@ -304,7 +304,18 @@ export default function CareerTimeline() {
   return (
     <div className="w-full">
       {/* ── Horizontal track ── */}
-      <div className="relative ct-track" style={{ height: trackHeight }}>
+      <div
+        className="relative ct-track"
+        style={
+          {
+            height: trackHeight,
+            /* Feeds the horizon light-pool in .ct-track::after so the
+               brightest band lands on the axis wherever lane packing puts
+               it, rather than assuming the middle. */
+            "--axis-pos": `${((axisY / trackHeight) * 100).toFixed(2)}%`,
+          } as React.CSSProperties
+        }
+      >
         {/* Base line — a lit rail rather than a hairline. See .ct-axis. */}
         <div className="absolute left-0 right-0 ct-axis" style={{ top: axisY }} />
 
@@ -315,10 +326,7 @@ export default function CareerTimeline() {
             className="absolute -translate-x-1/2"
             style={{ left: `${pct(yr)}%`, top: axisY + 14 }}
           >
-            <div
-              className="w-px mx-auto mb-1"
-              style={{ height: 8, background: "var(--glass-border)" }}
-            />
+            <div className="ct-tick" />
             <span
               className="label-mono block text-center"
               style={{ color: "var(--text-muted)", fontSize: "0.55rem" }}

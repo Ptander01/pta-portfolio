@@ -1523,74 +1523,176 @@
 
    `--entry` is set inline per role from its accent colour, which is what
    lets these rules glow in the right hue without a class per role. */
+/* The ground reads as a lit surface with one light source, up and to the
+   left, plus a vignette pulling the corners down. Three stacked gradients
+   rather than one: a key light, a cooler fill from the right, and the
+   darkening at the edges that makes the middle look illuminated rather than
+   just lighter. No grain — the track sits inside a `.noise-bg` section and
+   the texture-zoning rule is one level of grain only. */
 .ct-track {
+  position: relative;
   border-radius: 10px;
   background:
-    radial-gradient(120% 80% at 50% 46%, rgba(255, 255, 255, 0.035), transparent 70%),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.018), transparent 55%);
+    radial-gradient(70% 120% at 18% 0%, rgba(255, 255, 255, 0.05), transparent 62%),
+    radial-gradient(60% 100% at 88% 8%, rgba(120, 180, 255, 0.028), transparent 60%),
+    radial-gradient(150% 100% at 50% 50%, transparent 42%, rgba(0, 0, 0, 0.32) 100%),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02), transparent 45%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+/* Light pooling along the horizon — the brightest band sits on the axis,
+   which is what makes the rails look like they are resting on something. */
+.ct-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    90% 26% at 50% var(--axis-pos, 50%),
+    rgba(255, 255, 255, 0.055),
+    transparent 70%
+  );
 }
 [data-theme="light"] .ct-track {
   background:
-    radial-gradient(120% 80% at 50% 46%, rgba(120, 100, 70, 0.06), transparent 70%),
-    linear-gradient(to bottom, rgba(120, 100, 70, 0.03), transparent 55%);
+    radial-gradient(70% 120% at 18% 0%, rgba(255, 250, 240, 0.7), transparent 62%),
+    radial-gradient(60% 100% at 88% 8%, rgba(150, 130, 90, 0.05), transparent 60%),
+    radial-gradient(150% 100% at 50% 50%, transparent 42%, rgba(120, 100, 70, 0.14) 100%),
+    linear-gradient(to bottom, rgba(255, 252, 244, 0.5), transparent 45%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+[data-theme="light"] .ct-track::after {
+  background: radial-gradient(
+    90% 26% at 50% var(--axis-pos, 50%),
+    rgba(255, 250, 238, 0.55),
+    transparent 70%
+  );
 }
 
-/* The horizon: a hairline with a soft bloom above and below it. */
+/* The horizon: a hairline that brightens toward the centre, with a bloom
+   above and below and a hairline highlight sitting on top of it. Crisper
+   than a flat 1px rule because the edge has two values, not one. */
 .ct-axis {
   height: 1px;
   background: linear-gradient(
     to right,
     transparent,
-    var(--glass-border) 8%,
-    var(--glass-border) 92%,
+    var(--glass-border) 6%,
+    color-mix(in srgb, var(--glass-border) 60%, white) 50%,
+    var(--glass-border) 94%,
     transparent
   );
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 14px rgba(255, 255, 255, 0.07),
+    0 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Year ticks — hairline rules that fade downward, so they read as etched
+   into the surface rather than drawn on top of it. */
+.ct-tick {
+  width: 1px;
+  height: 9px;
+  margin: 0 auto 4px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--glass-border) 70%, white),
+    transparent
+  );
 }
 
 /* Duration rails — lit from within, with a shadow cast onto the ground. */
+/* Rails as extruded material rather than coloured lines. Four things do the
+   work: a gradient with a bright band just below the top edge, a 1px inset
+   specular highlight along that edge, an inset shade along the bottom, and a
+   tight contact shadow that sits the rail on the ground. The wide coloured
+   glow is what carries the "lit from within" read. */
 .ct-bar {
-  height: 5px;
+  height: 6px;
   border-radius: 999px;
   background: linear-gradient(
     to bottom,
-    color-mix(in srgb, var(--entry) 92%, white),
-    var(--entry) 45%,
-    color-mix(in srgb, var(--entry) 78%, black)
+    color-mix(in srgb, var(--entry) 55%, white) 0%,
+    color-mix(in srgb, var(--entry) 88%, white) 22%,
+    var(--entry) 55%,
+    color-mix(in srgb, var(--entry) 72%, black) 100%
   );
   box-shadow:
-    0 0 10px color-mix(in srgb, var(--entry) 42%, transparent),
-    0 3px 8px rgba(0, 0, 0, 0.5);
-  opacity: 0.82;
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.28),
+    0 0 10px color-mix(in srgb, var(--entry) 40%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 4px 10px rgba(0, 0, 0, 0.35);
+  opacity: 0.88;
   transition: opacity 0.25s ease, box-shadow 0.3s ease, height 0.2s ease;
 }
+/* Light spilling from the rail onto the surface below it. This is the single
+   biggest difference between "coloured line" and "lit object". */
+.ct-bar::after {
+  content: "";
+  position: absolute;
+  left: 2%;
+  right: 2%;
+  top: 100%;
+  height: 16px;
+  pointer-events: none;
+  border-radius: 50%;
+  background: radial-gradient(
+    60% 100% at 50% 0%,
+    color-mix(in srgb, var(--entry) 34%, transparent),
+    transparent 72%
+  );
+  filter: blur(5px);
+  opacity: 0.75;
+  transition: opacity 0.3s ease, height 0.3s ease;
+}
 .ct-bar--on {
-  height: 7px;
+  height: 8px;
   opacity: 1;
   box-shadow:
-    0 0 22px color-mix(in srgb, var(--entry) 70%, transparent),
-    0 0 44px color-mix(in srgb, var(--entry) 30%, transparent),
-    0 4px 12px rgba(0, 0, 0, 0.55);
+    inset 0 1px 0 rgba(255, 255, 255, 0.65),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 0 24px color-mix(in srgb, var(--entry) 72%, transparent),
+    0 0 52px color-mix(in srgb, var(--entry) 32%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.55),
+    0 5px 14px rgba(0, 0, 0, 0.4);
 }
+.ct-bar--on::after { height: 26px; opacity: 1; }
 
 /* Start-year node — hot core falling off to the accent, sitting proud of
    the rail with its own shadow. */
 .ct-cap {
-  width: 10px;
-  height: 10px;
-  margin-left: -5px;
-  margin-top: -2px;
+  width: 11px;
+  height: 11px;
+  margin-left: -5.5px;
+  margin-top: -2.5px;
   border-radius: 50%;
   background: radial-gradient(
-    circle at 38% 34%,
-    color-mix(in srgb, var(--entry) 25%, white),
-    var(--entry) 62%,
-    color-mix(in srgb, var(--entry) 70%, black)
+    circle at 36% 30%,
+    color-mix(in srgb, var(--entry) 12%, white),
+    var(--entry) 58%,
+    color-mix(in srgb, var(--entry) 62%, black)
   );
   box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
     0 0 12px color-mix(in srgb, var(--entry) 55%, transparent),
+    0 0 26px color-mix(in srgb, var(--entry) 22%, transparent),
     0 2px 5px rgba(0, 0, 0, 0.6);
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+/* Specular pinprick — a hard, tiny highlight up and left, matching the key
+   light on the ground. This is what reads as polished rather than matte. */
+.ct-cap::after,
+.ct-diamond::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  filter: blur(0.5px);
+  pointer-events: none;
 }
 .ct-cap--on {
   transform: scale(1.35);
@@ -1603,21 +1705,26 @@
 /* Degrees — the same material, cut as a diamond so a credential never reads
    as a very short job. */
 .ct-diamond {
-  width: 10px;
-  height: 10px;
+  position: absolute;
+  width: 11px;
+  height: 11px;
   border-radius: 2px;
   transform: rotate(45deg);
   background: radial-gradient(
-    circle at 36% 32%,
-    color-mix(in srgb, var(--entry) 22%, white),
-    var(--entry) 60%,
-    color-mix(in srgb, var(--entry) 72%, black)
+    circle at 34% 28%,
+    color-mix(in srgb, var(--entry) 10%, white),
+    var(--entry) 56%,
+    color-mix(in srgb, var(--entry) 64%, black)
   );
   box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
     0 0 12px color-mix(in srgb, var(--entry) 55%, transparent),
+    0 0 26px color-mix(in srgb, var(--entry) 22%, transparent),
     0 2px 5px rgba(0, 0, 0, 0.6);
   transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
 }
+/* Counter-rotated so the specular stays with the light, not with the shape. */
+.ct-diamond::after { transform: rotate(-45deg); }
 .ct-diamond--on {
   transform: rotate(45deg) scale(1.35);
   box-shadow:
