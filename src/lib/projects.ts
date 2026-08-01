@@ -16,6 +16,12 @@
 export interface Project {
   id: string;
   index: string;
+  /** Year Patrick made the piece — his own recollection, approximate by design.
+   *  NOT the year in the data: Northridge is a 1994 earthquake, the seismicity
+   *  piece spans 1900–2014. Also not the publish date; four of the Tableau
+   *  vizzes were batch-uploaded in July 2019 from coursework 1–2 years older.
+   *  Drives the gallery's default recent-first order. */
+  year: number;
   title: string;
   editorialTitle: string[];   // headline split for italic treatment
   subtitle: string;
@@ -232,6 +238,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "ocean-currents",
     index: "01",
+    year: 2022,
     title: "Mapping Ocean Currents",
     editorialTitle: ["The Gulf Stream,", "made visible."],
     subtitle: "Physical Oceanography · Current Velocity · Atlantic Basin",
@@ -262,6 +269,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "chattooga",
     index: "02",
+    year: 2017,
     title: "Riparian Buffer on the Chattooga",
     editorialTitle: ["The river as", "terrain."],
     subtitle: "Chattooga River Gorge · Terrain Profile with Canopy · 1,008–1,714 ft",
@@ -291,6 +299,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "solar-agriculture",
     index: "03",
+    year: 2019,
     title: "Solar Applications in Agriculture",
     editorialTitle: ["Town Creek Farms —", "solar at field scale."],
     subtitle: "Global Solar Irradiance · Summer Solstice · 82°46'W 34°37'N",
@@ -324,6 +333,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "societal-health",
     index: "04",
+    year: 2019,
     title: "Societal Health Metrics in the US",
     editorialTitle: ["Where health", "is unevenly held."],
     subtitle: "County-Level Composite Health Index · CONUS · 2024",
@@ -360,6 +370,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "refugee-displacement",
     index: "05",
+    year: 2022,
     title: "International Refugee Displacement",
     editorialTitle: ["Movement as", "data."],
     subtitle: "Global Forced Migration Flows · UNHCR 2023",
@@ -389,6 +400,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "dc-satellite",
     index: "06",
+    year: 2025,
     title: "DC Satellite Imagery Monitoring",
     editorialTitle: ["Watching the", "infrastructure grow."],
     subtitle: "AI Data Center Expansion · Satellite Time Series · Northern Virginia",
@@ -420,6 +432,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "dc-parcels",
     index: "07",
+    year: 2026,
     title: "DC Parcel Dashboard",
     editorialTitle: ["Land as", "infrastructure."],
     subtitle: "AI Data Center Site Acquisition · Parcel Analysis · NOVA Corridor",
@@ -465,6 +478,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "hexbin",
     index: "08",
+    year: 2026,
     title: "Where Knowledge Concentrates",
     editorialTitle: ["Where knowledge", "concentrates."],
     subtitle: "US PhD Concentration · CONUS Hexbin · ACS 2024",
@@ -497,6 +511,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "passing-network",
     index: "09",
+    year: 2026,
     title: "The Shape of a Team",
     editorialTitle: ["The shape", "of a team."],
     subtitle: "Passing Network × Centrality Analysis · Inter Miami CF",
@@ -525,6 +540,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "rankflow",
     index: "10",
+    year: 2026,
     title: "The Season in Ribbons",
     editorialTitle: ["The season", "in ribbons."],
     subtitle: "MLS Standing Flows · 33 Matchweeks · 30 Teams",
@@ -555,6 +571,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "geocode-swirl",
     index: "11",
+    year: 2026,
     title: "Inside the Pipeline",
     editorialTitle: ["Inside", "the pipeline."],
     subtitle: "Geospatial Code Swirl · Self-Portrait as Workflow",
@@ -579,6 +596,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-dashboard",
     index: "12",
+    year: 2026,
     title: "MLS Analytics Dashboard",
     editorialTitle: ["Analytics as", "craft."],
     subtitle: "Full-Stack Sports Analytics · 881 Players · 30 Teams · 2025 Season",
@@ -626,6 +644,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "toxic-release",
     index: "13",
+    year: 2017,
     title: "Facility Emissions & Toxic Release",
     editorialTitle: ["Where the air", "carries a cost."],
     subtitle: "EPA & EIA Facility-Level Emissions · Midwest Corridor",
@@ -660,6 +679,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "global-temperatures",
     index: "14",
+    year: 2017,
     title: "A Century and a Half of Warming",
     editorialTitle: ["A century of", "rising heat."],
     subtitle: "Global Surface Temperature Anomaly · 1850–2020s",
@@ -694,6 +714,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mt-rainier-topo",
     index: "15",
+    year: 2017,
     title: "Mount Rainier, Rendered in Relief",
     editorialTitle: ["A mountain,", "measured."],
     subtitle: "3D Topographic Symbology · USGS 30m DEM",
@@ -723,6 +744,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "politics-uk",
     index: "16",
+    year: 2017,
     title: "Politics in the U.K.",
     editorialTitle: ["How presentation", "shapes the message."],
     subtitle: "2015 UK General Election · Classification & Symbology Study",
@@ -751,6 +773,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "sf-crime",
     index: "17",
+    year: 2018,
     title: "Fighting Crime with GIS and R",
     editorialTitle: ["Where the city", "runs hot."],
     subtitle: "San Francisco Crime Hotspot Analysis · Getis-Ord Gi*",
@@ -787,6 +810,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "storm-tracking",
     index: "18",
+    year: 2018,
     title: "Storm Tracking",
     editorialTitle: ["Every storm,", "a thread."],
     subtitle: "Atlantic & Gulf Storm Track Visualization",
@@ -815,6 +839,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "northridge-earthquake",
     index: "19",
+    year: 2018,
     title: "Tremors in Northridge",
     editorialTitle: ["Ten seconds", "that moved a valley."],
     subtitle: "1994 Northridge Earthquake · Magnitude 6.7 · Southern California",
@@ -846,6 +871,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "us-migration-flows",
     index: "20",
+    year: 2024,
     title: "US State Migration Flows",
     editorialTitle: ["Where America", "is moving."],
     subtitle: "2023 US Census Bureau State-to-State Migration",
@@ -881,6 +907,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "vehicle-fuel-efficiency",
     index: "21",
+    year: 2018,
     title: "Analysis of Vehicle Fuel Efficiency",
     editorialTitle: ["Efficiency,", "by the class."],
     subtitle: "Fuel Efficiency Dashboard · Make, Model, Class, Cylinder Count",
@@ -913,6 +940,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "urban-growth",
     index: "22",
+    year: 2020,
     title: "Visualizing Urban Growth",
     editorialTitle: ["A city,", "by building age."],
     subtitle: "Building Age Analysis in R · INSPIRE Building Footprints",
@@ -943,6 +971,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "agent-flow-visualizer-gallery",
     index: "23",
+    year: 2026,
     title: "Visualizing the Machine That Built This Site",
     editorialTitle: ["The agents,", "made visible."],
     subtitle: "Multi-Agent Orchestration · 57 Tasks · 20 Days",
@@ -974,6 +1003,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "earth-from-above",
     index: "24",
+    year: 2019,
     title: "Earth from Above",
     editorialTitle: ["The whole planet,", "one lens."],
     subtitle: "Global Remote Sensing Survey · SOLARGIS",
@@ -1003,6 +1033,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "dc-consensus-model",
     index: "25",
+    year: 2026,
     title: "AI Data Center Consensus Tracker",
     editorialTitle: ["Nine sources,", "one map."],
     subtitle: "Geospatial Intelligence Platform · 120 Campuses · 280 Buildings",
@@ -1034,6 +1065,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "brain-mri-explorer",
     index: "26",
+    year: 2026,
     title: "The Terrain Inside",
     editorialTitle: ["The terrain", "inside."],
     subtitle: "Interactive 3D Brain Explorer · DICOM → WebGL · Own MRI, 2026",
@@ -1059,6 +1091,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "dc-graveyard",
     index: "27",
+    year: 2026,
     title: "The Data Center Graveyard",
     editorialTitle: ["Where the buildout", "stalls."],
     subtitle: "At-Risk & Failed Data Center Projects · 28 Sites · 11 States",
@@ -1085,6 +1118,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "chrono-sankey",
     index: "28",
+    year: 2025,
     title: "The Bible, Reordered",
     editorialTitle: ["Two orders,", "one canon."],
     subtitle: "Canonical vs. Chronological Order · 66 Books → 14 Eras · Sankey",
@@ -1110,6 +1144,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "jesus-world",
     index: "29",
+    year: 2026,
     title: "Jesus's World",
     editorialTitle: ["An atlas of", "the Gospels."],
     subtitle: "Interactive Atlas · Ministry Map & Timeline · AD 29–33",
@@ -1140,6 +1175,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "pauls-world",
     index: "30",
+    year: 2026,
     title: "Paul's World",
     editorialTitle: ["The journeys,", "traced."],
     subtitle: "Missionary Journeys & Letters · Interactive Map · AD 46–67",
@@ -1170,6 +1206,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "bible-timeline",
     index: "31",
+    year: 2026,
     title: "Bible Timeline",
     editorialTitle: ["Forty centuries,", "one axis."],
     subtitle: "ESV Chronological · ~4000 BC – AD 95 · Zoomable Timeline",
@@ -1200,6 +1237,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "bible-study-library",
     index: "32",
+    year: 2026,
     title: "Bible Study Library",
     editorialTitle: ["Fifty studies,", "one system."],
     subtitle: "Resource Library · 48+ Studies · 58+ Word Studies · 3 Apps",
@@ -1230,6 +1268,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "holy-spirit-study",
     index: "33",
+    year: 2026,
     title: "The Holy Spirit in Scripture",
     editorialTitle: ["Eighteen months,", "ninety-six observations."],
     subtitle: "Study App · 96 Observations · 10 Characteristics · Genesis → Revelation",
@@ -1260,6 +1299,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "tcf-elevation",
     index: "34",
+    year: 2025,
     title: "The Shape of the Ground",
     editorialTitle: ["Bare earth,", "and everything on it."],
     subtitle: "Town Creek Farms · DEM vs DSM · Canopy Structure from UAV Survey",
@@ -1290,6 +1330,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "tcf-illumination",
     index: "35",
+    year: 2025,
     title: "Where the Light Falls, Hour by Hour",
     editorialTitle: ["The day,", "in twelve panels."],
     subtitle: "Town Creek Farms · Hourly Illumination Model · Terrain-Shadowed",
@@ -1318,6 +1359,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "uav-photogrammetry",
     index: "36",
+    year: 2019,
     title: "Flying the Survey",
     editorialTitle: ["Photographs,", "turned into ground."],
     subtitle: "UAV Photogrammetry · Dense Point Cloud → Classified Surface",
@@ -1348,6 +1390,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-shotmap",
     index: "37",
+    year: 2026,
     title: "Every Shot, Weighted",
     editorialTitle: ["Twenty-one shots,", "one expected goal."],
     subtitle: "3D Shot Map × xG · Inter Miami 4–0 Toronto FC · 21 Shots",
@@ -1379,6 +1422,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "scid-access",
     index: "38",
+    year: 2024,
     title: "How Far Is Care",
     editorialTitle: ["Twenty-five centers,", "and the drive to reach them."],
     subtitle: "VHA SCI/D System of Care · Drive-Time Catchments · FY2019–FY2023",
@@ -1407,6 +1451,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "scid-population",
     index: "39",
+    year: 2024,
     title: "Where the Veterans Are",
     editorialTitle: ["A population,", "moving."],
     subtitle: "VHA SCI/D · Catchment Population & Five-Year Net Change · FY2019–FY2023",
@@ -1440,6 +1485,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "scid-utilization",
     index: "40",
+    year: 2024,
     title: "Two and a Half Million Encounters",
     editorialTitle: ["Every visit,", "counted."],
     subtitle: "VHA SCI/D · 142 Facilities · 36,999 Patients · 2.5M Encounters",
@@ -1470,6 +1516,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-attendance",
     index: "41",
+    year: 2026,
     title: "What a Visiting Club Is Worth",
     editorialTitle: ["Who fills", "the stadium."],
     subtitle: "Attendance Analytics · Road Draw vs Home Baseline · Avg 26,496",
@@ -1499,6 +1546,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-budget",
     index: "42",
+    year: 2026,
     title: "What a Roster Costs",
     editorialTitle: ["One salary cap,", "many ways around it."],
     subtitle: "Team Budget · Designated Players / TAM / Regular · MLSPA Disclosure",
@@ -1524,6 +1572,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-player-stats",
     index: "43",
+    year: 2026,
     title: "Volume Against Finishing",
     editorialTitle: ["Who shoots,", "and who scores."],
     subtitle: "Player Comparison · Configurable Axes · Season Leaders",
@@ -1549,6 +1598,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "mls-travel",
     index: "44",
+    year: 2026,
     title: "The Cost of the Away Leg",
     editorialTitle: ["Miles travelled,", "points dropped."],
     subtitle: "Travel Burden × Away Performance · PPG Drop by Club",
@@ -1574,6 +1624,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "hawaii-topo",
     index: "45",
+    year: 2025,
     title: "Sea Floor to Summit",
     editorialTitle: ["Fourteen thousand feet,", "and the water around it."],
     subtitle: "Hawai'i Island · Stacked Contours · 100–14,000 m · Blender",
@@ -1603,6 +1654,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "earthquakes-global",
     index: "46",
+    year: 2018,
     title: "A Century of Tremors",
     editorialTitle: ["Every quake,", "1900 to 2014."],
     subtitle: "Global Seismicity · Magnitude × Depth × Time · 1900–2014",
@@ -1632,6 +1684,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   {
     id: "tcf-solar",
     index: "47",
+    year: 2025,
     title: "The Solar Year on One Field",
     editorialTitle: ["Four corners", "of the calendar."],
     subtitle: "Town Creek Farms · Seasonal Solar Radiation · Equinox to Solstice",
@@ -1665,6 +1718,35 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
   },
 ];
 
+/** Domain order: broadly newest-first, with the tie among 2026 broken
+ *  deliberately rather than alphabetically.
+ *
+ *  Median year per domain, for reference:
+ *    Sports 2026 · History & Religion 2026 · AI Infrastructure 2026
+ *    Healthcare 2024 · Civic & Public Data 2020 · Environmental 2019
+ *
+ *  Three domains tie at 2026, so a pure median sort decided the top of the
+ *  page on `Object.keys` order and put MLS soccer analytics ahead of Meta.
+ *  That is the opposite of what reordering was for: the audit's finding was
+ *  that the paid work sat at the bottom while personal work led.
+ *
+ *  So the three 2026 domains are ordered by what they argue for — Meta's
+ *  infrastructure work first. Healthcare is then held above Sports despite a
+ *  2024 median, because it is the five-year VA engagement plus the Brain MRI
+ *  piece, and it is the strongest professional evidence on the site. Below
+ *  that the list is genuinely chronological.
+ *
+ *  This is a positioning judgement, not a derivation, and it is written out
+ *  rather than computed so it cannot pretend otherwise. */
+export const DOMAIN_ORDER: DomainKey[] = [
+  "infrastructure",
+  "healthcare",
+  "sports",
+  "history",
+  "civic",
+  "environmental",
+];
+
 /* Accent is derived, never authored.
  *
  * It used to be a per-piece field, and 33 of the 47 had drifted off their
@@ -1678,4 +1760,28 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
 export const PROJECTS: Project[] = RAW_PROJECTS.map((p) => ({
   ...p,
   accent: DOMAINS[p.domain].accent,
-}));
+})).sort(
+  (a, b) =>
+    b.year - a.year ||
+    DOMAIN_ORDER.indexOf(a.domain) - DOMAIN_ORDER.indexOf(b.domain) ||
+    a.index.localeCompare(b.index),
+);
+
+/* Default order is newest first.
+ *
+ * RAW_PROJECTS stays in catalogue order — `index` is a stable identifier, not a
+ * position. The handoffs and the Decision Log refer to pieces by number ("DC
+ * Graveyard (27)"), so renumbering to match the display order would invalidate
+ * every one of those references. Sorting here instead leaves the file readable
+ * and the numbers citable; a card's "PTA · 27" is a catalogue mark and its year
+ * is the date.
+ *
+ * Why newest first: order used to be order-of-addition, which put five
+ * academic and personal pieces from 2017–2022 in front and left the VA work at
+ * 38–40 and the Brain MRI at 26. The first screen argued that the hobby work
+ * was the portfolio. Sorted by year, the Meta and MLS work leads and the
+ * Clemson-era pieces close, which is also the career arc read backwards.
+ *
+ * Ties break on `index` so the order is deterministic — twenty pieces share
+ * 2026, and an unstable sort would reshuffle the gallery between renders. */
+
