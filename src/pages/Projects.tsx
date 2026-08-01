@@ -22,6 +22,7 @@ import PageTransition from "@/components/animations/PageTransition";
 import { useIsMobile } from "@/hooks/useMobile";
 import { Link } from "wouter";
 import {
+  DOMAIN_ORDER,
   DOMAINS,
   PROJECTS,
   TECHS,
@@ -385,7 +386,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
                 textAlign: "right",
               }}
             >
-              PTA · {p.index}
+              PTA · {p.index} · {p.year}
               {p.link && (
                 <div style={{ marginTop: 4 }}>
                   <a
@@ -455,7 +456,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                     color: "rgb(var(--fg-rgb) / 0.15)",
                   }}
                 >
-                  PTA · {p.index}
+                  PTA · {p.index} · {p.year}
                 </span>
               </div>
             </div>
@@ -638,7 +639,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                     color: "rgb(var(--fg-rgb) / 0.2)",
                   }}
                 >
-                  PTA · {section.hero.index}
+                  PTA · {section.hero.index} · {section.hero.year}
                 </span>
                 {section.hero.caseStudy && (
                   <div style={{ marginTop: 3 }}>
@@ -795,9 +796,13 @@ function SupportingGrid({ projects }: { projects: Project[] }) {
 function LayoutDomain({ projects }: { projects: Project[] }) {
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "4rem" }}>
-      {(Object.entries(DOMAINS) as [DomainKey, typeof DOMAINS[DomainKey]][]).map(
-        ([key, domain]) => {
-          const domainProjects = projects.filter((p) => p.domain === key);
+      {/* DOMAIN_ORDER, not Object.entries — object key order is the order the
+          domains happen to be declared in, which put Environmental (the oldest
+          work, median 2019) first. Sections now run newest-median first, so the
+          Meta and MLS chapters lead and Clemson closes. */}
+      {DOMAIN_ORDER.map((key) => {
+        const domain = DOMAINS[key];
+        const domainProjects = projects.filter((p) => p.domain === key);
           if (domainProjects.length === 0) return null;
           return (
             <section key={key}>
@@ -926,9 +931,8 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                 ))}
               </div>
             </section>
-          );
-        }
-      )}
+        );
+      })}
     </div>
   );
 }
@@ -1307,16 +1311,16 @@ export default function Projects() {
             }}
           >
             <Facet name="Industry" activeCount={industries.size}>
-              {(Object.entries(DOMAINS) as [DomainKey, (typeof DOMAINS)[DomainKey]][]).map(
-                ([key, d]) => (
-                  <FilterPill
-                    key={key}
-                    label={d.label}
-                    active={industries.has(key)}
-                    onClick={() => setIndustries(toggleIn(industries, key))}
-                  />
-                )
-              )}
+              {/* Same order as the By Domain sections, so the filter and the
+                  layout present the domains in the same sequence. */}
+              {DOMAIN_ORDER.map((key) => (
+                <FilterPill
+                  key={key}
+                  label={DOMAINS[key].label}
+                  active={industries.has(key)}
+                  onClick={() => setIndustries(toggleIn(industries, key))}
+                />
+              ))}
             </Facet>
 
             <Facet name="Technique" activeCount={techs.size}>
