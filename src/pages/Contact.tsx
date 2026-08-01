@@ -3,11 +3,23 @@
  * Design: "Forged Monolith" — warm amber accent, neumorphic form cards
  * Content: Personal portfolio voice for Patrick Anderson
  */
+import { useState } from "react";
 import FadeIn from "@/components/animations/FadeIn";
 import PageTransition from "@/components/animations/PageTransition";
 import Photo from "@/components/Photo";
 import { Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import { toast } from "sonner";
+
+/** Formspree "Guest Book" form, Professional Website project.
+ *
+ *  Safe to keep in client source — a Formspree endpoint is designed to sit in
+ *  public HTML and is not a credential. Spam is handled by Formspree's own
+ *  filtering plus the `_gotcha` honeypot below.
+ *
+ *  If this site moves to a custom domain, the endpoint keeps working, but
+ *  Formspree's "Restrict to Domain" setting (currently unset) will need the
+ *  new host — same list as the three hardcoded .vercel.app URLs in index.html. */
+const FORM_ENDPOINT = "https://formspree.io/f/mdaqrwlo";
 
 const contactLinks = [
   {
@@ -37,12 +49,49 @@ const contactLinks = [
 ];
 
 export default function Contact() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  /** The previous version of this called preventDefault, fired a success toast
+   *  and reset the form — and sent nothing anywhere. Every message anyone ever
+   *  typed here was discarded while they were told "I'll be in touch soon."
+   *
+   *  So the rule this replaces it with: the success toast fires ONLY after
+   *  Formspree has accepted the submission. A failure says so and points at
+   *  the mailto, which is the one route that cannot silently fail. */
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success("Message sent! I'll be in touch soon.", {
-      description: "Thank you for reaching out.",
-    });
-    (e.target as HTMLFormElement).reset();
+    const form = e.currentTarget;
+    setSubmitting(true);
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (res.ok) {
+        toast.success("Message sent! I'll be in touch soon.", {
+          description: "Thank you for reaching out.",
+        });
+        form.reset();
+        return;
+      }
+
+      // Formspree returns 4xx with { errors: [{ message, field }] }.
+      const data = await res.json().catch(() => null);
+      const detail = data?.errors?.map((x: { message: string }) => x.message).join(", ");
+      toast.error(detail || "That didn't go through.", {
+        description: "Please email ptander01@gmail.com directly.",
+      });
+    } catch {
+      // Network failure, offline, blocked request — never claim success here.
+      toast.error("Couldn't reach the server.", {
+        description: "Please email ptander01@gmail.com directly.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -228,6 +277,7 @@ export default function Contact() {
                         </label>
                         <input
                           type="text"
+                          name="name"
                           required
                           className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                           style={{
@@ -249,6 +299,7 @@ export default function Contact() {
                         </label>
                         <input
                           type="email"
+                          name="email"
                           required
                           className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                           style={{
@@ -272,6 +323,7 @@ export default function Contact() {
                       </label>
                       <input
                         type="text"
+                        name="_subject"
                         required
                         className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1"
                         style={{
@@ -293,6 +345,7 @@ export default function Contact() {
                         MESSAGE
                       </label>
                       <textarea
+                        name="message"
                         required
                         rows={5}
                         className="neu-concave w-full rounded-lg px-4 py-3 font-display text-sm outline-none focus:ring-1 resize-none"
@@ -304,17 +357,42 @@ export default function Contact() {
                       />
                     </div>
 
+                    {/* Honeypot. Formspree discards any submission where
+                        `_gotcha` is filled; a human never sees this field, a
+                        naive bot fills every input it finds. Moved off-screen
+                        rather than display:none, which some bots detect and
+                        skip, and taken out of the tab order and the
+                        accessibility tree so it cannot trap a keyboard or
+                        screen-reader user. */}
+                    <input
+                      type="text"
+                      name="_gotcha"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      aria-hidden="true"
+                      style={{
+                        position: "absolute",
+                        left: "-9999px",
+                        width: 1,
+                        height: 1,
+                        opacity: 0,
+                      }}
+                    />
+
                     <button
                       type="submit"
+                      disabled={submitting}
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 rounded-lg font-display font-semibold text-sm transition-all"
                       style={{
                         color: "var(--primary-foreground)",
                         background: "var(--amber)",
                         boxShadow:
                           "0 4px 12px rgba(255, 179, 71, 0.3), 0 0 20px rgba(255, 179, 71, 0.1)",
+                        opacity: submitting ? 0.6 : 1,
+                        cursor: submitting ? "wait" : "pointer",
                       }}
                     >
-                      SEND MESSAGE
+                      {submitting ? "SENDING…" : "SEND MESSAGE"}
                     </button>
                   </div>
                 </form>
