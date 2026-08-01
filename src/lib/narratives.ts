@@ -26,6 +26,58 @@ export type Narrative = {
 };
 
 export const narratives: Record<string, Narrative> = {
+  /* Built from Patrick's own executive summary for the VHA SCI/D National
+     Program Office — the same document published at
+     /writing/Anderson-VHA-SCID-Catchment-Area-Executive-Summary.pdf. Sentences
+     are his, compressed; the report's register is formal, so the tone is too.
+     Everything here is facility- or territory-level, which clears the
+     county-level de-identification standard by a wide margin. */
+  "scid-access": {
+    tone: "formal",
+    standfirst:
+      "On 23 April 2024 the SCI/D program office asked, for each of 25 catchment areas: who can actually reach care, and is that changing?",
+    paragraphs: [
+      "The system runs as 25 hub centers with 122 spokes feeding them. To ask who can reach it, each facility first needed a territory — and a territory drawn by straight-line distance would have been wrong from the outset, because Veterans do not drive in straight lines. Thiessen polygons were generated for all 147 facilities and weighted by road network rather than Euclidean distance, over a study area of 3,655,250 square miles. The average hub territory came to 146,210 square miles; the average spoke, 24,775.",
+      "Veteran addresses were geocoded and assigned with the Closest Facility tool from the Network Analyst toolset, run twice — once against the closest hub, once against the closest hub-or-spoke, because those answer different questions for a program deciding where to put capacity. Commute was then summarized per territory for each of five fiscal years.",
+      "The spread between territories is large and it is structural. Average Veteran commute by hub territory ranged from 37 miles in San Juan to 266 in Seattle, which also covers Alaska. Spoke territories averaged 46 miles, from 10 at the closest to 182 at the furthest.",
+      "The change over those five years was almost nothing. The average commute across the hub system moved from 143.6 miles to 144.4 — a net of one mile nationally — and every hub's percentage change fell between -9 and +4 percent. A system that looks volatile territory by territory turned out to be remarkably stable in aggregate.",
+      "The intuition worth testing was that territories gaining Veterans should be the ones drawing them closer. A simple linear regression between five-year net change in population and five-year net change in average commute returned no relationship at all, for hubs and spokes alike (R² = 0). A pairwise comparison of facilities that cleared ±2 standard deviations on both measures isolated a handful of hubs — Memphis, Aurora, Long Beach, Syracuse — and no spokes at all.",
+      "One note on reading the maps. Percentage change in average commute by hub was all between -9 and 4 percent. So while the color symbology covers an extreme range of dark and light diverging hues that seems to suggest significant relative change, the data itself tempers that message. If we were to stretch the color ramp from -100 to +100 percent change, all 25 values would be in the pale purple and orange classes.",
+    ],
+    credits: [
+      {
+        label: "Delivered",
+        lines: [
+          "Two presentations (all diagnoses; SCI diagnosis only)",
+          "Executive summary · population tables · mapping products",
+          "ESRI ArcGIS Pro 3.3 — Network Analyst, Closest Facility",
+        ],
+      },
+    ],
+  },
+
+  "scid-population": {
+    tone: "formal",
+    standfirst:
+      "The same 147 territories, asked a different question: not how many Veterans, but which territories are quietly changing shape.",
+    paragraphs: [
+      "Annual population for 25,157 Veterans was summarized to every hub and spoke territory across FY2019–FY2023. Hub territories averaged 991 Veterans, ranging from 253 in Hampton to 2,257 in Augusta. Spokes averaged 170, from 25 in Hawai\u2019i to 824 in Dallas.",
+      "The analysis was run four times rather than once. The study population was split by diagnosis category — all diagnoses, and spinal cord injury only — and then by facility status, hub and spoke. Four parallel sub-analyses, delivered as two separate documents, because a program office planning hub capacity and one planning spoke coverage are not reading the same report.",
+      "Net growth across the whole system was 240 Veterans over five years, an average of 60 a year. Reported alone, that describes a system barely moving. The annual series says something else: a drop of 784 Veterans in FY22 followed by a rebound of 836 in FY23. The net is real, and so is the shock underneath it — which is the argument for publishing both.",
+      "Change was expressed five ways — annual, five-year net, five-year average, annual percentage and five-year percentage — and then converted to standard deviations. That last step is what makes the ranking honest: it measures each facility against the distribution rather than against its neighbours, so a large absolute change in a large territory is not mistaken for an unusual one. Only Aurora, at +237, cleared two standard deviations among the hubs. Richmond, Memphis, Long Beach, Cleveland, Boston and Syracuse cleared one.",
+      "Measured as a percentage instead, a different set of facilities surfaces — Grand Junction at +59 percent, Beckley and Martinsburg at 36. Small territories move a long way in percentage terms on modest absolute numbers, which is exactly why both framings were reported rather than whichever one told a cleaner story.",
+    ],
+    credits: [
+      {
+        label: "Scope",
+        lines: [
+          "25,157 Veterans · 25 hubs · 122 spokes · FY2019–FY2023",
+          "Two cohorts × two facility tiers = four parallel analyses",
+        ],
+      },
+    ],
+  },
+
   "solar-agriculture": {
     tone: "field-notes",
     standfirst:
