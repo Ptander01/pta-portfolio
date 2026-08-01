@@ -1425,7 +1425,8 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     year: 2024,
     title: "How Far Is Care",
     editorialTitle: ["Twenty-five centers,", "and the drive to reach them."],
-    subtitle: "VHA SCI/D System of Care · Drive-Time Catchments · FY2019–FY2023",
+    subtitle:
+      "VHA SCI/D System of Care · Road-Network Catchments · FY2019–FY2023",
     category: "Healthcare Access · Spatial Epidemiology",
     domain: "healthcare",
     tech: ["gis", "statistics", "analytics"],
@@ -1433,18 +1434,19 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: false,
     subtype: "Access & Catchments",
     description:
-      "The VA's Spinal Cord Injury and Disorder system runs as 25 hub centers with spokes feeding them, and the question posed was who can actually reach it. Catchments were drawn around each center by road-network commute rather than straight-line distance, then travel burden was tracked across five fiscal years to find where Veterans were drifting further from their care.",
+      "The VA's Spinal Cord Injury and Disorder system runs as 25 hub centers with 122 spokes feeding them, and the question the program office posed in April 2024 was who can actually reach it. Territories were built as Thiessen polygons weighted by road network rather than straight-line distance, across a 3.66 million square-mile study area, then every Veteran's commute was measured to their closest hub and closest hub-or-spoke and tracked across five fiscal years.",
     insight:
-      "Proximity on a map is not access. Once a catchment is drawn by drive time instead of distance, territories that look balanced on paper turn out to carry very different travel burdens — and the fastest-growing ones are not always nearest a center.",
+      "Across five fiscal years the average commute moved by one mile nationally, and no hub shifted more than nine percent in either direction. What did not move was the gap between territories: the average Veteran in Seattle's catchment drives 266 miles to care, in San Juan's 37. Growth does not close that gap — regressed against five-year population change, commute change returned R² = 0.",
     method:
-      "Catchment areas modeled as network-weighted proximity polygons accounting for road commute rather than Euclidean distance (ArcGIS Pro 3.3). Closest-facility analysis from the Network Analyst toolset, run against both closest hub and closest hub-or-spoke, summarized by territory across FY2019–FY2023 and tested for correlation against population change.",
+      "Thiessen polygons generated for 25 hub territories and 122 spokes, weighted by road-network commute rather than Euclidean distance (ArcGIS Pro 3.3). Veteran addresses geocoded and assigned with the Closest Facility tool from the Network Analyst toolset, run twice — closest hub, and closest hub-or-spoke. Commute summarized per territory per fiscal year, then change expressed five ways: annual, five-year net, five-year average, annual percentage and five-year percentage, with net change converted to standard deviations to separate signal from noise. Simple linear regression and a pairwise ±2 SD comparison tested commute change against population change.",
     image: "/images/work/scid-access.webp",
     images: [
       "/images/work/scid-access.webp",
       "/images/work/scid-access-2.webp",
     ],
     imageCrop: "center",
-    source: "Client: VHA SCI/D · Method: Network catchments · Closest Facility · ArcGIS Pro 3.3",
+    source:
+      "Client: VHA SCI/D National Program Office · 147 facility territories · FY2019–FY2023 · ArcGIS Pro 3.3",
     tags: ["Healthcare Access", "Network Analysis", "Drive Time", "VHA", "Spatial Epidemiology"],
     hero: true,
   },
@@ -1454,7 +1456,8 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     year: 2024,
     title: "Where the Veterans Are",
     editorialTitle: ["A population,", "moving."],
-    subtitle: "VHA SCI/D · Catchment Population & Five-Year Net Change · FY2019–FY2023",
+    subtitle:
+      "VHA SCI/D · Territory Population & Five-Year Net Change · FY2019–FY2023",
     category: "Population Analysis · Healthcare",
     domain: "healthcare",
     tech: ["gis", "statistics", "analytics"],
@@ -1462,11 +1465,11 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: false,
     subtype: "Population Health",
     description:
-      "Veteran population summarized to every hub territory and spoke across five fiscal years, then expressed in standard deviations so that real movement separates from ordinary year-to-year noise. Paired with the VA's rurality classification, the map shows which territories are growing, which are emptying, and how much of each system sits in rural and highly rural ZIP codes.",
+      "Annual population for 25,157 Veterans summarized to all 147 facility territories across five fiscal years, expressed in standard deviations so that real movement separates from ordinary year-to-year noise. Hub territories averaged 991 Veterans and ranged from 253 to 2,257; spokes averaged 170 and ranged from 25 to 824. The question was not how many, but which territories are quietly changing shape.",
     insight:
-      "Growth and shrinkage were not evenly spread. Some territories gained enough Veterans to change what their center needs to be, while others lost more than a standard deviation — and rurality, not raw headcount, is what turns a population shift into an access problem.",
+      "Net growth across the whole system was 240 Veterans in five years. That figure conceals a 784-Veteran drop in FY22 and an 836-Veteran rebound in FY23 — a system that looks static in summary moved sharply and came back. Of twenty-five hubs, only one cleared two standard deviations from the mean.",
     method:
-      "Annual Veteran population summarized by catchment for FY2019–FY2023. Change measured five ways — annual, five-year net, five-year average, annual percentage, five-year percentage — and normalized to standard deviations for significance. Rurality via the USDA/DHS Rural-Urban Commuting Area (RUCA) classification the VA uses.",
+      "Veteran population summarized by territory and fiscal year, FY2019–FY2023, for two cohorts (all diagnoses, and SCI diagnosis only) across two facility tiers — four parallel analyses. Change measured five ways and normalized to standard deviations, with ±1 and ±2 SD as significance thresholds, so facilities were ranked against the distribution rather than against each other.",
     image: "/images/work/scid-population.webp",
     images: [
       "/images/work/scid-population.webp",
@@ -1478,7 +1481,8 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
       "/images/work/scid-population-7.webp",
     ],
     imageCrop: "center",
-    source: "Client: VHA SCI/D · Population FY2019–FY2023 · RUCA rurality · Change in SD",
+    source:
+      "Client: VHA SCI/D National Program Office · 25,157 Veterans · 25 hubs · 122 spokes · FY2019–FY2023",
     tags: ["Population Analysis", "RUCA", "Rurality", "Change Detection", "VHA"],
     hero: true,
   },
