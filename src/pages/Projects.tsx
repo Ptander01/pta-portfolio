@@ -20,7 +20,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PageTransition from "@/components/animations/PageTransition";
 import { useIsMobile } from "@/hooks/useMobile";
-import { Link } from "wouter";
+import { Link, useSearchParams } from "wouter";
 import {
   DOMAIN_ORDER,
   DOMAINS,
@@ -1121,17 +1121,74 @@ function Facet({
 ───────────────────────────────────────────────────────────── */
 type FormatFilter = "all" | "interactive" | "static";
 
-export default function Projects() {
-  const [layout, setLayout] = useState<LayoutMode>("gallery");
-  const [industries, setIndustries] = useState<ReadonlySet<DomainKey>>(
-    new Set()
-  );
-  const [techs, setTechs] = useState<ReadonlySet<TechKey>>(new Set());
-  const [format, setFormat] = useState<FormatFilter>("all");
+type SortOrder = "newest" | "oldest";
 
-  const handleLayout = useCallback((mode: LayoutMode) => {
-    setLayout(mode);
-  }, []);
+/* View state lives in the query string, not in useState.
+ *
+ * Every control on this page — layout, the three filter facets, sort order —
+ * reads from and writes to the URL, so a view can be linked. That matters
+ * practically: `/projects` was previously the only address this page had, so
+ * there was no way to send someone the environmental work, or the AI
+ * infrastructure work, without asking them to click the filters themselves.
+ *
+ * Derived from the URL rather than mirrored into state. Holding both would
+ * mean keeping them in sync on every change, on back/forward, and on a pasted
+ * link — three places to drift. The URL is simply the source of truth.
+ *
+ * Defaults are omitted from the query string so a clean view stays `/projects`
+ * rather than accumulating `?layout=gallery&sort=newest`, and unknown values
+ * are dropped instead of throwing: a hand-edited or stale link degrades to the
+ * default view rather than an empty gallery. */
+export default function Projects() {
+  const [params, setParams] = useSearchParams();
+
+  const readSet = <T extends string>(
+    key: string,
+    valid: readonly string[]
+  ): ReadonlySet<T> =>
+    new Set(
+      (params.get(key) ?? "")
+        .split(",")
+        .map((v) => v.trim())
+        .filter((v): v is T => valid.includes(v))
+    );
+
+  const rawLayout = params.get("layout") ?? "";
+  const layout: LayoutMode = (
+    rawLayout in LAYOUTS ? rawLayout : "gallery"
+  ) as LayoutMode;
+  const industries = readSet<DomainKey>("industry", DOMAIN_ORDER);
+  const techs = readSet<TechKey>("tech", Object.keys(TECHS));
+  const rawFormat = params.get("format") ?? "";
+  const format: FormatFilter = (
+    ["interactive", "static"].includes(rawFormat) ? rawFormat : "all"
+  ) as FormatFilter;
+  const sort: SortOrder = params.get("sort") === "oldest" ? "oldest" : "newest";
+
+  /** Patch the query string; null or "" removes a key so defaults stay absent.
+   *  `replace` so filtering does not fill the history stack — the back button
+   *  should leave the gallery, not step through every pill the visitor tried. */
+  const update = useCallback(
+    (patch: Record<string, string | null>) => {
+      setParams(
+        (prev) => {
+          const next = new URLSearchParams(prev);
+          for (const [k, v] of Object.entries(patch)) {
+            if (v === null || v === "") next.delete(k);
+            else next.set(k, v);
+          }
+          return next;
+        },
+        { replace: true }
+      );
+    },
+    [setParams]
+  );
+
+  const handleLayout = useCallback(
+    (mode: LayoutMode) => update({ layout: mode === "gallery" ? null : mode }),
+    [update]
+  );
 
   const toggleIn = <T,>(set: ReadonlySet<T>, v: T): Set<T> => {
     const next = new Set(set);
@@ -1140,7 +1197,13 @@ export default function Projects() {
     return next;
   };
 
-  const filtered = PROJECTS.filter(
+  const toggleParam = <T extends string>(
+    key: string,
+    set: ReadonlySet<T>,
+    v: T
+  ) => update({ [key]: Array.from(toggleIn(set, v)).join(",") || null });
+
+  const matched = PROJECTS.filter(
     (p) =>
       (industries.size === 0 || industries.has(p.domain)) &&
       (techs.size === 0 || p.tech.some((t) => techs.has(t))) &&
@@ -1148,14 +1211,24 @@ export default function Projects() {
         (format === "interactive" ? p.hasInteractive : p.hasStatic))
   );
 
+  /* PROJECTS already arrives newest-first. "Oldest" re-sorts rather than
+     reversing, so the domain and index tiebreaks keep pointing the same way in
+     both directions instead of mirroring into a different order. */
+  const filtered =
+    sort === "oldest"
+      ? [...matched].sort(
+          (a, b) =>
+            a.year - b.year ||
+            DOMAIN_ORDER.indexOf(a.domain) - DOMAIN_ORDER.indexOf(b.domain) ||
+            a.index.localeCompare(b.index)
+        )
+      : matched;
+
   const filtersActive =
     industries.size > 0 || techs.size > 0 || format !== "all";
 
-  const clearFilters = () => {
-    setIndustries(new Set());
-    setTechs(new Set());
-    setFormat("all");
-  };
+  const clearFilters = () =>
+    update({ industry: null, tech: null, format: null });
 
   return (
     <PageTransition>
@@ -1318,7 +1391,7 @@ export default function Projects() {
                   key={key}
                   label={DOMAINS[key].label}
                   active={industries.has(key)}
-                  onClick={() => setIndustries(toggleIn(industries, key))}
+                  onClick={() => toggleParam("industry", industries, key)}
                 />
               ))}
             </Facet>
@@ -1329,7 +1402,7 @@ export default function Projects() {
                   key={key}
                   label={label}
                   active={techs.has(key)}
-                  onClick={() => setTechs(toggleIn(techs, key))}
+                  onClick={() => toggleParam("tech", techs, key)}
                 />
               ))}
             </Facet>
@@ -1346,7 +1419,29 @@ export default function Projects() {
                   key={key}
                   label={label}
                   active={format === key}
-                  onClick={() => setFormat(key)}
+                  onClick={() => update({ format: key === "all" ? null : key })}
+                />
+              ))}
+            </Facet>
+
+            {/* Sort sits with the filters rather than in the VIEW AS block:
+                both change what the gallery shows, where VIEW AS changes how
+                the same set is drawn. It is a Facet so it inherits the
+                collapse-on-mobile behaviour the other three already have. */}
+            <Facet name="Sort" activeCount={sort === "newest" ? 0 : 1}>
+              {(
+                [
+                  ["newest", "Newest first"],
+                  ["oldest", "Oldest first"],
+                ] as [SortOrder, string][]
+              ).map(([key, label]) => (
+                <FilterPill
+                  key={key}
+                  label={label}
+                  active={sort === key}
+                  onClick={() =>
+                    update({ sort: key === "newest" ? null : key })
+                  }
                 />
               ))}
             </Facet>

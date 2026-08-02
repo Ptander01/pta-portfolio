@@ -78,6 +78,37 @@ export const narratives: Record<string, Narrative> = {
     ],
   },
 
+  /* From Patrick's two-part write-up on the tool. His words, compressed; the
+     platform scaffolding is dropped per the rule at the top of this file.
+
+     Figures are the ones the DEPLOYED app reports (96 tasks, 546,322 credits,
+     6 projects, 25 days). His posts cite a later snapshot — 101 chats,
+     617,226 credits, 8 projects, 26 days — which the hosted build does not
+     yet show. A card must not promise more than the thing it links to, so the
+     live numbers win until the app is redeployed. */
+  "agent-flow-visualizer-gallery": {
+    tone: "field-notes",
+    standfirst:
+      "I wanted to see how far multi-agent AI could be pushed as a force-multiplier without trading quality for scale. So I ran eight workstreams at once — and then built something to watch it happen.",
+    paragraphs: [
+      "Over 25 days I used Manus AI's Max Agent model to build a large amount of work in parallel: 96 tasks across six projects, 3,559 messages exchanged, 1,717 files created or modified, 546,322 credits consumed, and roughly 1,270 hours of compute. Those numbers are not estimates — they are pulled directly from the Manus API and structured into a local JSON schema that powers the entire visualization.",
+      "As an organized and highly visual person, I wanted to keep track of my progress and the agent's. So I built the Agent Flow Visualizer. React 19, React Flow, Tailwind, Vite, Vercel. The data path is Manus API to structured JSON to client-side rendering, with no backend at all.",
+      "The overview is a node graph: conversations organized into project clusters, a Gantt timeline of the whole build, and a summary pane. That answers what was built. The more interesting half answers how.",
+      "Double-click any task node and three things animate at once. A hexagonal tool-call graph, where every agent action becomes a glowing node — deploying, thinking, installing, git, searching, analyzing, waiting, user input, running — activating and connecting through colour-coded dashed edges into a shifting orbital web. A live event timeline, where individual actions fire as coloured marks along a scrubber, building a rhythm that shows where a session was active and where it stalled. And a session header holding your exact position in the event log, with totals visible throughout.",
+      "The density of that web turned out to be the visual fingerprint of how the agent approached a problem: chaotic and branching when it was debugging, sparse and linear when it was executing cleanly. One portfolio sprint alone produced 266 discrete events over 312 hours of compute, 2,115 credits, and 3,230 lines of code.",
+      "Watching the replay was genuinely useful rather than just interesting. It showed me the flow of a conversation — where I prompted well and where I prompted poorly, and where agent context and output quality began to lag. It is also simply good to watch: the agent pauses to think, fires a cluster of parallel tool calls, hits a deployment failure, retries, searches for context, and stabilises. All of that is legible as pattern before you read a single line of log text.",
+    ],
+    credits: [
+      {
+        label: "Stack",
+        lines: [
+          "React 19 · React Flow · Tailwind CSS · Vite · Vercel",
+          "Manus API → structured JSON → client-side, no backend",
+        ],
+      },
+    ],
+  },
+
   "solar-agriculture": {
     tone: "field-notes",
     standfirst:
