@@ -68,8 +68,12 @@ const skillGroups = [
     label: "Building & Delivery",
     items: [
       "React · TypeScript",
-      "D3 · MapLibre GL",
+      "D3 · MapLibre GL · Leaflet",
+      "deck.gl · Three.js · WebGL",
+      "Vector tiles · PMTiles",
+      "AI-assisted development",
       "Tableau",
+      "SQL",
       "Dashboard architecture",
       "Automation scripting",
       "Technical writing",

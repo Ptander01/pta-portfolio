@@ -974,7 +974,8 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     year: 2026,
     title: "Visualizing the Machine That Built This Site",
     editorialTitle: ["The agents,", "made visible."],
-    subtitle: "Multi-Agent Orchestration · 57 Tasks · 20 Days",
+    subtitle:
+      "Multi-Agent Orchestration · 96 Tasks · 25 Days",
     category: "AI Infrastructure · Meta",
     domain: "infrastructure",
     tech: ["fullstack", "dataviz"],
@@ -982,11 +983,11 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: true,
     subtype: "Pipeline Architecture",
     description:
-      "A standalone node-graph visualization of the multi-agent AI orchestration used to build this entire portfolio ecosystem — 57 tasks, 2,580 messages, and 907 file attachments across 7 parallel projects over 20 days. Project nodes cluster into task nodes; a bottom timeline replays the full execution history.",
+      "A node-graph visualization of the multi-agent AI orchestration behind this entire portfolio ecosystem — 96 tasks, 3,559 messages and 1,717 files across six parallel projects over 25 days, every figure pulled from the Manus API rather than estimated. Project nodes cluster into task nodes; double-clicking any task drops into a replay that animates the agent's actual behaviour, tool call by tool call.",
     insight:
-      "The portfolio itself is the primary artifact. This is the meta-artifact — proof of the workflow that produced it, not just the output.",
+      "The shape of the graph turns out to be diagnostic. A dense, branching web of tool calls means the agent was debugging; a sparse, linear one means it was executing cleanly. You can read how a session went before reading a single line of its log — and, less comfortably, you can see exactly where the prompting was poor.",
     method:
-      "React Flow node graph with dagre layout. Project clusters branch into task nodes; execution timeline drives graph highlighting. Data sourced from the Manus API.",
+      "React Flow node graph with dagre layout; project clusters branch into task nodes and an execution timeline drives graph highlighting. Drill-down replay renders each agent action as a hexagonal node joined by colour-coded edges, with a scrubber firing individual events along a session timeline. Data pulled from the Manus API into a structured local JSON schema and rendered client-side — no backend.",
     image: "/images/work/agent-flow-visualizer.webp",
     images: [
       "/images/work/agent-flow-visualizer.webp",
@@ -996,7 +997,8 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     caseStudy: "agent-flow-visualizer",
     imageCrop: "top",
     link: "https://agentflow-eaqzkikc.manus.space",
-    source: "Data: Manus API · 57 tasks · 2,580 messages · 907 files · Mar 10–29, 2026",
+    source:
+      "Data: Manus API · 96 tasks · 3,559 messages · 1,717 files · Mar 10–Apr 2, 2026",
     tags: ["AI", "Multi-Agent", "React Flow", "Meta"],
     hero: false,
   },
