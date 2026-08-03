@@ -393,6 +393,7 @@ function LayoutCinematic({ projects }: { projects: Project[] }) {
                     href={p.link}
                     target="_blank"
                     rel="noopener noreferrer"
+                    className="card-link"
                     style={{
                       color: p.accent,
                       textDecoration: "none",
@@ -547,6 +548,7 @@ function LayoutEditorial({ projects }: { projects: Project[] }) {
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="card-link"
                   style={{
                     fontFamily: "'Lora', serif",
                     fontSize: "0.875rem",
@@ -645,6 +647,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                   <div style={{ marginTop: 3 }}>
                     <Link
                       href={`/work/${section.hero.caseStudy}`}
+                      className="card-link"
                       style={{
                         fontFamily: "'Space Mono', monospace",
                         fontSize: "0.5rem",
@@ -663,6 +666,7 @@ function LayoutGallery({ projects }: { projects: Project[] }) {
                       href={section.hero.link}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="card-link"
                       style={{
                         fontFamily: "'Space Mono', monospace",
                         fontSize: "0.5rem",
@@ -753,6 +757,7 @@ function SupportingGrid({ projects }: { projects: Project[] }) {
               {p.caseStudy && (
                 <Link
                   href={`/work/${p.caseStudy}`}
+                  className="card-link"
                   style={{
                     fontFamily: "'Space Mono', monospace",
                     fontSize: "0.5rem",
@@ -769,6 +774,7 @@ function SupportingGrid({ projects }: { projects: Project[] }) {
                   href={p.link}
                   target="_blank"
                   rel="noopener noreferrer"
+                  className="card-link"
                   style={{
                     fontFamily: "'Space Mono', monospace",
                     fontSize: "0.5rem",
@@ -913,6 +919,7 @@ function LayoutDomain({ projects }: { projects: Project[] }) {
                           href={p.link}
                           target="_blank"
                           rel="noopener noreferrer"
+                          className="card-link"
                           style={{
                             fontFamily: "'Space Mono', monospace",
                             fontSize: "0.5rem",

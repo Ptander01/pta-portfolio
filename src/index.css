@@ -1599,6 +1599,29 @@
   .facet-options > * { transition-duration: 0.01ms; transform: none; }
 }
 
+/* ══ Card outbound links ══
+   "View live ↗" and "Case study →" on the gallery cards. They are 8px inline
+   text with no box of their own, which on a phone measures 63x12px — and
+   "View live" is the primary conversion action on roughly thirty cards, the
+   thing a reader taps to see that the work is real.
+
+   These have to be reachable from CSS rather than set inline: the five sites
+   that render them each carry their own inline font and colour, and an inline
+   style beats a media query. Only the touch sizing lives here, so each link
+   keeps its layout's own type treatment.
+
+   Real box, not a `::after` hit area: in the By Domain layout "Case study"
+   and "View live" stack 15px apart, so an expanded pseudo-element would have
+   each link overlapping the other and taps would misroute between two
+   different destinations. Growing the boxes cannot do that. */
+@media (max-width: 767px) {
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+}
+
 /* ══ Career timeline — symbology control ══
    A control, so it takes the chrome treatment from the texture-zoning table:
    glass + neumorphic lip, same language as the gallery facet pills. The
