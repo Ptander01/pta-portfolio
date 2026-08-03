@@ -1,0 +1,93 @@
+﻿Traditional,SourceRank,SourceRAw,Chronological,Value
+01 Genesis,1,Genesis,01-Genesis & Patriarchs,1533
+02 Exodus,2,Exodus,03-Exodus & The Law,1213
+03 Leviticus,3,Leviticus,03-Exodus & The Law,859
+04 Numbers,4,Numbers,03-Exodus & The Law,1288
+05 Deuteronomy,5,Deuteronomy,03-Exodus & The Law,959
+06 Joshua,6,Joshua,04-Conquest & Judges,658
+07 Judges,7,Judges,04-Conquest & Judges,618
+08 Ruth,8,Ruth,04-Conquest & Judges,85
+09 1 Samuel,9,1 Samuel,04-Conquest & Judges,404
+09 1 Samuel,9,1 Samuel,05-United Kingdom (Saul & David),407
+10 2 Samuel,10,2 Samuel,05-United Kingdom (Saul & David),695
+10 2 Samuel,10,2 Samuel,06-Psalms & Wisdom (Davidic),39
+11 1 Kings,11,1 Kings,06-Psalms & Wisdom (Davidic),2
+11 1 Kings,11,1 Kings,07-Solomon & Wisdom,355
+11 1 Kings,11,1 Kings,08-Divided Kingdom,717
+12 2 Kings,11,2 Kings,08-Divided Kingdom,623
+12 2 Kings,11,2 Kings,09-Prophets to Israel & Judah,129
+12 2 Kings,11,2 Kings,10-Exile,40
+13 1 Chronicles,12,1 Chronicles,01-Genesis & Patriarchs,152
+13 1 Chronicles,12,1 Chronicles,04-Conquest & Judges,255
+13 1 Chronicles,12,1 Chronicles,05-United Kingdom (Saul & David),255
+13 1 Chronicles,12,1 Chronicles,06-Psalms & Wisdom (Davidic),188
+13 1 Chronicles,12,1 Chronicles,09-Prophets to Israel & Judah,2
+13 1 Chronicles,12,1 Chronicles,10-Exile,15
+13 1 Chronicles,12,1 Chronicles,11-Return from Exile,62
+14 2 Chronicles,13,2 Chronicles,07-Solomon & Wisdom,208
+14 2 Chronicles,13,2 Chronicles,08-Divided Kingdom,559
+14 2 Chronicles,13,2 Chronicles,10-Exile,122
+14 2 Chronicles,13,2 Chronicles,11-Return from Exile,2
+15 Ezra,14,Ezra,11-Return from Exile,280
+16 Nehemiah,15,Nehemiah,11-Return from Exile,406
+17 Esther,16,Esther,11-Return from Exile,167
+18 Job,17,Job,02-Job,1070
+19 Psalm,18,Psalm,04-Conquest & Judges,17
+19 Psalm,18,Psalm,05-United Kingdom (Saul & David),210
+19 Psalm,18,Psalm,06-Psalms & Wisdom (Davidic),1902
+19 Psalm,18,Psalm,07-Solomon & Wisdom,37
+19 Psalm,18,Psalm,08-Divided Kingdom,20
+19 Psalm,18,Psalm,09-Prophets to Israel & Judah,85
+19 Psalm,18,Psalm,10-Exile,137
+19 Psalm,18,Psalm,11-Return from Exile,474
+20 Proverbs,19,Proverbs,07-Solomon & Wisdom,654
+20 Proverbs,19,Proverbs,09-Prophets to Israel & Judah,155
+21 Ecclesiastes,20,Ecclesiastes,07-Solomon & Wisdom,222
+22 Song of Solomon,21,Song of Solomon,07-Solomon & Wisdom,117
+23 Isaiah,22,Isaiah,09-Prophets to Israel & Judah,118
+23 Isaiah,22,Isaiah,10-Exile,1176
+24 Jeremiah,23,Jeremiah,10-Exile,1051
+25 Lamentations,24,Lamentations,10-Exile,154
+26 Ezekiel,25,Ezekiel,10-Exile,1118
+26 Ezekiel,25,Ezekiel,11-Return from Exile,161
+27 Daniel,26,Daniel,10-Exile,103
+27 Daniel,26,Daniel,11-Return from Exile,254
+28 Hosea,27,Hosea,09-Prophets to Israel & Judah,197
+29 Joel,28,Joel,11-Return from Exile,73
+30 Amos,29,Amos,09-Prophets to Israel & Judah,146
+31 Obadiah,30,Obadiah,11-Return from Exile,21
+32 Jonah,31,Jonah,09-Prophets to Israel & Judah,48
+33 Micah,32,Micah,09-Prophets to Israel & Judah,62
+34 Nahum,33,Nahum,10-Exile,47
+35 Habakkuk,34,Habakkuk,10-Exile,56
+36 Zephaniah,35,Zephaniah,10-Exile,53
+37 Haggai,36,Haggai,11-Return from Exile,38
+38 Zechariah,37,Zechariah,11-Return from Exile,211
+39 Malachi,38,Malachi,11-Return from Exile,55
+40 Matthew,39,Matthew,12-Life of Christ,963
+41 Mark,40,Mark,12-Life of Christ,678
+42 Luke,41,Luke,12-Life of Christ,1151
+43 John,42,John,12-Life of Christ,786
+44 Acts,43,Acts,13-The Early Church & Pauls Letters,1007
+45 Romans,44,Romans,13-The Early Church & Pauls Letters,433
+46 1 Corinthians,45,1 Corinthians,13-The Early Church & Pauls Letters,437
+47 2 Corinthians,46,2 Corinthians,13-The Early Church & Pauls Letters,257
+48 Galatians,47,Galatians,13-The Early Church & Pauls Letters,149
+49 Ephesians,48,Ephesians,13-The Early Church & Pauls Letters,155
+50 Philippians,49,Philippians,13-The Early Church & Pauls Letters,104
+51 Colossians,50,Colossians,13-The Early Church & Pauls Letters,95
+52 1 Thessalonians,51,1 Thessalonians,13-The Early Church & Pauls Letters,89
+53 2 Thessalonians,52,2 Thessalonians,13-The Early Church & Pauls Letters,47
+54 1 Timothy,53,1 Timothy,14-General Epistles & Revelation,113
+55 2 Timothy,54,2 Timothy,14-General Epistles & Revelation,83
+56 Titus,55,Titus,14-General Epistles & Revelation,46
+57 Philemon,56,Philemon,13-The Early Church & Pauls Letters,25
+58 Hebrews,57,Hebrews,14-General Epistles & Revelation,303
+59 James,58,James,14-General Epistles & Revelation,108
+60 1 Peter,59,1 Peter,14-General Epistles & Revelation,105
+61 2 Peter,60,2 Peter,14-General Epistles & Revelation,61
+62 1 John,61,1 John,14-General Epistles & Revelation,105
+63 2 John,62,2 John,14-General Epistles & Revelation,13
+64 3 John,63,3 John,14-General Epistles & Revelation,15
+65 Jude,64,Jude,14-General Epistles & Revelation,25
+66 Revelation,65,Revelation,14-General Epistles & Revelation,404
