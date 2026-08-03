@@ -951,21 +951,32 @@ function LayoutButton({
 }) {
   const { label, description, icon } = LAYOUTS[mode];
   return (
+    /* The description used to render as a second line inside every button.
+       Four of them stacked cost 248px on a phone — more than the page title —
+       and on desktop they made the block 668px wide, which alongside a 578px
+       title exceeded the content width and wrapped the whole switcher onto its
+       own row. It is a tooltip now: the icon and the label already
+       differentiate the four, and one of the strings ("Lavergne style") means
+       nothing to a first-time reader anyway. */
     <button
       onClick={onClick}
+      title={description}
+      aria-pressed={active}
       style={{
         display: "flex",
-        flexDirection: "column",
-        alignItems: "flex-start",
-        gap: 3,
-        padding: "10px 16px",
+        alignItems: "center",
+        gap: 6,
+        padding: "0 13px",
+        /* Matches the 40px the filter pills settled on — same reasoning:
+           these are 10px micro-labels and a 44px capsule around one reads as
+           a button that lost its text. */
+        minHeight: 40,
         border: active
           ? "0.5px solid rgb(var(--accent-rgb) / 0.45)"
           : "0.5px solid rgb(var(--hairline-rgb) / 0.12)",
         background: active ? "rgb(var(--accent-rgb) / 0.06)" : "transparent",
         cursor: "pointer",
         transition: "all 0.2s ease",
-        minWidth: 120,
       }}
       onMouseEnter={(e) => {
         if (!active)
@@ -978,50 +989,34 @@ function LayoutButton({
             "rgb(var(--hairline-rgb) / 0.12)";
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-        }}
-      >
-        <span
-          style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: 10,
-            color: active ? "rgb(var(--accent-rgb))" : "rgb(var(--fg-rgb) / 0.5)",
-            transition: "color 0.2s ease",
-          }}
-        >
-          {icon}
-        </span>
-        <span
-          style={{
-            fontFamily: "'Space Mono', monospace",
-            fontSize: "0.625rem",
-            letterSpacing: "0.15em",
-            textTransform: "uppercase",
-            color: active ? "rgb(var(--accent-rgb))" : "rgb(var(--fg-rgb) / 0.45)",
-            fontWeight: active ? 700 : 400,
-            transition: "color 0.2s ease",
-          }}
-        >
-          {label}
-        </span>
-      </div>
       <span
+        aria-hidden="true"
         style={{
-          fontFamily: "'Lora', serif",
-          fontSize: "0.625rem",
-          fontWeight: 300,
-          color: active
-            ? "rgb(var(--accent-rgb) / 0.6)"
-            : "rgb(var(--fg-rgb) / 0.25)",
-          letterSpacing: "0.01em",
+          fontFamily: "'Space Mono', monospace",
+          fontSize: 10,
+          color: active ? "rgb(var(--accent-rgb))" : "var(--text-muted)",
           transition: "color 0.2s ease",
         }}
       >
-        {description}
+        {icon}
+      </span>
+      <span
+        style={{
+          fontFamily: "'Space Mono', monospace",
+          fontSize: "0.5625rem",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          whiteSpace: "nowrap",
+          /* `--text-muted`, not `rgb(var(--fg-rgb) / 0.45)`. These buttons now
+             sit in the same row as the facet pills, so they take the same
+             control token — which also lifts them off 2.3:1 on parchment,
+             where the 0.45 alpha had put them. */
+          color: active ? "rgb(var(--accent-rgb))" : "var(--text-muted)",
+          fontWeight: active ? 700 : 400,
+          transition: "color 0.2s ease",
+        }}
+      >
+        {label}
       </span>
     </button>
   );
@@ -1096,6 +1091,9 @@ function Facet({
       tabIndex={isMobile ? undefined : 0}
       role="group"
       aria-label={name}
+      /* Open takes the whole row so the options wrap into it; closed is
+         content-width so the four triggers pack two-to-a-row instead of one. */
+      style={isMobile ? { width: open ? "100%" : "auto" } : undefined}
     >
       {isMobile ? (
         <button
@@ -1244,11 +1242,22 @@ export default function Projects() {
           paddingTop: "6rem",
         }}
       >
-        {/* ── Page header ── */}
+        {/* ── Page header ──
+            Everything above the first piece of work is furniture, and it used
+            to run 583px at 1280×720 and 890px at 375×812 — a full viewport on
+            a phone before a single image. A stranger arriving from a LinkedIn
+            link scrolled past a slogan, four view-switchers and four filter
+            triggers before seeing any work at all.
+
+            Two changes, no content removed: the switcher moved out of the
+            header into the control band below (it was wrapping onto its own
+            row on desktop and stacking four two-line buttons on mobile), and
+            the rhythm between the three bands tightened. The title, the
+            eyebrow, the back link and every control are all still here. */}
         <header
           style={{
-            padding: "0 6vw 3rem",
-            marginBottom: "3rem",
+            padding: "0 6vw 1.5rem",
+            marginBottom: "1.25rem",
             borderBottom: "0.5px solid rgb(var(--hairline-rgb) / 0.07)",
           }}
         >
@@ -1263,7 +1272,7 @@ export default function Projects() {
                 color: "rgb(var(--fg-rgb) / 0.25)",
                 cursor: "pointer",
                 display: "inline-block",
-                marginBottom: "2rem",
+                marginBottom: "1rem",
                 transition: "color 0.2s ease",
               }}
               onMouseEnter={(e) => {
@@ -1279,17 +1288,8 @@ export default function Projects() {
             </span>
           </Link>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "2rem",
-            }}
-          >
-            {/* Title */}
-            <div>
+          {/* Title */}
+          <div>
               <div
                 style={{
                   fontFamily: "'Space Mono', monospace",
@@ -1297,7 +1297,7 @@ export default function Projects() {
                   letterSpacing: "0.28em",
                   textTransform: "uppercase",
                   color: "rgb(var(--accent-rgb) / 0.65)",
-                  marginBottom: "0.875rem",
+                  marginBottom: "0.75rem",
                   display: "flex",
                   alignItems: "center",
                   gap: 10,
@@ -1334,42 +1334,20 @@ export default function Projects() {
                   data into sight.
                 </em>
               </h1>
-            </div>
-
-            {/* Layout switcher */}
-            <div>
-              <div
-                style={{
-                  fontFamily: "'Space Mono', monospace",
-                  fontSize: "0.5rem",
-                  letterSpacing: "0.2em",
-                  textTransform: "uppercase",
-                  color: "rgb(var(--fg-rgb) / 0.2)",
-                  marginBottom: "0.5rem",
-                }}
-              >
-                View as
-              </div>
-              <div style={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
-                {(Object.keys(LAYOUTS) as LayoutMode[]).map((mode) => (
-                  <LayoutButton
-                    key={mode}
-                    mode={mode}
-                    active={layout === mode}
-                    onClick={() => handleLayout(mode)}
-                  />
-                ))}
-              </div>
-            </div>
           </div>
         </header>
 
-        {/* ── Facet filters: industry × technique × format ── */}
+        {/* ── Control band: view-as × industry × technique × format × sort ──
+            One band rather than two. VIEW AS still reads as its own group —
+            it changes how the same set is drawn, where the four facets change
+            what is in the set, and that distinction is the reason sort lives
+            with the filters — but grouping them onto one row costs nothing
+            horizontally and saves a whole band vertically. */}
         <section
-          aria-label="Filter projects"
+          aria-label="Gallery controls"
           style={{
             padding: "0 6vw",
-            marginBottom: "2.5rem",
+            marginBottom: "1.25rem",
             display: "flex",
             flexDirection: "column",
             gap: 8,
@@ -1383,6 +1361,42 @@ export default function Projects() {
               flexWrap: "wrap",
             }}
           >
+            <div
+              className="viewas-group"
+              role="group"
+              aria-label="View as"
+              style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}
+            >
+              <span
+                style={{
+                  fontFamily: "'Space Mono', monospace",
+                  fontSize: "0.5rem",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  /* Was `rgb(var(--fg-rgb) / 0.2)` — 1.5:1 on parchment, i.e.
+                     a group label nobody could read. `--text-muted` puts it at
+                     the same 3.65:1 as the facet triggers beside it; at 8px
+                     with no border it still reads as a label, not a control. */
+                  color: "var(--text-muted)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                View as
+              </span>
+              {(Object.keys(LAYOUTS) as LayoutMode[]).map((mode) => (
+                <LayoutButton
+                  key={mode}
+                  mode={mode}
+                  active={layout === mode}
+                  onClick={() => handleLayout(mode)}
+                />
+              ))}
+            </div>
+
+            {/* Hairline between the two groups — the only thing marking that
+                VIEW AS and the facets do different jobs now they share a row.
+                Hidden below 768px, where everything wraps anyway. */}
+            <span className="control-band-rule" aria-hidden="true" />
             <Facet name="Industry" activeCount={industries.size}>
               {/* Same order as the By Domain sections, so the filter and the
                   layout present the domains in the same sequence. */}

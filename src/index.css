@@ -1543,13 +1543,27 @@
    from here: the `:hover` / `:focus-within` rules above outrank any class,
    and a :hover that sticks after a tap would fight the toggle. What stays in
    CSS is only what the inline style doesn't touch. */
+/* Separates the VIEW AS group from the four facets now they share one row. */
+.control-band-rule {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background: rgb(var(--hairline-rgb) / 0.14);
+  margin: 0 4px;
+}
+
 @media (max-width: 767px) {
+  /* `width: 100%` put each facet on its own row: four collapsed triggers
+     stacked measured 230px of nothing but labels. They are content-width now,
+     so the four wrap into two rows (~98px) — and a facet that is open takes
+     `width: 100%` from an inline style in Facet, so its options still get a
+     full row to wrap into rather than squeezing beside a sibling. */
   .facet {
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
     gap: 6px;
   }
+  .control-band-rule { display: none; }
   /* The trigger is a real <button> on mobile — strip the UA chrome so it
      matches the <span> it replaces. */
   .facet-trigger {
@@ -1564,6 +1578,12 @@
     /* Must exceed the pill padding growth below, or stacked rows' touch
        areas overlap and taps land on the wrong filter. */
     row-gap: 10px;
+    /* Backstop. Open is driven by an inline `max-height: none` from Facet and
+       beats this. Closed, the base rule only sets `max-width: 0` — which does
+       not collapse a wrapping row, it turns it into a 0px-wide, 290px-tall
+       column of one pill per line. That is invisible but occupies the space,
+       and it is what renders if `isMobile` is ever false at a phone width. */
+    max-height: 0;
   }
   .facet-options > * { opacity: 1; transform: none; }
   /* 28px is not a tappable control. Grown to 40 rather than the full 44:
