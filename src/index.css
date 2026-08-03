@@ -1441,9 +1441,29 @@
   box-shadow: var(--lip-out);
   backdrop-filter: var(--glass-blur, blur(18px));
   white-space: nowrap;
-  cursor: default;
+  /* A real <button> at every breakpoint now — strip the UA chrome and say so
+     with the cursor. It was a <span> with `cursor: default` on desktop, which
+     is precisely how four pills gating 47 pieces came to look inert. */
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   transition: color 0.2s ease, box-shadow 0.25s ease;
 }
+
+/* The disclosure mark. Without it the trigger is a word in a capsule with
+   nothing to say it opens; a reader who does not sweep the pointer across the
+   row never finds the filters. Rotates when the facet is pinned open. */
+.facet-caret {
+  margin-left: 6px;
+  font-size: 0.5rem;
+  line-height: 1;
+  opacity: 0.55;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.facet:hover .facet-caret,
+.facet:focus-within .facet-caret { opacity: 0.9; }
+.facet--open .facet-caret { transform: rotate(180deg); opacity: 1; }
 .facet:hover .facet-trigger,
 .facet:focus-within .facet-trigger {
   color: var(--cyan);
@@ -1543,13 +1563,27 @@
    from here: the `:hover` / `:focus-within` rules above outrank any class,
    and a :hover that sticks after a tap would fight the toggle. What stays in
    CSS is only what the inline style doesn't touch. */
+/* Separates the VIEW AS group from the four facets now they share one row. */
+.control-band-rule {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background: rgb(var(--hairline-rgb) / 0.14);
+  margin: 0 4px;
+}
+
 @media (max-width: 767px) {
+  /* `width: 100%` put each facet on its own row: four collapsed triggers
+     stacked measured 230px of nothing but labels. They are content-width now,
+     so the four wrap into two rows (~98px) — and a facet that is open takes
+     `width: 100%` from an inline style in Facet, so its options still get a
+     full row to wrap into rather than squeezing beside a sibling. */
   .facet {
     flex-direction: column;
     align-items: flex-start;
-    width: 100%;
     gap: 6px;
   }
+  .control-band-rule { display: none; }
   /* The trigger is a real <button> on mobile — strip the UA chrome so it
      matches the <span> it replaces. */
   .facet-trigger {
@@ -1564,6 +1598,12 @@
     /* Must exceed the pill padding growth below, or stacked rows' touch
        areas overlap and taps land on the wrong filter. */
     row-gap: 10px;
+    /* Backstop. Open is driven by an inline `max-height: none` from Facet and
+       beats this. Closed, the base rule only sets `max-width: 0` — which does
+       not collapse a wrapping row, it turns it into a 0px-wide, 290px-tall
+       column of one pill per line. That is invisible but occupies the space,
+       and it is what renders if `isMobile` is ever false at a phone width. */
+    max-height: 0;
   }
   .facet-options > * { opacity: 1; transform: none; }
   /* 28px is not a tappable control. Grown to 40 rather than the full 44:
@@ -1577,6 +1617,29 @@
 @media (prefers-reduced-motion: reduce) {
   .facet-options,
   .facet-options > * { transition-duration: 0.01ms; transform: none; }
+}
+
+/* ══ Card outbound links ══
+   "View live ↗" and "Case study →" on the gallery cards. They are 8px inline
+   text with no box of their own, which on a phone measures 63x12px — and
+   "View live" is the primary conversion action on roughly thirty cards, the
+   thing a reader taps to see that the work is real.
+
+   These have to be reachable from CSS rather than set inline: the five sites
+   that render them each carry their own inline font and colour, and an inline
+   style beats a media query. Only the touch sizing lives here, so each link
+   keeps its layout's own type treatment.
+
+   Real box, not a `::after` hit area: in the By Domain layout "Case study"
+   and "View live" stack 15px apart, so an expanded pseudo-element would have
+   each link overlapping the other and taps would misroute between two
+   different destinations. Growing the boxes cannot do that. */
+@media (max-width: 767px) {
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
 }
 
 /* ══ Career timeline — symbology control ══

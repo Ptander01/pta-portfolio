@@ -155,7 +155,12 @@ export const entries: TimelineEntry[] = [
     endYear: 2026,
     label: "Jun 2025 – Apr 2026",
     role: "Lead Spatial Data Scientist / Remote Sensing Researcher",
-    org: "Meta (AI Research Labs)",
+    /* Just "Meta". The team was renamed three times in ten months — Infra
+       Intel, Competitive Infra Intel, Infrastructure Industry Intelligence —
+       and moved from the economics org to adjacent to MSL, so no single team
+       name is defensible. Patrick's résumé says Meta; this is the one place
+       career data lives, so /about and /resume both follow. */
+    org: "Meta",
     color: "var(--coral)",
     description:
       "Led GIS and remote sensing intelligence for Meta's AI infrastructure expansion. Built a 233,000-line automated geospatial data pipeline, a custom UCID spatial clustering algorithm, and 41 automated validation scripts.",

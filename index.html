@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <!-- No `maximum-scale`: it blocks pinch-zoom, which is WCAG 1.4.4, and on
+         a portfolio built out of dense map renders and small type it is the
+         one gesture a reader on a phone actually needs. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patrick T Anderson — Spatial Data Scientist</title>
     <meta name="description" content="Patrick T Anderson — spatial data scientist: research, build, present. Healthcare access, AI infrastructure, and environmental analysis. 47 pieces, 170,900 lines of code." />
 
