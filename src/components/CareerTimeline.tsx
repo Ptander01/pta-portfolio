@@ -71,7 +71,7 @@ export const entries: TimelineEntry[] = [
     org: "Clemson University — CAFLS",
     color: "var(--emerald)",
     description:
-      "Landscape-scale spatial analysis across 90,000+ km² for SCDNR, integrating elevation, land cover, forest density, soils, and NHD hydrology. Modeled PV site suitability across 88 agricultural sites from UAV and satellite imagery — published in Drones (MDPI, 2020).",
+      "Landscape-scale hydrology and stream-sinuosity analysis across 90,000+ km² for the South Carolina Department of Natural Resources, integrating NHD hydrography with elevation, land cover, forest density and soils. Modeled PV site suitability across 88 agricultural sites from UAV and satellite imagery — published in Drones (MDPI, 2020).",
     skills: [
       "Remote Sensing",
       "UAV / Photogrammetry",
