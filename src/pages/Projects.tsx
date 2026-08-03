@@ -1560,8 +1560,11 @@ export default function Projects() {
               color: "rgb(var(--fg-rgb) / 0.15)",
             }}
           >
-            Patrick Anderson · PTA Geospatial Intelligence ·{" "}
-            {new Date().getFullYear()}
+            {/* Not "PTA Geospatial Intelligence". It was the last rendered
+                place carrying the firm name and the GEOINT framing the
+                identity pass took out of the title and the OG tags — and this
+                portfolio is a person, not a firm. */}
+            Patrick Anderson · {new Date().getFullYear()}
           </span>
           <Link href="/">
             <span
