@@ -1441,9 +1441,29 @@
   box-shadow: var(--lip-out);
   backdrop-filter: var(--glass-blur, blur(18px));
   white-space: nowrap;
-  cursor: default;
+  /* A real <button> at every breakpoint now — strip the UA chrome and say so
+     with the cursor. It was a <span> with `cursor: default` on desktop, which
+     is precisely how four pills gating 47 pieces came to look inert. */
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
   transition: color 0.2s ease, box-shadow 0.25s ease;
 }
+
+/* The disclosure mark. Without it the trigger is a word in a capsule with
+   nothing to say it opens; a reader who does not sweep the pointer across the
+   row never finds the filters. Rotates when the facet is pinned open. */
+.facet-caret {
+  margin-left: 6px;
+  font-size: 0.5rem;
+  line-height: 1;
+  opacity: 0.55;
+  transition: transform 0.25s ease, opacity 0.2s ease;
+}
+.facet:hover .facet-caret,
+.facet:focus-within .facet-caret { opacity: 0.9; }
+.facet--open .facet-caret { transform: rotate(180deg); opacity: 1; }
 .facet:hover .facet-trigger,
 .facet:focus-within .facet-trigger {
   color: var(--cyan);

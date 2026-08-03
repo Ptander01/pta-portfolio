@@ -968,6 +968,10 @@ function LayoutButton({
     <button
       onClick={onClick}
       title={description}
+      /* Explicit, because with the description moved to `title` the button's
+         accessible name resolved to the tooltip — a screen reader announced
+         "Full-bleed · images lead" where the visible label says CINEMATIC. */
+      aria-label={`${label} — ${description}`}
       aria-pressed={active}
       style={{
         display: "flex",
@@ -1052,8 +1056,17 @@ function FilterPill({
   );
 }
 
-/** One facet: a trigger word whose options cascade out on hover/focus.
- *  Collapsed by default so the bar reads as three words, not twenty pills. */
+/** One facet: a trigger word whose options cascade out.
+ *  Collapsed by default so the bar reads as four words, not twenty-odd pills.
+ *
+ *  The trigger is a real <button> at every breakpoint. On desktop it used to
+ *  be a <span> and the cascade opened on hover alone, which meant the four
+ *  pills gating all 47 pieces looked inert — a visitor who never happened to
+ *  sweep the mouse across them never learned the gallery could be filtered at
+ *  all. Clicking now pins a facet open, hover still previews it, and the caret
+ *  says out loud that there is something behind the word. Pinning also makes
+ *  the reflow deliberate: on hover alone the gallery slid down and back up
+ *  again as the pointer crossed the row. */
 function Facet({
   name,
   activeCount,
@@ -1070,12 +1083,15 @@ function Facet({
     <>
       {name}
       {activeCount > 0 && <span className="facet-count">· {activeCount}</span>}
+      <span className="facet-caret" aria-hidden="true">
+        ▾
+      </span>
     </>
   );
 
-  /* On a phone the three cascades pinned open stack to ~550px — the whole
-     gallery below the fold behind a wall of filters. So mobile collapses by
-     default and opens on an explicit tap.
+  /* On a phone the cascades pinned open stack to ~550px — the whole gallery
+     below the fold behind a wall of filters. So mobile collapses by default
+     and opens on an explicit tap.
      The open state is an inline style rather than a class because the base
      `:hover` / `:focus-within` rules are more specific than any class we
      could add, and a sticky :hover after tap would fight the toggle. Inline
@@ -1083,37 +1099,45 @@ function Facet({
   /* max-height matters as much as max-width: the options wrap on mobile, so a
      zero-width box does not collapse — it turns into a 0px-wide, 990px-tall
      column of one pill per line. Both axes have to close. */
+  const OPEN = {
+    maxWidth: "64rem",
+    maxHeight: "none",
+    opacity: 1,
+    transform: "none" as const,
+  };
   const optionStyle = isMobile
-    ? {
-        maxWidth: open ? "64rem" : 0,
-        maxHeight: open ? "none" : 0,
-        opacity: open ? 1 : 0,
-        transform: "none" as const,
-      }
-    : undefined;
+    ? open
+      ? OPEN
+      : { maxWidth: 0, maxHeight: 0, opacity: 0, transform: "none" as const }
+    : /* Desktop closed is deliberately `undefined`, not an explicit closed
+         style: an inline style would outrank the `:hover` / `:focus-within`
+         rules and kill hover entirely. Only the pinned-open state is inline. */
+      open
+      ? OPEN
+      : undefined;
 
   return (
     <div
-      className={`facet${activeCount > 0 ? " facet--active" : ""}`}
-      tabIndex={isMobile ? undefined : 0}
+      className={`facet${activeCount > 0 ? " facet--active" : ""}${
+        open ? " facet--open" : ""
+      }`}
       role="group"
       aria-label={name}
       /* Open takes the whole row so the options wrap into it; closed is
          content-width so the four triggers pack two-to-a-row instead of one. */
       style={isMobile ? { width: open ? "100%" : "auto" } : undefined}
+      onKeyDown={(e) => {
+        if (e.key === "Escape" && open) setOpen(false);
+      }}
     >
-      {isMobile ? (
-        <button
-          type="button"
-          className="facet-trigger"
-          aria-expanded={open}
-          onClick={() => setOpen((o) => !o)}
-        >
-          {label}
-        </button>
-      ) : (
-        <span className="facet-trigger">{label}</span>
-      )}
+      <button
+        type="button"
+        className="facet-trigger"
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        {label}
+      </button>
       <div className="facet-options" style={optionStyle}>
         {children}
       </div>
