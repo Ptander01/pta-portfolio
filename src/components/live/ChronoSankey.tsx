@@ -11,12 +11,12 @@
  * Patrick Anderson
  */
 
-import { Fragment, useMemo, useState, useId } from "react";
+import { Fragment, useMemo, useRef, useState, useId } from "react";
 import {
   BOOKS, DIVISIONS, ERAS, TOTAL_VERSES, TOTAL_READINGS,
 } from "@/lib/data/chronoSankey";
 import {
-  layout, fmt, type LeftRes, type RightRes,
+  layout, fmt, heightForGaps, type LeftRes, type RightRes,
 } from "./chronoSankeyLayout";
 
 /** One CSS custom property per division, in canonical order. */
@@ -61,6 +61,11 @@ export default function ChronoSankey() {
   const [rightRes, setRightRes] = useState<RightRes>("era");
   const [hover, setHover] = useState<Focus>(null);
   const [pinned, setPinned] = useState<Focus>(null);
+  /* Optional scope. Chapter x Day is 1,189 bars against 365 and every ribbon
+     between them — true, and unreadable. Narrowing to one division or one era
+     is what makes the fine resolutions usable rather than decorative. */
+  const [scopeDivision, setScopeDivision] = useState<number | null>(null);
+  const [scopeEra, setScopeEra] = useState<number | null>(null);
   const titleId = useId();
   /* SVG ids are document-global, so they get a per-instance prefix. Two of
      these on one page would otherwise share gradients and fight. */
@@ -71,17 +76,46 @@ export default function ChronoSankey() {
   /* Height follows the denser axis: every node needs at least a couple of
      pixels or the column reads as a solid block. Capped so the page does not
      become unscrollable at chapter × day. */
-  const nodeCount = Math.max(
-    leftRes === "division" ? 7 : leftRes === "book" ? 66 : 1189,
-    rightRes === "era" ? 14 : 365
-  );
-  const height = Math.round(Math.min(2400, Math.max(520, nodeCount * 2.1)));
+  /* Height is sized so the columns can afford the breathing room they ask
+     for, rather than the gap being squeezed to whatever is left over.
+
+     Measured, not estimated. A first pass at a nominal height reports how
+     many nodes actually survive the scope — which no formula can predict,
+     because "Chapter, scoped to Exile" depends on which chapters happen to
+     fall in those 58 days. The second pass lays out at a height that affords
+     the gap for that real count. Two passes over 1,397 atoms is nothing, and
+     it is the difference between a scoped view that is calm and one that is
+     stretched over height it does not need. */
   const span = W - GUTTER_L - GUTTER_R;
 
-  const L = useMemo(
-    () => layout({ leftRes, rightRes, height, span, gap: 2 }),
-    [leftRes, rightRes, height, span]
-  );
+  const L = useMemo(() => {
+    const probe = layout({ leftRes, rightRes, height: 600, span, scopeDivision, scopeEra });
+    const nL = probe.left.length;
+    const nR = probe.right.length;
+    const h = Math.round(
+      Math.min(
+        2400,
+        Math.max(
+          420,
+          heightForGaps(nL), heightForGaps(nR),
+          nL * 2.1, nR * 2.1
+        )
+      )
+    );
+    return layout({ leftRes, rightRes, height: h, span, scopeDivision, scopeEra });
+  }, [leftRes, rightRes, span, scopeDivision, scopeEra]);
+
+  const height = L.height;
+
+  /* A scope that hides the focused node would leave a selection pinned to
+     something no longer on screen. */
+  const scopeKey = `${scopeDivision}|${scopeEra}|${leftRes}|${rightRes}`;
+  const lastScope = useRef(scopeKey);
+  if (lastScope.current !== scopeKey) {
+    lastScope.current = scopeKey;
+    if (pinned) setPinned(null);
+    if (hover) setHover(null);
+  }
 
   /* A ribbon is lit when it touches the focused node. Nothing focused means
      everything is lit, so the default view is the whole braid. */
@@ -119,6 +153,8 @@ export default function ChronoSankey() {
       <Controls
         leftRes={leftRes} rightRes={rightRes}
         setLeftRes={setLeftRes} setRightRes={setRightRes}
+        scopeDivision={scopeDivision} setScopeDivision={setScopeDivision}
+        scopeEra={scopeEra} setScopeEra={setScopeEra}
         onClear={() => setPinned(null)} pinned={!!pinned}
       />
 
@@ -357,10 +393,14 @@ function Defs({
 /* ── controls ────────────────────────────────────────────────────────── */
 
 function Controls({
-  leftRes, rightRes, setLeftRes, setRightRes, onClear, pinned,
+  leftRes, rightRes, setLeftRes, setRightRes,
+  scopeDivision, setScopeDivision, scopeEra, setScopeEra,
+  onClear, pinned,
 }: {
   leftRes: LeftRes; rightRes: RightRes;
   setLeftRes: (r: LeftRes) => void; setRightRes: (r: RightRes) => void;
+  scopeDivision: number | null; setScopeDivision: (v: number | null) => void;
+  scopeEra: number | null; setScopeEra: (v: number | null) => void;
   onClear: () => void; pinned: boolean;
 }) {
   return (
@@ -377,6 +417,14 @@ function Controls({
             {LEFT_LABEL[r]}
           </button>
         ))}
+        {/* The scope sits inside the group it scopes — same spatial argument
+            as putting the chronological controls on the right. */}
+        <Scope
+          label="all divisions"
+          value={scopeDivision}
+          onChange={setScopeDivision}
+          options={DIVISIONS.map((d, i) => ({ value: i, label: d.name }))}
+        />
       </fieldset>
 
       {/* Pushed to the far right so it sits over the column it controls.
@@ -395,6 +443,12 @@ function Controls({
             {RIGHT_LABEL[r]}
           </button>
         ))}
+        <Scope
+          label="all eras"
+          value={scopeEra}
+          onChange={setScopeEra}
+          options={ERAS.map((e, i) => ({ value: i, label: e.name }))}
+        />
       </fieldset>
 
       {pinned && (
@@ -403,6 +457,38 @@ function Controls({
         </button>
       )}
     </div>
+  );
+}
+
+/** A narrowing control, styled as one of the pills rather than as a browser
+ *  select — the native control cannot be made to match the chrome language,
+ *  and this sits in a row of pills. The <select> is kept as the real control
+ *  underneath for keyboard and screen-reader behaviour, and the pill is
+ *  simply what it looks like. */
+function Scope({
+  label, value, onChange, options,
+}: {
+  label: string;
+  value: number | null;
+  onChange: (v: number | null) => void;
+  options: { value: number; label: string }[];
+}) {
+  const active = value !== null;
+  const current = active ? options[value]?.label ?? label : label;
+  return (
+    <span className={`chrono-sankey__scope${active ? " is-on" : ""}`}>
+      <span aria-hidden="true">{current}</span>
+      <select
+        aria-label={`Narrow to one ${label.replace("all ", "").replace(/s$/, "")}`}
+        value={value === null ? "" : String(value)}
+        onChange={(e) => onChange(e.target.value === "" ? null : Number(e.target.value))}
+      >
+        <option value="">{label}</option>
+        {options.map((o) => (
+          <option key={o.value} value={o.value}>{o.label}</option>
+        ))}
+      </select>
+    </span>
   );
 }
 

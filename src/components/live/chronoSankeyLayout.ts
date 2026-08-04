@@ -83,10 +83,34 @@ export type LayoutOptions = {
   height: number;
   /** Horizontal distance between the two columns. */
   span: number;
-  /** Gap between stacked nodes, in px. Shrinks automatically when a
-   *  resolution has more nodes than the height can afford. */
-  gap?: number;
+  /** Optional scope. Either or both may be set; they intersect. */
+  scopeDivision?: number | null;
+  scopeEra?: number | null;
 };
+
+/**
+ * How much air a column of `n` nodes should get between its bars.
+ *
+ * Fewer, larger nodes earn more separation — that is what makes them read as
+ * distinct slabs rather than a striped column, and it is the quality the
+ * reference render gets from having only a handful of categories. Dense
+ * columns get almost none, because at 1,189 nodes any real gap would eat the
+ * bars it was meant to separate.
+ *
+ * Exported so the caller can size the drawing to afford the gap it asks for
+ * rather than discovering after the fact that it does not fit.
+ */
+export function gapFor(n: number): number {
+  if (n <= 8) return 16;
+  if (n <= 20) return 11;
+  if (n <= 80) return 5;
+  if (n <= 400) return 1.4;
+  return 0.6;
+}
+
+/** Height at which a column of `n` nodes can pay for `gapFor(n)` without the
+ *  gaps taking more than 40% of the drawing. */
+export const heightForGaps = (n: number) => (gapFor(n) * Math.max(1, n - 1)) / 0.4;
 
 /* ── grouping keys ───────────────────────────────────────────────────── */
 
@@ -157,35 +181,76 @@ function abbreviate(name: string) {
 
 export function layout(opts: LayoutOptions): Layout {
   const { leftRes, rightRes, height, span } = opts;
+  const scopeDivision = opts.scopeDivision ?? null;
+  const scopeEra = opts.scopeEra ?? null;
 
-  const lDesc = leftNodes(leftRes);
-  const rDesc = rightNodes(rightRes);
+  const lDesc0 = leftNodes(leftRes);
+  const rDesc0 = rightNodes(rightRes);
 
-  /* Aggregate atoms into the requested cells. */
-  const cells = new Map<number, number>();   // (l * rCount + r) -> verses
-  const lTotal = new Array(lDesc.length).fill(0);
-  const rTotal = new Array(rDesc.length).fill(0);
-  const rCount = rDesc.length;
+  /* Aggregate atoms into the requested cells, honouring the scope.
+     Filtering here rather than after layout matters: a scoped view rescales
+     to its own total, so one era fills the height instead of being drawn as
+     the 6% sliver it is of the whole Bible. */
+  const cells0 = new Map<number, number>();   // (l * rCount0 + r) -> verses
+  const lTotal0 = new Array(lDesc0.length).fill(0);
+  const rTotal0 = new Array(rDesc0.length).fill(0);
+  const rCount0 = rDesc0.length;
 
   for (const a of ATOMS) {
+    if (scopeDivision !== null && BOOKS[a[0]].division !== scopeDivision) continue;
+    if (scopeEra !== null && eraOfDay(a[2]) !== scopeEra) continue;
     const l =
       leftRes === "division" ? BOOKS[a[0]].division
       : leftRes === "book" ? a[0]
       : chapterOrdinal(a[0], a[1]);
     const r = rightIndex(a, rightRes);
-    const k = l * rCount + r;
-    cells.set(k, (cells.get(k) ?? 0) + a[3]);
-    lTotal[l] += a[3];
-    rTotal[r] += a[3];
+    const k = l * rCount0 + r;
+    cells0.set(k, (cells0.get(k) ?? 0) + a[3]);
+    lTotal0[l] += a[3];
+    rTotal0[r] += a[3];
   }
+
+  /* Drop nodes the scope emptied, and reindex. Without this, scoping to one
+     era would still draw 1,189 chapter bars, 1,100 of them at zero height —
+     the exact clutter the scope exists to remove. */
+  const compact = <T,>(desc: T[], totals: number[]) => {
+    const keep: number[] = [];
+    for (let i = 0; i < desc.length; i++) if (totals[i] > 0) keep.push(i);
+    const remap = new Map<number, number>();
+    keep.forEach((old, next) => remap.set(old, next));
+    return { desc: keep.map((i) => desc[i]), totals: keep.map((i) => totals[i]), remap };
+  };
+  const cl = compact(lDesc0, lTotal0);
+  const cr = compact(rDesc0, rTotal0);
+  const lDesc = cl.desc, rDesc = cr.desc;
+  const lTotal = cl.totals, rTotal = cr.totals;
+  const rCount = rDesc.length;
+
+  const cells = new Map<number, number>();
+  cells0.forEach((v, k) => {
+    const l = cl.remap.get(Math.floor(k / rCount0));
+    const r = cr.remap.get(k % rCount0);
+    if (l === undefined || r === undefined) return;
+    cells.set(l * rCount + r, v);
+  });
 
   const total = lTotal.reduce((x, y) => x + y, 0);
 
-  /* Gaps have to fit. At chapter resolution 1,189 nodes at even 1px of gap
-     would consume more height than exists, so the gap is whatever is left
-     after the bars, capped at the requested value and never negative. */
-  const want = opts.gap ?? 2;
-  const fit = (n: number) => Math.max(0, Math.min(want, (height * 0.35) / Math.max(1, n - 1)));
+  /* Breathing room scales with how much each node has to say.
+     A flat 2px gap treated seven divisions and 1,189 chapters identically,
+     which left the coarse views packed edge to edge — and it is exactly the
+     coarse views where there is height to spare and where the gap is what
+     makes the bars read as separate objects rather than one striped column.
+
+     So the gap comes from the node count, and the caller sizes the drawing
+     to afford it (see ChronoSankey.tsx). Still clamped by what actually
+     fits: gaps never take more than 40% of the height, so a resolution that
+     asks for more than the drawing can pay for degrades instead of
+     collapsing the bars to nothing. */
+  const fit = (n: number) => {
+    const want = gapFor(n);
+    return Math.max(0, Math.min(want, (height * 0.4) / Math.max(1, n - 1)));
+  };
   const lGap = fit(lDesc.length);
   const rGap = fit(rDesc.length);
 
