@@ -672,27 +672,40 @@
    worst pair is ΔE 38.4 dark and 33.6 light, where about 25 is the point two
    colours stop being confusable.
 
-   Hue order runs with canonical order, so reading down the left column is
-   also a walk around the wheel — an accident of the construction, kept
-   because it makes the sequence feel ordered rather than arbitrary. */
+   Hues are NOT evenly spaced, and that is the point. Even spacing put two of
+   the seven inside the green band — History at 105 and Wisdom & Poetry at 157,
+   a grass green and a pine, ΔE 40 apart and the third-closest pair in the set.
+   Two greens in a seven-colour categorical scale is one too many however far
+   apart they measure, because a reader tracking a ribbon across the diagram
+   is not comparing swatches side by side.
+
+   The set is now solved with a hard constraint of at most one hue in the
+   green band (78–162°), spacing left free, maximising the worst pair across
+   BOTH themes at once. Wisdom moved to a teal at 174°. The worst pair went
+   from ΔE 38.4 to 47.2 dark and 33.6 to 47.4 light — the constraint made the
+   whole set better, not just the greens.
+
+   Hue order still runs with canonical order, so reading down the left column
+   is a walk around the wheel; it makes the sequence feel ordered rather than
+   arbitrary. */
 :root,
 [data-theme="dark"] {
-  --div-law:      #A5960E;  /* 6.15:1 */
-  --div-history:  #35AA0F;  /* 6.10:1 */
-  --div-wisdom:   #0FA86D;  /* 6.04:1 */
-  --div-major:    #3998EE;  /* 6.09:1 */
-  --div-minor:    #A57EF4;  /* 6.08:1 */
-  --div-gospels:  #F053D3;  /* 6.07:1 */
-  --div-epistles: #F16962;  /* 6.12:1 */
+  --div-law:      #BA8D10;  /* 6.09:1  hue  44 */
+  --div-history:  #24AC0F;  /* 6.16:1  hue 112 — the only green */
+  --div-wisdom:   #0EA696;  /* 6.10:1  hue 174 */
+  --div-major:    #3799EE;  /* 6.14:1  hue 208 */
+  --div-minor:    #B577F3;  /* 6.09:1  hue 270 */
+  --div-gospels:  #F15FA5;  /* 6.11:1  hue 331 */
+  --div-epistles: #F06B53;  /* 6.12:1  hue   9 */
 }
 [data-theme="light"] {
-  --div-law:      #746E14;  /* 4.56:1 */
-  --div-history:  #2B7C16;  /* 4.54:1 */
-  --div-wisdom:   #157956;  /* 4.66:1 */
-  --div-major:    #216DBA;  /* 4.59:1 */
-  --div-minor:    #8049DF;  /* 4.61:1 */
-  --div-gospels:  #C0229D;  /* 4.59:1 */
-  --div-epistles: #CA3024;  /* 4.59:1 */
+  --div-law:      #826617;  /* 4.70:1 */
+  --div-history:  #237915;  /* 4.76:1 */
+  --div-wisdom:   #15776D;  /* 4.67:1 */
+  --div-major:    #1F6CB0;  /* 4.74:1 */
+  --div-minor:    #8D3EDD;  /* 4.70:1 */
+  --div-gospels:  #C52371;  /* 4.71:1 */
+  --div-epistles: #C03922;  /* 4.72:1 */
 }
 
 /* ═══════════════════════════════════════════════════════════════

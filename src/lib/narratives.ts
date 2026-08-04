@@ -388,16 +388,10 @@ export const narratives: Record<string, Narrative> = {
       "My idea started as curiosity, pattern recognition, and the art of reframing old information through a new lens. Ironically, I found myself turning narrative into data in order to let the data tell a narrative. Data science, at its best, is about finding beauty in structure — whether you're analyzing retail sales, migration patterns, or a 3,000-year-old narrative about humanity trying to make sense of itself.",
       "You don't have to be religious to appreciate it.",
     ],
-    credits: [
-      {
-        label: "Method",
-        lines: [
-          "Source: the Daily Reading Index of the printed ESV Chronological Bible",
-          "365 readings parsed into 767 contiguous passages, 31,102 verses",
-          "Verified: the plan covers all 66 books exactly once — no gaps, no overlaps",
-          "Era and day views are groupings of one table, so they cannot disagree",
-        ],
-      },
-    ],
+    /* No `credits` block. It used to carry a "Method" list, which rendered a
+       second <h2>Method</h2> directly under the one PieceDetail already draws
+       from `project.method` — same heading, overlapping content. The
+       substance now lives in `method` and `source` on the piece itself, which
+       is where every other piece keeps it. */
   },
 };
