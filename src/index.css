@@ -3054,3 +3054,17 @@
 @media (prefers-reduced-motion: reduce) {
   .chrono-sankey__ribbons { mix-blend-mode: normal; }
 }
+
+/* The chronological control sits over the column it drives. Two identical
+   pill groups side by side said nothing about which axis each one changed;
+   the association a reader makes is spatial, so the control is placed
+   spatially. `margin-left: auto` rather than space-between, so the Clear
+   button stays next to the filters it clears rather than being flung to the
+   middle. */
+.chrono-sankey__group--right { margin-left: auto; }
+@media (max-width: 767px) {
+  /* Below the breakpoint the diagram scrolls and the columns no longer line
+     up with anything, so the spatial argument stops applying and the groups
+     simply stack in reading order. */
+  .chrono-sankey__group--right { margin-left: 0; }
+}

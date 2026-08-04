@@ -11,7 +11,7 @@
  * Patrick Anderson
  */
 
-import { useMemo, useState, useId } from "react";
+import { Fragment, useMemo, useState, useId } from "react";
 import {
   BOOKS, DIVISIONS, ERAS, TOTAL_VERSES, TOTAL_READINGS,
 } from "@/lib/data/chronoSankey";
@@ -49,6 +49,11 @@ const PAD_TOP = 8;
    the three-part gradient starts to be separable by eye. */
 const GLASS_MIN = 4;
 
+/* A stacked node needs enough height for its bands to be separable. Below
+   this it falls back to the division contributing most of its verses —
+   still true, just coarser, and better than a grey bar that says nothing. */
+const STACK_MIN = 6;
+
 type Focus = { side: "left" | "right"; index: number } | null;
 
 export default function ChronoSankey() {
@@ -85,9 +90,24 @@ export default function ChronoSankey() {
 
   const focusedNode =
     focus && (focus.side === "left" ? L.left[focus.index] : L.right[focus.index]);
-  const focusedRibbons = focus
-    ? L.ribbons.filter((r) => isLit(r.source, r.target))
-    : [];
+  const focusedRibbons = useMemo(
+    () => (focus ? L.ribbons.filter((r) => isLit(r.source, r.target)) : []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [focus, L]
+  );
+
+  /* Both ends light, not just the one under the pointer.
+     Selecting Job and seeing only Job light is the question half-answered —
+     the whole point of the piece is where a passage LANDS, so the destination
+     has to light with the origin. These are the far-end nodes reached by the
+     focused ribbons, and the labels follow the same sets. */
+  const [litLeft, litRight] = useMemo(() => {
+    if (!focus) return [null, null] as const;
+    const l = new Set<number>();
+    const r = new Set<number>();
+    for (const rb of focusedRibbons) { l.add(rb.source); r.add(rb.target); }
+    return [l, r] as const;
+  }, [focus, focusedRibbons]);
 
   /* Labels are only drawn where the node is tall enough to hold one. At
      chapter resolution that is a minority of nodes, which is correct: the
@@ -119,7 +139,7 @@ export default function ChronoSankey() {
           style={{ display: "block", overflow: "visible" }}
           onMouseLeave={() => setHover(null)}
         >
-          <Defs gid={gid} />
+          <Defs gid={gid} stacks={L.rightStacks} minH={STACK_MIN} heights={L.right.map((n) => n.y1 - n.y0)} />
 
           <title id={titleId}>
             {`Sankey diagram: the ${TOTAL_VERSES.toLocaleString()} verses of the Bible flowing from `}
@@ -168,7 +188,7 @@ export default function ChronoSankey() {
             <g>
               {L.left.map((n, i) => {
                 const h = Math.max(1, n.y1 - n.y0);
-                const lit = !focus || (focus.side === "left" && focus.index === i);
+                const lit = !litLeft || litLeft.has(i);
                 return (
                   <g key={n.key}>
                     <rect
@@ -206,12 +226,12 @@ export default function ChronoSankey() {
             <g>
               {L.right.map((n, i) => {
                 const h = Math.max(1, n.y1 - n.y0);
-                const lit = !focus || (focus.side === "right" && focus.index === i);
+                const lit = !litRight || litRight.has(i);
                 return (
                   <g key={n.key}>
                     <rect
                       x={W - GUTTER_R} y={n.y0} width={BAR} height={h}
-                      fill={`url(#${gid}-neutral)`}
+                      fill={h >= STACK_MIN ? `url(#${gid}-r${i})` : divColor(L.rightDominant[i])}
                       stroke={h >= 5 ? "rgba(255,255,255,0.42)" : "none"}
                       strokeWidth={h >= 5 ? 0.6 : 0}
                       opacity={lit ? 1 : 0.3}
@@ -270,7 +290,14 @@ export default function ChronoSankey() {
    Theme-aware throughout: the ramp is built with color-mix against the
    division token, so it re-solves itself in light mode instead of carrying
    dark-mode highlights onto parchment. */
-function Defs({ gid }: { gid: string }) {
+function Defs({
+  gid, stacks, heights, minH,
+}: {
+  gid: string;
+  stacks: { division: number; from: number; to: number }[][];
+  heights: number[];
+  minH: number;
+}) {
   return (
     <defs>
       {DIV_VAR.map((v, i) => (
@@ -286,15 +313,33 @@ function Defs({ gid }: { gid: string }) {
         </linearGradient>
       ))}
 
-      {/* The chronological column carries no division colour — it is the
-          other axis — so it takes the same material in neutral. */}
-      <linearGradient id={`${gid}-neutral`} x1="0" y1="0" x2="0" y2="1"
-        gradientUnits="objectBoundingBox">
-        <stop offset="0%"   stopColor="rgb(var(--fg-rgb) / 0.95)" />
-        <stop offset="18%"  stopColor="rgb(var(--fg-rgb) / 0.82)" />
-        <stop offset="55%"  stopColor="rgb(var(--fg-rgb) / 0.62)" />
-        <stop offset="100%" stopColor="rgb(var(--fg-rgb) / 0.4)" />
-      </linearGradient>
+      {/* The chronological nodes were grey, which was a cop-out. An era is a
+          MIXTURE of divisions — that mixing is the entire reason the two
+          orders differ — so grey threw away the most interesting fact about
+          each node. Each one now stacks by composition, in canonical division
+          order, with hard stops.
+
+          It lines up exactly: the ribbons already arrive at a node sorted by
+          source, so the bands in the bar and the ribbons landing on it are in
+          the same order. Every node becomes a legend for itself, and "Exile
+          is mostly Major Prophets but has a seam of History" is readable
+          without hovering anything.
+
+          Only built for nodes tall enough to show it — at Day resolution most
+          are ~1px and take the dominant division flat instead. */}
+      {stacks.map((bands, i) =>
+        heights[i] >= minH ? (
+          <linearGradient key={i} id={`${gid}-r${i}`} x1="0" y1="0" x2="0" y2="1"
+            gradientUnits="objectBoundingBox">
+            {bands.map((b, j) => (
+              <Fragment key={j}>
+                <stop offset={`${b.from * 100}%`} stopColor={divColor(b.division)} />
+                <stop offset={`${b.to * 100}%`} stopColor={divColor(b.division)} />
+              </Fragment>
+            ))}
+          </linearGradient>
+        ) : null
+      )}
 
       {/* ONE contact shadow for the whole ribbon group. Per-ribbon filters
           would be 1,339 of them and drop the frame rate through the floor;
@@ -334,7 +379,11 @@ function Controls({
         ))}
       </fieldset>
 
-      <fieldset className="chrono-sankey__group">
+      {/* Pushed to the far right so it sits over the column it controls.
+          Two identical-looking pill groups side by side gave no clue which
+          axis each one drove; the association is spatial, so the control
+          should be too. */}
+      <fieldset className="chrono-sankey__group chrono-sankey__group--right">
         <legend>Chronological</legend>
         {(["era", "day"] as RightRes[]).map((r) => (
           <button

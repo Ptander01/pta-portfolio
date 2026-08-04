@@ -64,6 +64,16 @@ export type Layout = {
   ribbons: Ribbon[];
   height: number;
   total: number;
+  /** Per right-hand node: the share of its verses coming from each division,
+   *  in canonical division order, as cumulative fractions 0..1. An era is a
+   *  MIXTURE — that is the whole reason the two orders differ — so a single
+   *  flat colour would be a claim the data does not support. These drive a
+   *  hard-stop gradient that stacks the node in the same order its ribbons
+   *  arrive, making each node a legend for its own composition. */
+  rightStacks: { division: number; from: number; to: number }[][];
+  /** The division contributing most verses to each right node — the honest
+   *  fallback when a node is too short to show a stack. */
+  rightDominant: number[];
 };
 
 export type LayoutOptions = {
@@ -271,7 +281,31 @@ export function layout(opts: LayoutOptions): Layout {
      re-renders, which matters for React reconciliation at 1,339 elements. */
   ribbons.sort((a, b) => b.thickness - a.thickness);
 
-  return { left, right, ribbons, height, total };
+  /* Division composition per right node. Built from the same cells the
+     ribbons came from, so the stack and the arriving ribbons cannot disagree. */
+  const rightStacks: { division: number; from: number; to: number }[][] = right.map(() => []);
+  const perNode = right.map(() => new Map<number, number>());
+  entries.forEach(({ l, r, v }) => {
+    const d = left[l].division;
+    perNode[r].set(d, (perNode[r].get(d) ?? 0) + v);
+  });
+  const rightDominant = right.map((n, r) => {
+    let best = -1, bestV = -1, acc = 0;
+    const divs = Array.from(perNode[r].keys()).sort((a, b) => a - b);
+    for (const d of divs) {
+      const v = perNode[r].get(d) as number;
+      if (v > bestV) { bestV = v; best = d; }
+    }
+    for (const d of divs) {
+      const v = perNode[r].get(d) as number;
+      const frac = n.value > 0 ? v / n.value : 0;
+      rightStacks[r].push({ division: d, from: acc, to: acc + frac });
+      acc += frac;
+    }
+    return best < 0 ? 0 : best;
+  });
+
+  return { left, right, ribbons, height, total, rightStacks, rightDominant };
 }
 
 /** Verses -> "1,533". Used in every readout. */
