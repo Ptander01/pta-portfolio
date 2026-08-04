@@ -200,7 +200,14 @@ export default function ChronoSankey() {
               {L.ribbons.map((r) => {
                 const lit = isLit(r.source, r.target);
                 const glass = r.thickness >= GLASS_MIN;
-                const o = focus ? (lit ? 0.92 : 0.05) : 0.62;
+                /* Opaque enough to read as a slab, with a little translucency kept so a
+                   bundle of ribbons still shows depth rather than a single
+                   flat mass. Thin ribbons stay more transparent — in a dense
+                   view they are stacked many-deep and full opacity there
+                   would hide everything behind the front one. */
+                const o = focus
+                  ? (lit ? 0.96 : 0.05)
+                  : glass ? 0.94 : 0.66;
                 return (
                   <g key={r.key} style={{ transition: "opacity 0.18s ease" }} opacity={o}>
                     <path
@@ -208,12 +215,37 @@ export default function ChronoSankey() {
                       fill={glass ? `url(#${gid}-g${r.division})` : divColor(r.division)}
                     />
                     {glass && (
-                      <path
-                        d={r.topPath}
-                        fill="none"
-                        stroke="rgba(255,255,255,0.55)"
-                        strokeWidth={0.75}
-                      />
+                      <>
+                        {/* Rim light along the bottom edge — the single
+                            strongest glass cue in the references, where the
+                            colour bleeds out under each pill brighter and
+                            more saturated than the body. Drawn before the
+                            specular so a thin ribbon shows the highlight
+                            rather than the rim. */}
+                        <path
+                          d={r.bottomPath}
+                          fill="none"
+                          stroke={`color-mix(in srgb, ${divColor(r.division)} 55%, white)`}
+                          strokeWidth={Math.min(1.4, r.thickness * 0.22)}
+                          opacity={0.85}
+                        />
+                        {/* Specular. Two strokes, not one: a wide soft bloom
+                            under a narrow hot core, which is what makes an
+                            edge read as a curved surface catching a key light
+                            rather than as a drawn line. */}
+                        <path
+                          d={r.topPath}
+                          fill="none"
+                          stroke="rgba(255,255,255,0.3)"
+                          strokeWidth={Math.min(3.2, r.thickness * 0.42)}
+                        />
+                        <path
+                          d={r.topPath}
+                          fill="none"
+                          stroke="rgba(255,255,255,0.85)"
+                          strokeWidth={0.7}
+                        />
+                      </>
                     )}
                   </g>
                 );
@@ -227,11 +259,13 @@ export default function ChronoSankey() {
                 const lit = !litLeft || litLeft.has(i);
                 return (
                   <g key={n.key}>
+                    {/* An all-round stroke outlines a rectangle; a bevel is
+                        a bright top and a lit bottom with nothing on the
+                        sides. That difference is most of what separates the
+                        reference's pills from a filled shape. */}
                     <rect
                       x={GUTTER_L - BAR} y={n.y0} width={BAR} height={h}
                       fill={h >= 3 ? `url(#${gid}-g${n.division})` : divColor(n.division)}
-                      stroke={h >= 5 ? "rgba(255,255,255,0.5)" : "none"}
-                      strokeWidth={h >= 5 ? 0.6 : 0}
                       opacity={lit ? 1 : 0.3}
                       style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
                       onMouseEnter={() => setHover({ side: "left", index: i })}
@@ -243,6 +277,12 @@ export default function ChronoSankey() {
                     >
                       <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
                     </rect>
+                    {h >= 5 && (
+                      <Bevel
+                        x={GUTTER_L - BAR} y0={n.y0} y1={n.y0 + h} w={BAR}
+                        color={divColor(n.division)} opacity={lit ? 1 : 0.3}
+                      />
+                    )}
                     {h >= labelMin && (
                       <text
                         x={GUTTER_L - BAR - 6} y={n.y0 + h / 2}
@@ -268,8 +308,6 @@ export default function ChronoSankey() {
                     <rect
                       x={W - GUTTER_R} y={n.y0} width={BAR} height={h}
                       fill={h >= STACK_MIN ? `url(#${gid}-r${i})` : divColor(L.rightDominant[i])}
-                      stroke={h >= 5 ? "rgba(255,255,255,0.42)" : "none"}
-                      strokeWidth={h >= 5 ? 0.6 : 0}
                       opacity={lit ? 1 : 0.3}
                       style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
                       onMouseEnter={() => setHover({ side: "right", index: i })}
@@ -281,6 +319,12 @@ export default function ChronoSankey() {
                     >
                       <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
                     </rect>
+                    {h >= 5 && (
+                      <Bevel
+                        x={W - GUTTER_R} y0={n.y0} y1={n.y0 + h} w={BAR}
+                        color={divColor(L.rightDominant[i])} opacity={lit ? 1 : 0.3}
+                      />
+                    )}
                     {h >= labelMin && (
                       <text
                         x={W - GUTTER_R + BAR + 6} y={n.y0 + h / 2}
@@ -306,6 +350,25 @@ export default function ChronoSankey() {
         {`Ribbon thickness is verse count; ribbon slope is how far the ESV moves a passage from its canonical place.`}
       </figcaption>
     </figure>
+  );
+}
+
+/** Top highlight and bottom rim light for a node bar — a bevel, not an
+ *  outline. Two 1px lines and nothing on the sides: the sides of a Sankey bar
+ *  are where ribbons attach, and edging them would draw a border around the
+ *  join the diagram is trying to make invisible. */
+function Bevel({
+  x, y0, y1, w, color, opacity,
+}: {
+  x: number; y0: number; y1: number; w: number; color: string; opacity: number;
+}) {
+  return (
+    <g opacity={opacity} pointerEvents="none">
+      <line x1={x} y1={y0 + 0.4} x2={x + w} y2={y0 + 0.4}
+        stroke="rgba(255,255,255,0.75)" strokeWidth={0.8} />
+      <line x1={x} y1={y1 - 0.5} x2={x + w} y2={y1 - 0.5}
+        stroke={`color-mix(in srgb, ${color} 45%, white)`} strokeWidth={1} />
+    </g>
   );
 }
 
@@ -342,10 +405,16 @@ function Defs({
           {/* Bright band sits at 18%, not 0%: a highlight exactly on the edge
               reads as a stroke, one just below it reads as a rounded surface
               catching the key light. Same offset the timeline rails use. */}
-          <stop offset="0%"   stopColor={`color-mix(in srgb, var(${v}) 62%, white)`} />
-          <stop offset="18%"  stopColor={`color-mix(in srgb, var(${v}) 84%, white)`} />
-          <stop offset="55%"  stopColor={`var(${v})`} />
-          <stop offset="100%" stopColor={`color-mix(in srgb, var(${v}) 72%, black)`} />
+          <stop offset="0%"   stopColor={`color-mix(in srgb, var(${v}) 50%, white)`} />
+          <stop offset="14%"  stopColor={`color-mix(in srgb, var(${v}) 88%, white)`} />
+          {/* The core goes DEEPER than the base colour, not to it. Glass is
+              a saturated body read through bright edges; a mid-tone middle is
+              what makes a gradient look like satin instead. The edge-to-core
+              contrast is the effect, and it only exists if the core gives
+              something up. */}
+          <stop offset="52%"  stopColor={`color-mix(in srgb, var(${v}) 82%, black)`} />
+          <stop offset="88%"  stopColor={`color-mix(in srgb, var(${v}) 62%, black)`} />
+          <stop offset="100%" stopColor={`color-mix(in srgb, var(${v}) 88%, black)`} />
         </linearGradient>
       ))}
 

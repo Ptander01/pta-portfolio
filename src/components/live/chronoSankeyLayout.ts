@@ -53,6 +53,10 @@ export type Ribbon = {
    *  outline the whole band, including the underside, and kill the extruded
    *  read: light comes from one key light, so only the top edge catches it. */
   topPath: string;
+  /** The trailing (lower) curve, open. Carries the rim light — in the glass
+   *  references the strongest single cue is colour bleeding out along the
+   *  bottom edge, brighter and more saturated than the body. */
+  bottomPath: string;
   /** Ribbon thickness, in px. Drives whether the glass treatment is worth
    *  drawing at all — see the note in ChronoSankey.tsx. */
   thickness: number;
@@ -323,6 +327,7 @@ export function layout(opts: LayoutOptions): Layout {
 
     const x0 = 0, x1 = span, xm = span / 2;
     const top = `M${x0},${y0a}C${xm},${y0a} ${xm},${y1a} ${x1},${y1a}`;
+    const bottom = `M${x0},${y0b}C${xm},${y0b} ${xm},${y1b} ${x1},${y1b}`;
     const path =
       top +
       `L${x1},${y1b}` +
@@ -338,6 +343,7 @@ export function layout(opts: LayoutOptions): Layout {
       thickness: lh,
       path,
       topPath: top,
+      bottomPath: bottom,
     };
   });
 

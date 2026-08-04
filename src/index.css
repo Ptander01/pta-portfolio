@@ -3041,19 +3041,20 @@
   .chrono-sankey rect { transition-duration: 0.01ms !important; }
 }
 
-/* The ribbons stack like real translucent material: where two overlap, the
-   result is brighter on a dark ground and darker on a light one, which is
-   what tells the eye they are panes rather than painted areas. That is the
-   single quality separating the reference render from a flat Sankey.
+/* Ribbons LAYER, they do not blend.
+   This started as `screen` in dark and `multiply` in light, on the argument
+   that translucent panes brighten where they overlap. Wrong reading of the
+   reference: look at the frosted-acrylic render again and the slabs occlude
+   one another — the front one wins, with its own bright edge and its own
+   shadow. That is what makes them read as objects at different depths rather
+   than as tinted films.
 
-   The blend mode has to flip with the theme. `screen` on parchment would
-   wash overlaps out to white and lose every crossing in the middle of the
-   diagram — the crossings being the entire point of the piece. */
-.chrono-sankey__ribbons { mix-blend-mode: screen; }
-[data-theme="light"] .chrono-sankey__ribbons { mix-blend-mode: multiply; }
-@media (prefers-reduced-motion: reduce) {
-  .chrono-sankey__ribbons { mix-blend-mode: normal; }
-}
+   It also actively fought the material. Under `screen`, dark maps to
+   transparent, so deepening a ribbon's core — the thing that gives glass its
+   edge-to-body contrast — simply made it more see-through, and every attempt
+   to add depth flattened instead. Normal compositing at high opacity lets the
+   core go deep and the edges stay hot, which is the whole effect. */
+.chrono-sankey__ribbons { mix-blend-mode: normal; }
 
 /* The chronological control sits over the column it drives. Two identical
    pill groups side by side said nothing about which axis each one changed;
