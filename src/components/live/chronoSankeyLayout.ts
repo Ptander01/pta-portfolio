@@ -48,7 +48,13 @@ export type Ribbon = {
    *  This is the "deviation" the piece is about. */
   slope: number;
   path: string;
-  /** Ribbon thickness at each end. */
+  /** Just the leading (upper) curve, open — the specular highlight is stroked
+   *  along this. Kept separate because a stroke on the closed `path` would
+   *  outline the whole band, including the underside, and kill the extruded
+   *  read: light comes from one key light, so only the top edge catches it. */
+  topPath: string;
+  /** Ribbon thickness, in px. Drives whether the glass treatment is worth
+   *  drawing at all — see the note in ChronoSankey.tsx. */
   thickness: number;
 };
 
@@ -241,9 +247,9 @@ export function layout(opts: LayoutOptions): Layout {
     const y1b = y1a + rh;
 
     const x0 = 0, x1 = span, xm = span / 2;
+    const top = `M${x0},${y0a}C${xm},${y0a} ${xm},${y1a} ${x1},${y1a}`;
     const path =
-      `M${x0},${y0a}` +
-      `C${xm},${y0a} ${xm},${y1a} ${x1},${y1a}` +
+      top +
       `L${x1},${y1b}` +
       `C${xm},${y1b} ${xm},${y0b} ${x0},${y0b}Z`;
 
@@ -256,6 +262,7 @@ export function layout(opts: LayoutOptions): Layout {
       slope: Math.abs((y1a + y1b) / 2 - (y0a + y0b) / 2),
       thickness: lh,
       path,
+      topPath: top,
     };
   });
 

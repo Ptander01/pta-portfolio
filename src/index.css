@@ -3040,3 +3040,17 @@
   .chrono-sankey path,
   .chrono-sankey rect { transition-duration: 0.01ms !important; }
 }
+
+/* The ribbons stack like real translucent material: where two overlap, the
+   result is brighter on a dark ground and darker on a light one, which is
+   what tells the eye they are panes rather than painted areas. That is the
+   single quality separating the reference render from a flat Sankey.
+
+   The blend mode has to flip with the theme. `screen` on parchment would
+   wash overlaps out to white and lose every crossing in the middle of the
+   diagram — the crossings being the entire point of the piece. */
+.chrono-sankey__ribbons { mix-blend-mode: screen; }
+[data-theme="light"] .chrono-sankey__ribbons { mix-blend-mode: multiply; }
+@media (prefers-reduced-motion: reduce) {
+  .chrono-sankey__ribbons { mix-blend-mode: normal; }
+}

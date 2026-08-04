@@ -43,6 +43,12 @@ const GUTTER_R = 238;      // longest era name, + bar + 6px offset
 const BAR = 9;
 const PAD_TOP = 8;
 
+/* Below this thickness the glass treatment costs marks and buys nothing —
+   a gradient across 1px is a flat colour, and a 0.75px specular stroke on a
+   1px band is just a lighter band. Set at 4px because that is roughly where
+   the three-part gradient starts to be separable by eye. */
+const GLASS_MIN = 4;
+
 type Focus = { side: "left" | "right"; index: number } | null;
 
 export default function ChronoSankey() {
@@ -51,6 +57,9 @@ export default function ChronoSankey() {
   const [hover, setHover] = useState<Focus>(null);
   const [pinned, setPinned] = useState<Focus>(null);
   const titleId = useId();
+  /* SVG ids are document-global, so they get a per-instance prefix. Two of
+     these on one page would otherwise share gradients and fight. */
+  const gid = useId().replace(/:/g, "");
 
   const focus = hover ?? pinned;
 
@@ -110,6 +119,8 @@ export default function ChronoSankey() {
           style={{ display: "block", overflow: "visible" }}
           onMouseLeave={() => setHover(null)}
         >
+          <Defs gid={gid} />
+
           <title id={titleId}>
             {`Sankey diagram: the ${TOTAL_VERSES.toLocaleString()} verses of the Bible flowing from `}
             {`canonical ${LEFT_LABEL[leftRes].toLowerCase()} order on the left to the ESV `}
@@ -117,19 +128,38 @@ export default function ChronoSankey() {
           </title>
 
           <g transform={`translate(0,${PAD_TOP})`}>
-            {/* Ribbons first, so the bars sit on top of them. */}
-            <g>
+            {/* Ribbons first, so the bars sit on top of them.
+                The glass is three marks, not one: a body filled with a
+                vertical gradient (bright just under the leading edge, base
+                through the middle, shaded at the underside), a 1px specular
+                stroke along the top curve only, and a contact shadow carried
+                by one group filter rather than 1,339 individual ones.
+
+                It is applied per ribbon, by thickness, not globally. Material
+                reads at 40px and vanishes at 1px, so below GLASS_MIN a ribbon
+                drops to a flat fill — at Chapter x Day almost everything does,
+                which is why that view looks like fibre optics rather than
+                like mud. One rule, no mode switch. */}
+            <g className="chrono-sankey__ribbons" filter={`url(#${gid}-contact)`} transform={`translate(${GUTTER_L},0)`}>
               {L.ribbons.map((r) => {
                 const lit = isLit(r.source, r.target);
+                const glass = r.thickness >= GLASS_MIN;
+                const o = focus ? (lit ? 0.92 : 0.05) : 0.62;
                 return (
-                  <path
-                    key={r.key}
-                    d={r.path}
-                    transform={`translate(${GUTTER_L},0)`}
-                    fill={divColor(r.division)}
-                    opacity={focus ? (lit ? 0.62 : 0.045) : 0.3}
-                    style={{ transition: "opacity 0.18s ease" }}
-                  />
+                  <g key={r.key} style={{ transition: "opacity 0.18s ease" }} opacity={o}>
+                    <path
+                      d={r.path}
+                      fill={glass ? `url(#${gid}-g${r.division})` : divColor(r.division)}
+                    />
+                    {glass && (
+                      <path
+                        d={r.topPath}
+                        fill="none"
+                        stroke="rgba(255,255,255,0.55)"
+                        strokeWidth={0.75}
+                      />
+                    )}
+                  </g>
                 );
               })}
             </g>
@@ -143,7 +173,9 @@ export default function ChronoSankey() {
                   <g key={n.key}>
                     <rect
                       x={GUTTER_L - BAR} y={n.y0} width={BAR} height={h}
-                      fill={divColor(n.division)}
+                      fill={h >= 3 ? `url(#${gid}-g${n.division})` : divColor(n.division)}
+                      stroke={h >= 5 ? "rgba(255,255,255,0.5)" : "none"}
+                      strokeWidth={h >= 5 ? 0.6 : 0}
                       opacity={lit ? 1 : 0.3}
                       style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
                       onMouseEnter={() => setHover({ side: "left", index: i })}
@@ -179,7 +211,9 @@ export default function ChronoSankey() {
                   <g key={n.key}>
                     <rect
                       x={W - GUTTER_R} y={n.y0} width={BAR} height={h}
-                      fill="rgb(var(--fg-rgb) / 0.55)"
+                      fill={`url(#${gid}-neutral)`}
+                      stroke={h >= 5 ? "rgba(255,255,255,0.42)" : "none"}
+                      strokeWidth={h >= 5 ? 0.6 : 0}
                       opacity={lit ? 1 : 0.3}
                       style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
                       onMouseEnter={() => setHover({ side: "right", index: i })}
@@ -216,6 +250,62 @@ export default function ChronoSankey() {
         {`Ribbon thickness is verse count; ribbon slope is how far the ESV moves a passage from its canonical place.`}
       </figcaption>
     </figure>
+  );
+}
+
+/* ── material ────────────────────────────────────────────────────────────
+   The glass, defined once and referenced by every ribbon and bar.
+
+   These are the four things the career timeline's rails already do, ported
+   from CSS box-shadow to SVG: a bright band just below the leading edge, the
+   base colour through the body, a shaded underside, and a contact shadow that
+   sits the mark on the ground. Same physics as the reference render, and the
+   same language as the rest of the site, so the diagram reads as native
+   rather than as a guest.
+
+   `gradientUnits="objectBoundingBox"` means each ribbon gets its own vertical
+   ramp regardless of where it sits or how thick it is, which is what keeps a
+   1,500-verse band and a 40-verse band looking like the same material.
+
+   Theme-aware throughout: the ramp is built with color-mix against the
+   division token, so it re-solves itself in light mode instead of carrying
+   dark-mode highlights onto parchment. */
+function Defs({ gid }: { gid: string }) {
+  return (
+    <defs>
+      {DIV_VAR.map((v, i) => (
+        <linearGradient key={v} id={`${gid}-g${i}`} x1="0" y1="0" x2="0" y2="1"
+          gradientUnits="objectBoundingBox">
+          {/* Bright band sits at 18%, not 0%: a highlight exactly on the edge
+              reads as a stroke, one just below it reads as a rounded surface
+              catching the key light. Same offset the timeline rails use. */}
+          <stop offset="0%"   stopColor={`color-mix(in srgb, var(${v}) 62%, white)`} />
+          <stop offset="18%"  stopColor={`color-mix(in srgb, var(${v}) 84%, white)`} />
+          <stop offset="55%"  stopColor={`var(${v})`} />
+          <stop offset="100%" stopColor={`color-mix(in srgb, var(${v}) 72%, black)`} />
+        </linearGradient>
+      ))}
+
+      {/* The chronological column carries no division colour — it is the
+          other axis — so it takes the same material in neutral. */}
+      <linearGradient id={`${gid}-neutral`} x1="0" y1="0" x2="0" y2="1"
+        gradientUnits="objectBoundingBox">
+        <stop offset="0%"   stopColor="rgb(var(--fg-rgb) / 0.95)" />
+        <stop offset="18%"  stopColor="rgb(var(--fg-rgb) / 0.82)" />
+        <stop offset="55%"  stopColor="rgb(var(--fg-rgb) / 0.62)" />
+        <stop offset="100%" stopColor="rgb(var(--fg-rgb) / 0.4)" />
+      </linearGradient>
+
+      {/* ONE contact shadow for the whole ribbon group. Per-ribbon filters
+          would be 1,339 of them and drop the frame rate through the floor;
+          at this offset the group shadow is indistinguishable anyway, because
+          what sells the effect is the mark sitting a little above the ground,
+          not each band shadowing its neighbour. */}
+      <filter id={`${gid}-contact`} x="-2%" y="-2%" width="104%" height="106%">
+        <feDropShadow dx="0" dy="1.5" stdDeviation="1.6"
+          floodColor="#000" floodOpacity="0.34" />
+      </filter>
+    </defs>
   );
 }
 
