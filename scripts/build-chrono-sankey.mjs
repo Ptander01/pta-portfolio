@@ -6,12 +6,16 @@
  *
  *   node scripts/build-chrono-sankey.mjs
  *
- * Both views come from ONE table. The day view and the era view are two
- * groupings of the same 767 parsed segments, so they cannot disagree — which
- * is the whole reason this was rebuilt. The two exports it replaces were
- * independent extractions: the era file totalled 31,296 (+194, Psalm 421
- * verses too high), the day file 28,110 (−2,992 across 39 books), and only 24
- * of 66 books agreed in both.
+ * Emits ONE atomic table — every (book, chapter, day) pairing, 1,397 rows —
+ * rather than a pre-aggregated view per resolution. Every zoom level is a
+ * grouping of that table computed in the browser, so the views cannot
+ * disagree with each other, and adding a resolution later is a change to the
+ * component rather than to the data.
+ *
+ * That mattered here: the two exports this replaces were independent
+ * extractions of the same plan. The era file totalled 31,296 (+194, Psalm 421
+ * too high), the day file 28,110 (−2,992 across 39 books), and only 24 of 66
+ * books reconciled in both. One table cannot drift from itself.
  *
  * The build refuses to emit unless the plan covers the Bible exactly once.
  */
@@ -27,57 +31,44 @@ const OUT = resolve(ROOT, "src/lib/data/chronoSankey.ts");
 
 verify();
 
-/* ── canonical book order and genre ──────────────────────────────────── */
+/* ── the left axis: canonical order, and its two coarser groupings ───── */
 
-const ORDER = Object.keys(BOOK_TOTALS);                 // canonical, Genesis..Revelation
-const POSITION = new Map(ORDER.map((b, i) => [b, i + 1]));
-
-/** Seven traditional divisions. The left axis colours by these; they are a
- *  property of the book, not of the plan, so they live here rather than in
- *  the transcription. */
-const GENRE_OF = {};
-const assign = (genre, books) => books.forEach((b) => (GENRE_OF[b] = genre));
-assign("The Law", ORDER.slice(0, 5));
-assign("History", ORDER.slice(5, 17));
-assign("Wisdom & Poetry", ORDER.slice(17, 22));
-assign("Major Prophets", ORDER.slice(22, 27));
-assign("Minor Prophets", ORDER.slice(27, 39));
-assign("Gospels & Acts", ORDER.slice(39, 44));
-assign("Epistles & Revelation", ORDER.slice(44, 66));
-
-/* ── eras ────────────────────────────────────────────────────────────────
-   Fourteen chronological eras, defined as day ranges over the same plan.
-
-   These are an editorial grouping, not something the plan states, and they
-   are Patrick's fourteen from the original Flourish version. Defining them by
-   day range — rather than per passage, as the retired era export did — is
-   what makes the era view a strict grouping of the day view. The cost is that
-   a day spanning an era boundary lands wholly in one era; the boundaries
-   below were placed at days where the subject actually turns, so no day is
-   split. Eras 13 and 14 reproduce the original export's book membership
-   exactly, which is a useful check that the ranges are sane. */
-const ERAS = [
-  { name: "Genesis & Patriarchs",        from: 1,   to: 16 },
-  { name: "Job",                          from: 17,  to: 29 },
-  { name: "Exodus & The Law",             from: 30,  to: 71 },
-  { name: "Conquest & Judges",            from: 72,  to: 89 },
-  { name: "United Kingdom (Saul & David)",from: 90,  to: 119 },
-  { name: "Psalms & Wisdom (Davidic)",    from: 120, to: 139 },
-  { name: "Solomon & Wisdom",             from: 140, to: 162 },
-  { name: "Divided Kingdom",              from: 163, to: 177 },
-  { name: "Prophets to Israel & Judah",   from: 178, to: 197 },
-  { name: "Exile",                        from: 198, to: 255 },
-  { name: "Return from Exile",            from: 256, to: 285 },
-  { name: "Life of Christ",               from: 286, to: 324 },
-  { name: "The Early Church & Paul's Letters", from: 325, to: 349 },
-  { name: "General Epistles & Revelation",from: 350, to: 365 },
+const ORDER = Object.keys(BOOK_TOTALS);
+const DIVISIONS = [
+  { name: "The Law", books: ORDER.slice(0, 5) },
+  { name: "History", books: ORDER.slice(5, 17) },
+  { name: "Wisdom & Poetry", books: ORDER.slice(17, 22) },
+  { name: "Major Prophets", books: ORDER.slice(22, 27) },
+  { name: "Minor Prophets", books: ORDER.slice(27, 39) },
+  { name: "Gospels & Acts", books: ORDER.slice(39, 44) },
+  { name: "Epistles & Revelation", books: ORDER.slice(44, 66) },
 ];
+const DIVISION_OF = new Map();
+DIVISIONS.forEach((d, i) => d.books.forEach((b) => DIVISION_OF.set(b, i)));
 
-const eraOfDay = (d) => {
-  const i = ERAS.findIndex((e) => d >= e.from && d <= e.to);
-  if (i < 0) throw new Error(`Day ${d} falls in no era`);
-  return i;
-};
+/* ── the right axis: fourteen eras as day ranges ──────────────────────────
+   An editorial grouping, not something the plan states — Patrick's fourteen
+   from the original Flourish version. Defined as day ranges so the era view
+   is a strict grouping of the day view; the retired era export assigned them
+   per passage instead, which is how Psalm 90 ended up filed under Conquest &
+   Judges there. Boundaries sit where the subject turns, so no day is split.
+   Eras 13 and 14 reproduce the old export's book membership exactly. */
+const ERAS = [
+  { name: "Genesis & Patriarchs",              from: 1,   to: 16 },
+  { name: "Job",                               from: 17,  to: 29 },
+  { name: "Exodus & The Law",                  from: 30,  to: 71 },
+  { name: "Conquest & Judges",                 from: 72,  to: 89 },
+  { name: "United Kingdom (Saul & David)",     from: 90,  to: 119 },
+  { name: "Psalms & Wisdom (Davidic)",         from: 120, to: 139 },
+  { name: "Solomon & Wisdom",                  from: 140, to: 162 },
+  { name: "Divided Kingdom",                   from: 163, to: 177 },
+  { name: "Prophets to Israel & Judah",        from: 178, to: 197 },
+  { name: "Exile",                             from: 198, to: 255 },
+  { name: "Return from Exile",                 from: 256, to: 285 },
+  { name: "Life of Christ",                    from: 286, to: 324 },
+  { name: "The Early Church & Paul's Letters", from: 325, to: 349 },
+  { name: "General Epistles & Revelation",     from: 350, to: 365 },
+];
 
 /* ── parse ───────────────────────────────────────────────────────────── */
 
@@ -85,11 +76,11 @@ const lines = readFileSync(resolve(ROOT, "data/chrono-sankey/reading-plan.tsv"),
   .split("\n").map((l) => l.replace(/\r$/, ""))
   .filter((l) => l.trim() && !l.startsWith("#"));
 
-/** Every segment, in reading order. The single source both views group. */
 const segments = [];
 for (const line of lines) {
   const [dayStr, reading] = line.split("\t");
   const day = Number(dayStr);
+  if (!Number.isFinite(day)) throw new Error(`bad day in: ${line}`);
   for (const s of parseReading(reading)) segments.push({ day, ...s });
 }
 
@@ -108,112 +99,127 @@ for (const s of segments) {
     }
   }
 }
-const omittedCount = Object.values(ESV_OMITTED).flat().length;
 for (const b of ORDER) {
-  const expected = BOOK_TOTALS[b] - (ESV_OMITTED[b]?.length ?? 0);
-  const got = seen.get(b).size;
-  const missingOmitted = (ESV_OMITTED[b] ?? []).filter((k) => !seen.get(b).has(k)).length;
-  if (got + missingOmitted !== BOOK_TOTALS[b])
-    throw new Error(`${b}: covers ${got}, expected ${expected}..${BOOK_TOTALS[b]}`);
+  const omitted = new Set(ESV_OMITTED[b] ?? []);
+  const ch = CHAPTERS[b];
+  for (let c = 1; c <= ch.length; c++)
+    for (let v = 1; v <= ch[c - 1]; v++) {
+      const key = `${c}:${v}`;
+      if (!seen.get(b).has(key) && !omitted.has(key))
+        throw new Error(`${b} ${key} is never read — plan does not cover the Bible`);
+    }
 }
+const dayCount = new Set(segments.map((s) => s.day)).size;
+if (dayCount !== 365) throw new Error(`${dayCount} days, expected 365`);
 
-const totalVerses = segments.reduce((a, s) => a + s.verses, 0);
-const days = [...new Set(segments.map((s) => s.day))].sort((a, b) => a - b);
-if (days.length !== 365) throw new Error(`${days.length} days, expected 365`);
-
-/* ── group ───────────────────────────────────────────────────────────── */
-
-const BOOKS = ORDER.filter((b) => segments.some((s) => s.book === b));
-const bookIx = new Map(BOOKS.map((b, i) => [b, i]));
-
-/**
- * Merge repeats of the same (book, target) into one weighted ribbon, keeping
- * how many separate sittings it took. Patrick's own rule from the original:
- * "If there are 10 verses that connect two sections over 5 intervals, they
- * are one ribbon with a weighted value of 10." The alternative is 31,102
- * ribbons and no forest for the trees.
- */
-function group(targetOf, targetCount) {
-  const merged = new Map();
-  for (const s of segments) {
-    const t = targetOf(s);
-    const key = `${bookIx.get(s.book)}|${t}`;
-    const cur = merged.get(key);
-    if (cur) { cur[2] += s.verses; cur[3] += 1; }
-    else merged.set(key, [bookIx.get(s.book), t, s.verses, 1]);
+/* ── atoms ───────────────────────────────────────────────────────────────
+   Split every reading at chapter boundaries, so the finest node the left
+   axis can offer — a chapter — is expressible, and every coarser level is a
+   sum over these. Verse-level *nodes* are deliberately not emitted: 31,102
+   of them would be sub-pixel at any plausible height, and the ribbons are
+   already weighted by verse, so the precision is present without pretending
+   each verse can be a distinct mark. */
+const atoms = [];   // [bookIndex, chapter, day, verses]
+for (const s of segments) {
+  const ch = CHAPTERS[s.book];
+  const bi = ORDER.indexOf(s.book);
+  for (let c = s.startCh; c <= s.endCh; c++) {
+    const from = c === s.startCh ? s.startV : 1;
+    const to = c === s.endCh ? s.endV : ch[c - 1];
+    atoms.push([bi, c, s.day, to - from + 1]);
   }
-  const links = [...merged.values()].sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-  const total = links.reduce((a, l) => a + l[2], 0);
-  if (total !== totalVerses) throw new Error(`grouping lost verses: ${total} vs ${totalVerses}`);
-  void targetCount;
-  return links;
 }
+atoms.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
 
-const eraLinks = group((s) => eraOfDay(s.day), ERAS.length);
-const dayLinks = group((s) => s.day - 1, 365);
+const totalVerses = atoms.reduce((a, x) => a + x[3], 0);
+const segTotal = segments.reduce((a, s) => a + s.verses, 0);
+if (totalVerses !== segTotal) throw new Error(`atoms lost verses: ${totalVerses} vs ${segTotal}`);
 
 /* ── report ──────────────────────────────────────────────────────────── */
 
-console.log(`segments ${segments.length}   books ${BOOKS.length}   verses ${totalVerses}`);
-console.log(`coverage ${totalVerses}/${GRAND_TOTAL} verse numbers; the ESV omits ${omittedCount}, of which the plan's ranges span all but Mark 11:26`);
-console.log(`eras  ${ERAS.length} targets, ${eraLinks.length} ribbons`);
-console.log(`days  365 targets, ${dayLinks.length} ribbons`);
+const omittedCount = Object.values(ESV_OMITTED).flat().length;
+const chaptersTouched = new Set(atoms.map((a) => `${a[0]}:${a[1]}`)).size;
+const ribbons = (l, r) => new Set(atoms.map((a) => `${l(a)}|${r(a)}`)).size;
+const eraOf = (a) => ERAS.findIndex((e) => a[2] >= e.from && a[2] <= e.to);
+
+console.log(`readings ${segments.length}   atoms ${atoms.length}   verses ${totalVerses}`);
+console.log(`chapters touched ${chaptersTouched}/1189   days ${dayCount}`);
+console.log(`ESV omits ${omittedCount} verse numbers; the plan's ranges span all but Mark 11:26\n`);
+console.log("ribbons per resolution pair:");
+for (const [ln, lf] of [["division", (a) => DIVISION_OF.get(ORDER[a[0]])], ["book", (a) => a[0]], ["chapter", (a) => `${a[0]}:${a[1]}`]])
+  for (const [rn, rf] of [["era", eraOf], ["day", (a) => a[2]]])
+    console.log(`  ${ln.padEnd(8)} x ${rn.padEnd(4)} -> ${String(ribbons(lf, rf)).padStart(5)}`);
 
 /* ── emit ────────────────────────────────────────────────────────────── */
 
 const j = (v) => JSON.stringify(v);
-const genres = [...new Set(Object.values(GENRE_OF))];
-
 const out = `/**
  * chronoSankey.ts — GENERATED, do not edit by hand.
  *
- * Source:    data/chrono-sankey/reading-plan.tsv  (build input, not shipped)
- * Generator: scripts/build-chrono-sankey.mjs
+ * Source:     data/chrono-sankey/reading-plan.tsv
+ * Generator:  scripts/build-chrono-sankey.mjs
  * Regenerate: \`node scripts/build-chrono-sankey.mjs\`
  *
- * Both views are groupings of ONE parsed table of ${segments.length} reading segments, so
- * the era view and the day view cannot disagree. The build refuses to emit
- * unless the plan covers every verse of all 66 books exactly once.
+ * ONE atomic table. \`ATOMS\` holds every (book, chapter, day) pairing in the
+ * ESV Chronological Bible's 365-day plan; every zoom level the component
+ * offers is a grouping of it, computed in the browser. Two views of one table
+ * cannot disagree — which is the point, because the two exports this replaces
+ * were separate extractions of the same plan and agreed on only 24 of 66
+ * books.
  *
- * Links are [bookIndex, targetIndex, verses, intervals]. Repeats of a pairing
- * merge into one weighted ribbon; \`intervals\` records how many separate
- * sittings it took, so the merge loses nothing.
+ * The build refuses to emit unless the plan covers every verse of all 66
+ * books exactly once, with no gaps and no overlaps.
  *
- * ${totalVerses} is a count of verse *numbers* the plan covers. The ESV omits ${omittedCount}
- * bracketed verses; all but Mark 11:26 fall inside larger ranges, so the true
- * count of verses printed in the ESV is about fifteen lower. Stated rather
- * than rounded away.
+ * ${totalVerses} counts verse *numbers*. The ESV omits ${omittedCount} bracketed verses; all but
+ * Mark 11:26 fall inside larger ranges, so the count of verses actually
+ * printed is about fifteen lower. Stated rather than rounded away.
  */
 
-export type Genre = ${genres.map(j).join("\n  | ")};
-export type Book = { name: string; pos: number; genre: Genre };
-/** [bookIndex, targetIndex, verses, intervals] */
-export type Link = [number, number, number, number];
-export type View = { targets: readonly string[]; links: readonly Link[] };
+export type Division = ${DIVISIONS.map((d) => j(d.name)).join("\n  | ")};
 
-/** Verse numbers the plan covers, and the canonical total it is checked against. */
+export type Book = {
+  name: string;
+  /** Canonical position, 1 (Genesis) to 66 (Revelation). */
+  pos: number;
+  /** Index into DIVISIONS. */
+  division: number;
+  /** Verses per chapter, so a chapter node knows its own height. */
+  chapters: readonly number[];
+};
+
+export type Era = { name: string; from: number; to: number };
+
+/**
+ * [bookIndex, chapter, day, verses] — one row per (book, chapter, day).
+ * Sorted by book, then chapter, then day.
+ */
+export type Atom = readonly [number, number, number, number];
+
 export const TOTAL_VERSES = ${totalVerses};
 export const REFERENCE_TOTAL = ${GRAND_TOTAL};
+export const TOTAL_READINGS = ${segments.length};
+
+export const DIVISIONS: readonly { name: Division; from: number; to: number }[] = ${j(
+  DIVISIONS.map((d) => ({
+    name: d.name,
+    from: ORDER.indexOf(d.books[0]) + 1,
+    to: ORDER.indexOf(d.books[d.books.length - 1]) + 1,
+  }))
+)};
 
 export const BOOKS: readonly Book[] = ${j(
-  BOOKS.map((b) => ({ name: b, pos: POSITION.get(b), genre: GENRE_OF[b] }))
+  ORDER.map((b, i) => ({
+    name: b,
+    pos: i + 1,
+    division: DIVISION_OF.get(b),
+    chapters: CHAPTERS[b],
+  }))
 )};
 
 /** Fourteen chronological eras, as day ranges over the plan. */
-export const ERAS: View = {
-  targets: ${j(ERAS.map((e) => e.name))},
-  links: ${j(eraLinks)},
-};
+export const ERAS: readonly Era[] = ${j(ERAS)};
 
-/** The 365 daily readings — the micro view, where the braiding is visible. */
-export const DAYS: View = {
-  targets: ${j(Array.from({ length: 365 }, (_, i) => `Day ${i + 1}`))},
-  links: ${j(dayLinks)},
-};
-
-/** Day ranges for each era, so the day view can be banded by era. */
-export const ERA_RANGES: readonly { name: string; from: number; to: number }[] =
-  ${j(ERAS)};
+export const ATOMS: readonly Atom[] = ${j(atoms)};
 `;
 
 writeFileSync(OUT, out);

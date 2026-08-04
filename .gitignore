@@ -5,11 +5,3 @@ dist
 *.tsbuildinfo
 .DS_Store
 
-# The transcribed ESV Chronological Bible reading plan — build input, kept out
-# of a PUBLIC repo deliberately. The Bible text is public domain; Crossway's
-# arrangement of it into 365 chronological readings is their editorial work,
-# and a complete machine-readable copy of it in a public repo is a different
-# thing from publishing counts derived from it. The generated aggregate in
-# src/lib/data/chronoSankey.ts IS committed, so the site builds from a clone;
-# only regenerating needs the file. Delete this line to publish it.
-data/chrono-sankey/reading-plan.tsv
