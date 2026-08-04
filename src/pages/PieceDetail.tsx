@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import PageTransition from "@/components/animations/PageTransition";
 import { PROJECTS, DOMAINS } from "@/lib/projects";
 import { narratives } from "@/lib/narratives";
+import { LivePiece } from "@/lib/livePieces";
 import NotFound from "./NotFound";
 
 export default function PieceDetail() {
@@ -179,6 +180,12 @@ export default function PieceDetail() {
               {project.insight}
             </blockquote>
           </div>
+
+          {/* If the piece runs live, it leads — the working thing is a
+              stronger opening than a screenshot of the working thing, and a
+              reader who wants the stills can scroll. Renders nothing for the
+              46 pieces that have no live component. */}
+          <LivePiece id={project.id} accent={project.accent} />
 
           {/* Every macro, full width, in order. */}
           <div

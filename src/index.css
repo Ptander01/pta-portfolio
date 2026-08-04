@@ -656,6 +656,45 @@
   --domain-history:       #595621;  /* 6.54:1 */
 }
 
+/* ══ Chrono Sankey — the seven traditional divisions ══
+   A categorical scale for the Bible's seven divisions, used to colour both
+   the left-hand nodes and the ribbons leaving them.
+
+   Solved rather than picked, on the same two constraints the domain accents
+   were: legible on its own ground, and mutually tellable apart. Seven hues at
+   even spacing, then lightness searched per hue to a contrast floor — 6.0:1
+   on the dark ground, 4.5:1 on parchment.
+
+   Separation is measured as CIELAB ΔE, not RGB distance. RGB distance is what
+   the domain accents used and it is misleading down here: it collapses toward
+   zero for dark colours regardless of how different they look, which made the
+   light set unsolvable at any sane saturation until the metric changed. The
+   worst pair is ΔE 38.4 dark and 33.6 light, where about 25 is the point two
+   colours stop being confusable.
+
+   Hue order runs with canonical order, so reading down the left column is
+   also a walk around the wheel — an accident of the construction, kept
+   because it makes the sequence feel ordered rather than arbitrary. */
+:root,
+[data-theme="dark"] {
+  --div-law:      #A5960E;  /* 6.15:1 */
+  --div-history:  #35AA0F;  /* 6.10:1 */
+  --div-wisdom:   #0FA86D;  /* 6.04:1 */
+  --div-major:    #3998EE;  /* 6.09:1 */
+  --div-minor:    #A57EF4;  /* 6.08:1 */
+  --div-gospels:  #F053D3;  /* 6.07:1 */
+  --div-epistles: #F16962;  /* 6.12:1 */
+}
+[data-theme="light"] {
+  --div-law:      #746E14;  /* 4.56:1 */
+  --div-history:  #2B7C16;  /* 4.54:1 */
+  --div-wisdom:   #157956;  /* 4.66:1 */
+  --div-major:    #216DBA;  /* 4.59:1 */
+  --div-minor:    #8049DF;  /* 4.61:1 */
+  --div-gospels:  #C0229D;  /* 4.59:1 */
+  --div-epistles: #CA3024;  /* 4.59:1 */
+}
+
 /* ═══════════════════════════════════════════════════════════════
    CHAPTER PANEL SYSTEM
    Each chapter has a data attribute that sets its accent color.
@@ -2870,4 +2909,134 @@
   .home-nav-link {
     min-height: 44px;
   }
+}
+
+/* ══ Chrono Sankey ══
+   The first interactive piece rendered inside the portfolio itself rather
+   than linked out to a third-party host. Chrome takes the controls treatment
+   from the texture-zoning table (glass + neumorphic lip); the diagram itself
+   gets no added texture, same rule as images. */
+.chrono-sankey__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+.chrono-sankey__group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.chrono-sankey__group legend {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  float: left;
+  margin-right: 8px;
+  padding: 0;
+}
+.chrono-sankey__opt {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 7px 13px;
+  min-height: 40px;
+  border-radius: 14px;
+  border: none;
+  color: var(--text-muted);
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.chrono-sankey__opt:hover { color: var(--heading-color); box-shadow: var(--lip-hover); }
+.chrono-sankey__opt.is-on {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+
+/* The diagram needs a minimum width to stay legible; below that it scrolls
+   rather than compressing 66 labels into nothing. */
+.chrono-sankey__scroll { overflow-x: auto; overflow-y: hidden; }
+.chrono-sankey__scroll > svg { min-width: 660px; }
+
+.chrono-sankey__label {
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  fill: rgb(var(--fg-rgb) / 0.62);
+  pointer-events: none;
+}
+
+.chrono-sankey__readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  align-items: baseline;
+  min-height: 1.6em;
+  margin: 0 0 0.75rem;
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.chrono-sankey__readout strong {
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgb(var(--fg-rgb) / 0.9);
+}
+/* Reserved, not hidden: an idle readout that collapses would make the
+   diagram jump every time the pointer enters it. */
+.chrono-sankey__readout--idle { opacity: 0.55; }
+
+.chrono-sankey__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  font-family: "Space Mono", monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.chrono-sankey__legend li { display: flex; align-items: center; gap: 6px; }
+.chrono-sankey__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.chrono-sankey__caption {
+  margin-top: 0.75rem;
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgb(var(--fg-rgb) / 0.42);
+}
+
+@media (max-width: 767px) {
+  .chrono-sankey__controls { gap: 10px; }
+  .chrono-sankey__group { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chrono-sankey path,
+  .chrono-sankey rect { transition-duration: 0.01ms !important; }
 }
