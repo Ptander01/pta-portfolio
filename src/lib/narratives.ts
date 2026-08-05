@@ -363,4 +363,35 @@ export const narratives: Record<string, Narrative> = {
       "An ongoing research project with the Forestry Department at Clemson University.",
     ],
   },
+
+  /* Built from Patrick's two write-ups on the piece — the first published with
+     the era-level view, the second when he went back for the day-level one.
+     The sentences are his, compressed and joined; the platform scaffolding
+     (hashtags, "let me know in the comments") is dropped per the rule at the
+     top of this file. Nothing here was added that he didn't say.
+
+     The two paragraphs about the second version are the argument the piece
+     actually makes, and they are worth not cutting: the macro view was the
+     one that got attention, and he is the one who noticed what it had thrown
+     away. The rebuild of the underlying data is recorded in `credits`, not in
+     the prose, because that part is not his account. */
+  "chrono-sankey": {
+    tone: "field-notes",
+    standfirst:
+      "Crossway's ESV Chronological Bible braids every verse into a strictly linear timeline. This is what that rearrangement looks like when you draw it.",
+    paragraphs: [
+      "I've been reading from a Bible published by Crossway called the ESV Chronological Bible. It's been fascinating to see how they've braided every single verse into a strictly linear timeline. As a data scientist I often visualize complex datasets in order to quickly extract meaning, and while reading the 66 books in this unique format I found myself wondering how I could visualize the changes this publisher made to the traditional order of the biblical narrative.",
+      "The traditional order runs down the left: all 66 books, Genesis to Revelation, ranked accordingly. The chronological timeline runs down the right. The translucent ribbons between them connect the same verse in both timelines, so they draw every point where a verse in the chronological edition deviates from where the canon puts it. The ribbons are weighted proportional to their quantity — the more verses, the larger the ribbon.",
+      "They are also aggregated by origin and destination, for cleanliness. If ten verses connect two sections but occur over five intervals, they are drawn as one ribbon with a weighted value of ten. That tidies the visual and lets a reader appreciate the macro perspective of the entire biblical story. The alternative would be 31,102 ribbons — an impressive amount of detail, and a reliable way to lose the forest for the trees.",
+      "I liked how that first version captured the macro perspective, which I got by summarizing the books into genres and aggregating the narrative links. But in filtering out the micro-perspective it lost some of the magic of actually reading this format day to day, where in a single day you might read a passage from 1 Chronicles, then Judges, then Ruth, then a Psalm.",
+      "So I built a second version against the Bible's 365 daily readings. Both the nodes and the links are weighted by verse volume, so more verses means greater height, and the greater the slope of a link, the greater the deviation from the traditional timeline.",
+      "My idea started as curiosity, pattern recognition, and the art of reframing old information through a new lens. Ironically, I found myself turning narrative into data in order to let the data tell a narrative. Data science, at its best, is about finding beauty in structure — whether you're analyzing retail sales, migration patterns, or a 3,000-year-old narrative about humanity trying to make sense of itself.",
+      "You don't have to be religious to appreciate it.",
+    ],
+    /* No `credits` block. It used to carry a "Method" list, which rendered a
+       second <h2>Method</h2> directly under the one PieceDetail already draws
+       from `project.method` — same heading, overlapping content. The
+       substance now lives in `method` and `source` on the piece itself, which
+       is where every other piece keeps it. */
+  },
 };

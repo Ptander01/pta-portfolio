@@ -1131,15 +1131,15 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: true,
     subtype: "Chronology",
     description:
-      "The Bible's table of contents is not its timeline — Job sits mid-canon but belongs among the earliest events, and the prophets scatter across five centuries. A Sankey diagram routes all 66 books from their traditional canonical position into 14 chronological eras, making every crossing visible. Published in two Flourish views: a detailed book-level version and an aggregated era-level companion.",
+      "The Bible's table of contents is not its timeline — Job sits mid-canon but belongs among the earliest events, and the prophets scatter across five centuries. A Sankey diagram routes all 66 books from their canonical position into the ESV Chronological Bible's order, making every crossing visible. Runs live on this page: canonical order resolves to divisions, books or chapters; chronological order to eras or all 365 daily readings.",
     insight:
       "The canon is a library, not a chronicle. Readers assume the books sit in time order — they don't, and one diagram of the crossings communicates that faster than any explanation.",
     method:
-      "Book-to-era mapping assembled from an ESV chronological reading plan, rendered as a two-column Sankey in Flourish. Ribbon crossings encode the distance between a book's shelf position and its place in time.",
+      "Rebuilt from the printed Daily Reading Index rather than a derived export: 365 readings parsed into 767 passages and 1,397 book-chapter-day atoms, gated on a check that the plan covers all 66 books exactly once. Every zoom level groups that one table, so no two views can disagree. Ribbon slope encodes the distance between a passage's shelf position and its place in time.",
     image: "/images/work/chrono-sankey.webp",
     imageCrop: "center",
     link: "https://public.flourish.studio/visualisation/25256067/",
-    source: "Tool: Flourish · Data: ESV chronological reading plan · 2 views",
+    source: "Data: ESV Chronological Bible, Daily Reading Index (Crossway) · 31,102 verses · verified complete, no gaps or overlaps · rendered in-page, no charting library",
     tags: ["Sankey", "Flourish", "Data Storytelling", "Biblical History"],
     hero: true,
   },

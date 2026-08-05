@@ -656,6 +656,58 @@
   --domain-history:       #595621;  /* 6.54:1 */
 }
 
+/* ══ Chrono Sankey — the seven traditional divisions ══
+   A categorical scale for the Bible's seven divisions, used to colour both
+   the left-hand nodes and the ribbons leaving them.
+
+   Solved rather than picked, on the same two constraints the domain accents
+   were: legible on its own ground, and mutually tellable apart. Seven hues at
+   even spacing, then lightness searched per hue to a contrast floor — 6.0:1
+   on the dark ground, 4.5:1 on parchment.
+
+   Separation is measured as CIELAB ΔE, not RGB distance. RGB distance is what
+   the domain accents used and it is misleading down here: it collapses toward
+   zero for dark colours regardless of how different they look, which made the
+   light set unsolvable at any sane saturation until the metric changed. The
+   worst pair is ΔE 38.4 dark and 33.6 light, where about 25 is the point two
+   colours stop being confusable.
+
+   Hues are NOT evenly spaced, and that is the point. Even spacing put two of
+   the seven inside the green band — History at 105 and Wisdom & Poetry at 157,
+   a grass green and a pine, ΔE 40 apart and the third-closest pair in the set.
+   Two greens in a seven-colour categorical scale is one too many however far
+   apart they measure, because a reader tracking a ribbon across the diagram
+   is not comparing swatches side by side.
+
+   The set is now solved with a hard constraint of at most one hue in the
+   green band (78–162°), spacing left free, maximising the worst pair across
+   BOTH themes at once. Wisdom moved to a teal at 174°. The worst pair went
+   from ΔE 38.4 to 47.2 dark and 33.6 to 47.4 light — the constraint made the
+   whole set better, not just the greens.
+
+   Hue order still runs with canonical order, so reading down the left column
+   is a walk around the wheel; it makes the sequence feel ordered rather than
+   arbitrary. */
+:root,
+[data-theme="dark"] {
+  --div-law:      #BA8D10;  /* 6.09:1  hue  44 */
+  --div-history:  #24AC0F;  /* 6.16:1  hue 112 — the only green */
+  --div-wisdom:   #0EA696;  /* 6.10:1  hue 174 */
+  --div-major:    #3799EE;  /* 6.14:1  hue 208 */
+  --div-minor:    #B577F3;  /* 6.09:1  hue 270 */
+  --div-gospels:  #F15FA5;  /* 6.11:1  hue 331 */
+  --div-epistles: #F06B53;  /* 6.12:1  hue   9 */
+}
+[data-theme="light"] {
+  --div-law:      #826617;  /* 4.70:1 */
+  --div-history:  #237915;  /* 4.76:1 */
+  --div-wisdom:   #15776D;  /* 4.67:1 */
+  --div-major:    #1F6CB0;  /* 4.74:1 */
+  --div-minor:    #8D3EDD;  /* 4.70:1 */
+  --div-gospels:  #C52371;  /* 4.71:1 */
+  --div-epistles: #C03922;  /* 4.72:1 */
+}
+
 /* ═══════════════════════════════════════════════════════════════
    CHAPTER PANEL SYSTEM
    Each chapter has a data attribute that sets its accent color.
@@ -2871,3 +2923,220 @@
     min-height: 44px;
   }
 }
+
+/* ══ Chrono Sankey ══
+   The first interactive piece rendered inside the portfolio itself rather
+   than linked out to a third-party host. Chrome takes the controls treatment
+   from the texture-zoning table (glass + neumorphic lip); the diagram itself
+   gets no added texture, same rule as images. */
+.chrono-sankey__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+.chrono-sankey__group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+.chrono-sankey__group legend {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  float: left;
+  margin-right: 8px;
+  padding: 0;
+}
+.chrono-sankey__opt {
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 7px 13px;
+  min-height: 40px;
+  border-radius: 14px;
+  border: none;
+  color: var(--text-muted);
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  cursor: pointer;
+  transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.chrono-sankey__opt:hover { color: var(--heading-color); box-shadow: var(--lip-hover); }
+.chrono-sankey__opt.is-on {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+
+/* The diagram needs a minimum width to stay legible; below that it scrolls
+   rather than compressing 66 labels into nothing. */
+.chrono-sankey__scroll { overflow-x: auto; overflow-y: hidden; }
+.chrono-sankey__scroll > svg { min-width: 660px; }
+
+.chrono-sankey__label {
+  font-family: "Space Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+  fill: rgb(var(--fg-rgb) / 0.62);
+  pointer-events: none;
+}
+
+.chrono-sankey__readout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  align-items: baseline;
+  min-height: 1.6em;
+  margin: 0 0 0.75rem;
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.chrono-sankey__readout strong {
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: rgb(var(--fg-rgb) / 0.9);
+}
+/* Reserved, not hidden: an idle readout that collapses would make the
+   diagram jump every time the pointer enters it. */
+.chrono-sankey__readout--idle { opacity: 0.55; }
+
+.chrono-sankey__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  font-family: "Space Mono", monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.chrono-sankey__legend li { display: flex; align-items: center; gap: 6px; }
+.chrono-sankey__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.chrono-sankey__caption {
+  margin-top: 0.75rem;
+  font-family: "Lora", Georgia, serif;
+  font-size: 0.75rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: rgb(var(--fg-rgb) / 0.42);
+}
+
+@media (max-width: 767px) {
+  .chrono-sankey__controls { gap: 10px; }
+  .chrono-sankey__group { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chrono-sankey path,
+  .chrono-sankey rect { transition-duration: 0.01ms !important; }
+}
+
+/* Ribbons LAYER, they do not blend.
+   This started as `screen` in dark and `multiply` in light, on the argument
+   that translucent panes brighten where they overlap. Wrong reading of the
+   reference: look at the frosted-acrylic render again and the slabs occlude
+   one another — the front one wins, with its own bright edge and its own
+   shadow. That is what makes them read as objects at different depths rather
+   than as tinted films.
+
+   It also actively fought the material. Under `screen`, dark maps to
+   transparent, so deepening a ribbon's core — the thing that gives glass its
+   edge-to-body contrast — simply made it more see-through, and every attempt
+   to add depth flattened instead. Normal compositing at high opacity lets the
+   core go deep and the edges stay hot, which is the whole effect. */
+.chrono-sankey__ribbons { mix-blend-mode: normal; }
+
+/* The chronological control sits over the column it drives. Two identical
+   pill groups side by side said nothing about which axis each one changed;
+   the association a reader makes is spatial, so the control is placed
+   spatially. `margin-left: auto` rather than space-between, so the Clear
+   button stays next to the filters it clears rather than being flung to the
+   middle. */
+.chrono-sankey__group--right { margin-left: auto; }
+@media (max-width: 767px) {
+  /* Below the breakpoint the diagram scrolls and the columns no longer line
+     up with anything, so the spatial argument stops applying and the groups
+     simply stack in reading order. */
+  .chrono-sankey__group--right { margin-left: 0; }
+}
+
+/* The scope pill. A native <select> cannot be made to match the chrome
+   language, and this sits in a row of pills — so the real control is kept
+   underneath at zero opacity, covering the pill, and the visible text is a
+   span. Keyboard, screen readers and mobile all get the native control;
+   everyone gets the site's own look. */
+.chrono-sankey__scope {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 7px 26px 7px 13px;
+  border-radius: 14px;
+  font-family: "Space Mono", monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  max-width: 15rem;
+  color: var(--text-muted);
+  background: var(--pill-bg);
+  box-shadow: var(--lip-out);
+  transition: color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.chrono-sankey__scope > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* The caret, drawn rather than imported. */
+.chrono-sankey__scope::after {
+  content: "";
+  position: absolute;
+  right: 11px;
+  width: 0;
+  height: 0;
+  border-left: 3.5px solid transparent;
+  border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor;
+  opacity: 0.65;
+  pointer-events: none;
+}
+.chrono-sankey__scope:hover { color: var(--heading-color); box-shadow: var(--lip-hover); }
+.chrono-sankey__scope.is-on {
+  color: var(--cyan);
+  background: var(--pill-bg-active);
+  box-shadow: var(--lip-in-glow);
+}
+.chrono-sankey__scope select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  font: inherit;
+}
+/* Focus has to be visible even though the control it belongs to is invisible. */
+.chrono-sankey__scope:focus-within { box-shadow: var(--lip-in-glow); color: var(--cyan); }
