@@ -703,7 +703,7 @@ export default function About() {
               >
                 Faced with massive, disparate datasets, I upskilled rapidly.
                 Leveraging AI-assisted development tools, I transitioned from a
-                traditional GIS analyst to a full-stack data engineer. In three
+                traditional GIS analyst to a full-stack data engineer. In two
                 months, I built a 233,000-line production-grade Python and React
                 pipeline. I developed a custom Universal Consensus ID (UCID)
                 spatial clustering algorithm to harmonize conflicting data
