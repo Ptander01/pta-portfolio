@@ -375,6 +375,46 @@ export const narratives: Record<string, Narrative> = {
      one that got attention, and he is the one who noticed what it had thrown
      away. The rebuild of the underlying data is recorded in `credits`, not in
      the prose, because that part is not his account. */
+  /* Patrick's own LinkedIn post about the piece, 2026-08-07. Field notes
+     register, and the personal frame is the point of it — he chose to keep
+     the injury, the insurance aside and the closing joke rather than reduce
+     it to a pipeline description. The sentences are his. Dropped per the rule
+     at the top of this file: two emoji, which are the clearest platform
+     artifact in the original. Nothing was added that he didn't say.
+
+     Note the arithmetic this narrative does NOT restate: `method` in
+     projects.ts says 6,212 DICOM instances recovered, where the post says he
+     requested more than 2,000 — different counts of different things (the
+     request against the full recovered study), so the prose keeps his number
+     and the data keeps its own rather than silently reconciling them. */
+  "brain-mri-explorer": {
+    tone: "field-notes",
+    standfirst:
+      "I recently had a traumatic brain injury and have had a terrible time recovering. My neurologist ordered an MRI.",
+    paragraphs: [
+      "Naturally, as a spatial data scientist and data viz enthusiast, I requested the full dataset of more than 2,000 uncompressed DICOM medical images and turned it into a 3D model of my own brain you can explore in a browser. (Is this how I handle grief?)",
+      "Well actually, to make it more technically interesting, the hospital portal gave me four download links. All four zips were corrupt — truncated, no valid archive directory. Nothing would open them.",
+      "So I, with my friend Claude, wrote a streaming salvage script that walked the raw bytes, found the DICOM file signatures, and CRC-validated each instance it pulled out. That recovered the study intact. (Then my insurance called to tell me that the radiology practice was out of network, and they weren't going to cover the bill. But I digress. This is a data science story.)",
+      "From there: 192 sagittal T1-MPRAGE slices, at 1 × 0.9375 × 0.9375 mm voxels, stacked into an 11.5-million-voxel volume. A morphological skull-strip, then marching cubes to turn the voxel grid into a triangle mesh — Taubin smoothing and quadric decimation to keep it fast. Ambient occlusion baked per-vertex, so anatomically the sulci read as real depth instead of flat shading. Eighty SWI slices through a Frangi vesselness filter to extract my cerebral veins.",
+      "Anatomy labeled with a deep-learning DKT atlas (Desikan-Killiany-Tourville, Mindboggle-101): 31 cortical regions per hemisphere, plus individual subcortical nuclei — thalamus, hippocampus, amygdala, caudate, putamen, globus pallidus.",
+      "The final product: 14 structures and roughly 217,000 vertices in one self-contained HTML file. Three.js and all geometry inlined. No server, no upload.",
+      "The part I didn't expect to care about — the parcellation follows my actual sulci. Not a template brain warped to approximate mine; the model traced the folds in my own cortex. My hippocampus is 6.7 cc. My thalamus is 16.3 cc. Those are my numbers. There's something fascinating about rotating your own brain with a mouse.",
+      "Is this the smallest map that's ever been made?",
+    ],
+    credits: [
+      {
+        label: "Pipeline",
+        lines: [
+          "Python — pydicom, NumPy, scikit-image, trimesh, ANTsPyNet",
+          "Rendering — Three.js, geometry inlined, no server",
+          "192 sagittal T1-MPRAGE slices · 1 × 0.9375 × 0.9375 mm voxels",
+          "80 SWI slices · Frangi vesselness filter for the cerebral veins",
+          "14 structures · ~217,000 vertices · one self-contained HTML file",
+        ],
+      },
+    ],
+  },
+
   "chrono-sankey": {
     tone: "field-notes",
     standfirst:
