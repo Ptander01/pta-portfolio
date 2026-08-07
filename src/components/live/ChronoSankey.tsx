@@ -54,6 +54,12 @@ const GLASS_MIN = 4;
    still true, just coarser, and better than a grey bar that says nothing. */
 const STACK_MIN = 6;
 
+/* Hoisted: the node rects live inside memoized subtrees, so a fresh object
+   literal here would be a prop that changes identity every render for no
+   reason. The opacity transition that used to sit alongside `cursor` is in
+   the stylesheet now — see the focus-dimming note in index.css. */
+const HIT_STYLE = { cursor: "pointer" } as const;
+
 type Focus = { side: "left" | "right"; index: number } | null;
 
 export default function ChronoSankey() {
@@ -148,8 +154,186 @@ export default function ChronoSankey() {
      alternative is 1,189 overlapping 7px labels and an unreadable column. */
   const labelMin = 7;
 
+  /* ── the drawing, built once per layout ──────────────────────────────
+     These three memos are the performance fix, and the reason they work is
+     referential equality: React bails out of reconciling a subtree whose
+     element is the same object it saw last time. Focus is not in their
+     dependencies, so hovering cannot rebuild them — at chapter x day that is
+     8,053 SVG nodes React no longer walks per pointer move. Everything focus
+     changes about them is expressed in `focusCss` below. */
+  const ribbonEls = useMemo(
+    () =>
+      L.ribbons.map((r) => {
+        const glass = r.thickness >= GLASS_MIN;
+        return (
+          <g
+            key={r.key}
+            data-s={r.source}
+            data-t={r.target}
+            /* Base opacity, as an attribute so a focus rule outranks it.
+               Opaque enough to read as a slab, with a little translucency
+               kept so a bundle still shows depth rather than a flat mass.
+               Thin ribbons stay more transparent — in a dense view they
+               stack many-deep and full opacity would hide everything
+               behind the front one. */
+            opacity={glass ? 0.94 : 0.66}
+          >
+            <path
+              d={r.path}
+              fill={glass ? `url(#${gid}-g${r.division})` : divColor(r.division)}
+            />
+            {glass && (
+              <>
+                {/* Rim light along the bottom edge — the single strongest
+                    glass cue in the references, where the colour bleeds out
+                    under each pill brighter and more saturated than the
+                    body. Drawn before the specular so a thin ribbon shows
+                    the highlight rather than the rim. */}
+                <path
+                  d={r.bottomPath}
+                  fill="none"
+                  stroke={`color-mix(in srgb, ${divColor(r.division)} 55%, white)`}
+                  strokeWidth={Math.min(1.4, r.thickness * 0.22)}
+                  opacity={0.85}
+                />
+                {/* Specular. Two strokes, not one: a wide soft bloom under a
+                    narrow hot core, which is what makes an edge read as a
+                    curved surface catching a key light rather than as a
+                    drawn line. */}
+                <path
+                  d={r.topPath}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.3)"
+                  strokeWidth={Math.min(3.2, r.thickness * 0.42)}
+                />
+                <path
+                  d={r.topPath}
+                  fill="none"
+                  stroke="rgba(255,255,255,0.85)"
+                  strokeWidth={0.7}
+                />
+              </>
+            )}
+          </g>
+        );
+      }),
+    [L, gid]
+  );
+
+  const leftEls = useMemo(
+    () =>
+      L.left.map((n, i) => {
+        const h = Math.max(1, n.y1 - n.y0);
+        return (
+          <g key={n.key} data-i={i}>
+            {/* An all-round stroke outlines a rectangle; a bevel is a bright
+                top and a lit bottom with nothing on the sides. That
+                difference is most of what separates the reference's pills
+                from a filled shape. */}
+            <rect
+              x={GUTTER_L - BAR} y={n.y0} width={BAR} height={h}
+              fill={h >= 3 ? `url(#${gid}-g${n.division})` : divColor(n.division)}
+              style={HIT_STYLE}
+              onMouseEnter={() => setHover({ side: "left", index: i })}
+              onClick={() =>
+                setPinned((p) =>
+                  p && p.side === "left" && p.index === i ? null : { side: "left", index: i }
+                )
+              }
+            >
+              <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
+            </rect>
+            {h >= 5 && (
+              <Bevel
+                x={GUTTER_L - BAR} y0={n.y0} y1={n.y0 + h} w={BAR}
+                color={divColor(n.division)}
+              />
+            )}
+            {h >= labelMin && (
+              <text
+                x={GUTTER_L - BAR - 6} y={n.y0 + h / 2}
+                textAnchor="end" dominantBaseline="middle"
+                className="chrono-sankey__label"
+              >
+                {h < 12 ? n.short : n.label}
+              </text>
+            )}
+          </g>
+        );
+      }),
+    [L, gid]
+  );
+
+  const rightEls = useMemo(
+    () =>
+      L.right.map((n, i) => {
+        const h = Math.max(1, n.y1 - n.y0);
+        return (
+          <g key={n.key} data-i={i}>
+            <rect
+              x={W - GUTTER_R} y={n.y0} width={BAR} height={h}
+              fill={h >= STACK_MIN ? `url(#${gid}-r${i})` : divColor(L.rightDominant[i])}
+              style={HIT_STYLE}
+              onMouseEnter={() => setHover({ side: "right", index: i })}
+              onClick={() =>
+                setPinned((p) =>
+                  p && p.side === "right" && p.index === i ? null : { side: "right", index: i }
+                )
+              }
+            >
+              <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
+            </rect>
+            {h >= 5 && (
+              <Bevel
+                x={W - GUTTER_R} y0={n.y0} y1={n.y0 + h} w={BAR}
+                color={divColor(L.rightDominant[i])}
+              />
+            )}
+            {h >= labelMin && (
+              <text
+                x={W - GUTTER_R + BAR + 6} y={n.y0 + h / 2}
+                dominantBaseline="middle"
+                className="chrono-sankey__label"
+              >
+                {h < 12 ? n.short : n.label}
+              </text>
+            )}
+          </g>
+        );
+      }),
+    [L, gid]
+  );
+
+  /* The entire visual effect of focus, as one stylesheet.
+     Node rules emit the LIT indices and dim the rest wholesale, because the
+     lit set is the smaller one in every case that matters: focusing a bar
+     lights exactly itself on its own side, and only the nodes its ribbons
+     reach on the far side. */
+  const focusCss = useMemo(() => {
+    if (!focus) return "";
+    const s = `[data-cs="${gid}"] `;
+    const end = focus.side === "left" ? "s" : "t";
+    const out = [
+      `${s}.chrono-sankey__ribbons>g{opacity:.05}`,
+      `${s}.chrono-sankey__ribbons>g[data-${end}="${focus.index}"]{opacity:.96}`,
+    ];
+    const col = (cls: string, lit: Set<number> | null) => {
+      if (!lit) return;
+      out.push(`${s}${cls}>g{--o:.3;--ot:.35}`);
+      if (lit.size) {
+        const sels: string[] = [];
+        lit.forEach((i) => sels.push(`${s}${cls}>g[data-i="${i}"]`));
+        out.push(sels.join(",") + "{--o:1;--ot:1}");
+      }
+    };
+    col(".chrono-sankey__col--left", litLeft);
+    col(".chrono-sankey__col--right", litRight);
+    return out.join("");
+  }, [focus, litLeft, litRight, gid]);
+
   return (
-    <figure className="chrono-sankey" style={{ margin: "0 0 2rem" }}>
+    <figure className="chrono-sankey" data-cs={gid} style={{ margin: "0 0 2rem" }}>
+      <style>{focusCss}</style>
       <Controls
         leftRes={leftRes} rightRes={rightRes}
         setLeftRes={setLeftRes} setRightRes={setRightRes}
@@ -197,148 +381,14 @@ export default function ChronoSankey() {
                 which is why that view looks like fibre optics rather than
                 like mud. One rule, no mode switch. */}
             <g className="chrono-sankey__ribbons" filter={`url(#${gid}-contact)`} transform={`translate(${GUTTER_L},0)`}>
-              {L.ribbons.map((r) => {
-                const lit = isLit(r.source, r.target);
-                const glass = r.thickness >= GLASS_MIN;
-                /* Opaque enough to read as a slab, with a little translucency kept so a
-                   bundle of ribbons still shows depth rather than a single
-                   flat mass. Thin ribbons stay more transparent — in a dense
-                   view they are stacked many-deep and full opacity there
-                   would hide everything behind the front one. */
-                const o = focus
-                  ? (lit ? 0.96 : 0.05)
-                  : glass ? 0.94 : 0.66;
-                return (
-                  <g key={r.key} style={{ transition: "opacity 0.18s ease" }} opacity={o}>
-                    <path
-                      d={r.path}
-                      fill={glass ? `url(#${gid}-g${r.division})` : divColor(r.division)}
-                    />
-                    {glass && (
-                      <>
-                        {/* Rim light along the bottom edge — the single
-                            strongest glass cue in the references, where the
-                            colour bleeds out under each pill brighter and
-                            more saturated than the body. Drawn before the
-                            specular so a thin ribbon shows the highlight
-                            rather than the rim. */}
-                        <path
-                          d={r.bottomPath}
-                          fill="none"
-                          stroke={`color-mix(in srgb, ${divColor(r.division)} 55%, white)`}
-                          strokeWidth={Math.min(1.4, r.thickness * 0.22)}
-                          opacity={0.85}
-                        />
-                        {/* Specular. Two strokes, not one: a wide soft bloom
-                            under a narrow hot core, which is what makes an
-                            edge read as a curved surface catching a key light
-                            rather than as a drawn line. */}
-                        <path
-                          d={r.topPath}
-                          fill="none"
-                          stroke="rgba(255,255,255,0.3)"
-                          strokeWidth={Math.min(3.2, r.thickness * 0.42)}
-                        />
-                        <path
-                          d={r.topPath}
-                          fill="none"
-                          stroke="rgba(255,255,255,0.85)"
-                          strokeWidth={0.7}
-                        />
-                      </>
-                    )}
-                  </g>
-                );
-              })}
+              {ribbonEls}
             </g>
 
             {/* Left column */}
-            <g>
-              {L.left.map((n, i) => {
-                const h = Math.max(1, n.y1 - n.y0);
-                const lit = !litLeft || litLeft.has(i);
-                return (
-                  <g key={n.key}>
-                    {/* An all-round stroke outlines a rectangle; a bevel is
-                        a bright top and a lit bottom with nothing on the
-                        sides. That difference is most of what separates the
-                        reference's pills from a filled shape. */}
-                    <rect
-                      x={GUTTER_L - BAR} y={n.y0} width={BAR} height={h}
-                      fill={h >= 3 ? `url(#${gid}-g${n.division})` : divColor(n.division)}
-                      opacity={lit ? 1 : 0.3}
-                      style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
-                      onMouseEnter={() => setHover({ side: "left", index: i })}
-                      onClick={() =>
-                        setPinned((p) =>
-                          p && p.side === "left" && p.index === i ? null : { side: "left", index: i }
-                        )
-                      }
-                    >
-                      <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
-                    </rect>
-                    {h >= 5 && (
-                      <Bevel
-                        x={GUTTER_L - BAR} y0={n.y0} y1={n.y0 + h} w={BAR}
-                        color={divColor(n.division)} opacity={lit ? 1 : 0.3}
-                      />
-                    )}
-                    {h >= labelMin && (
-                      <text
-                        x={GUTTER_L - BAR - 6} y={n.y0 + h / 2}
-                        textAnchor="end" dominantBaseline="middle"
-                        className="chrono-sankey__label"
-                        opacity={lit ? 1 : 0.35}
-                      >
-                        {h < 12 ? n.short : n.label}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-            </g>
+            <g className="chrono-sankey__col chrono-sankey__col--left">{leftEls}</g>
 
             {/* Right column */}
-            <g>
-              {L.right.map((n, i) => {
-                const h = Math.max(1, n.y1 - n.y0);
-                const lit = !litRight || litRight.has(i);
-                return (
-                  <g key={n.key}>
-                    <rect
-                      x={W - GUTTER_R} y={n.y0} width={BAR} height={h}
-                      fill={h >= STACK_MIN ? `url(#${gid}-r${i})` : divColor(L.rightDominant[i])}
-                      opacity={lit ? 1 : 0.3}
-                      style={{ cursor: "pointer", transition: "opacity 0.18s ease" }}
-                      onMouseEnter={() => setHover({ side: "right", index: i })}
-                      onClick={() =>
-                        setPinned((p) =>
-                          p && p.side === "right" && p.index === i ? null : { side: "right", index: i }
-                        )
-                      }
-                    >
-                      <title>{`${n.label} — ${fmt(n.value)} verses`}</title>
-                    </rect>
-                    {h >= 5 && (
-                      <Bevel
-                        x={W - GUTTER_R} y0={n.y0} y1={n.y0 + h} w={BAR}
-                        color={divColor(L.rightDominant[i])} opacity={lit ? 1 : 0.3}
-                      />
-                    )}
-                    {h >= labelMin && (
-                      <text
-                        x={W - GUTTER_R + BAR + 6} y={n.y0 + h / 2}
-                        dominantBaseline="middle"
-                        className="chrono-sankey__label"
-                        opacity={lit ? 1 : 0.35}
-                      >
-                        {h < 12 ? n.short : n.label}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-            </g>
+            <g className="chrono-sankey__col chrono-sankey__col--right">{rightEls}</g>
           </g>
         </svg>
       </div>
@@ -358,12 +408,12 @@ export default function ChronoSankey() {
  *  are where ribbons attach, and edging them would draw a border around the
  *  join the diagram is trying to make invisible. */
 function Bevel({
-  x, y0, y1, w, color, opacity,
+  x, y0, y1, w, color,
 }: {
-  x: number; y0: number; y1: number; w: number; color: string; opacity: number;
+  x: number; y0: number; y1: number; w: number; color: string;
 }) {
   return (
-    <g opacity={opacity} pointerEvents="none">
+    <g className="cs-bevel" pointerEvents="none">
       <line x1={x} y1={y0 + 0.4} x2={x + w} y2={y0 + 0.4}
         stroke="rgba(255,255,255,0.75)" strokeWidth={0.8} />
       <line x1={x} y1={y1 - 0.5} x2={x + w} y2={y1 - 0.5}

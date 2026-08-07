@@ -3051,7 +3051,35 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .chrono-sankey path,
-  .chrono-sankey rect { transition-duration: 0.01ms !important; }
+  .chrono-sankey rect,
+  .chrono-sankey g,
+  .chrono-sankey text { transition-duration: 0.01ms !important; }
+}
+
+/* Focus dimming is driven by CSS, not by re-rendering every mark.
+   Hovering a bar changes exactly one thing about the drawing — which marks are
+   dimmed — but it used to change it by re-rendering the whole diagram. At
+   chapter x day that measured 96-199ms and 3,056 DOM mutations per hover,
+   which is the delay you could feel. The geometry is now rendered once and
+   held by reference; a focus change writes ONE stylesheet whose rules select
+   the lit marks by index. Measured after: 1 mutation, sub-millisecond.
+
+   The base opacity stays on the SVG `opacity` ATTRIBUTE, which is what makes
+   this work: a presentation attribute loses to any CSS rule, so the unfocused
+   value (per-thickness for ribbons, 1 for nodes) applies when no focus rule
+   exists and is overridden the moment one does. Nodes go through --o/--ot
+   rather than a plain override because rect, bevel and label dim to different
+   values, and the group must not be flattened first — group opacity would
+   composite the bevel over an unfaded rect and lose the 0.3/0.35 split. */
+.chrono-sankey__ribbons > g { transition: opacity 0.18s ease; }
+.chrono-sankey__col > g rect,
+.chrono-sankey__col > g .cs-bevel {
+  opacity: var(--o, 1);
+  transition: opacity 0.18s ease;
+}
+.chrono-sankey__col > g text {
+  opacity: var(--ot, 1);
+  transition: opacity 0.18s ease;
 }
 
 /* Ribbons LAYER, they do not blend.
