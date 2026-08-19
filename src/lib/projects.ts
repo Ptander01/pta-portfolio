@@ -43,6 +43,13 @@ export interface Project {
   link?: string;              // external live demo
   /** Long-form write-up published elsewhere — rendered as a second CTA. */
   articleUrl?: string;
+  /** Screen recording, shown on the detail page only — never on a card.
+   *  For pieces whose point is motion: a filter that responds to a click, a
+   *  layer that re-queries as you pan, a pipeline whose live demo cannot run
+   *  the backend. Poster is the piece's own `image`, so nothing extra is
+   *  fetched to hold the box. Keep these H.264 mp4 and around 1080p — see
+   *  PieceVideo for why the source is lazy-attached. */
+  video?: string;
   /** Slug of an in-site case study at /work/:slug, where one exists.
    *  The /work index was retired — this is how those pages stay reachable. */
   caseStudy?: string;
@@ -1760,6 +1767,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     ],
     imageCrop: "center",
     link: "https://solar-siting-explorer.vercel.app",
+    video: "/video/solar-siting-explorer.mp4",
     source:
       "Data: SRTM 30m · ESA WorldCover 10m · HIFLD transmission · USGS PAD-US — all public, no API key",
     tags: ["MapLibre GL", "deck.gl", "GeoPandas", "Rasterio", "FastAPI"],

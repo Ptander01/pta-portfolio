@@ -22,6 +22,7 @@ import PageTransition from "@/components/animations/PageTransition";
 import { PROJECTS, DOMAINS } from "@/lib/projects";
 import { narratives } from "@/lib/narratives";
 import { LivePiece } from "@/lib/livePieces";
+import PieceVideo from "@/components/PieceVideo";
 import NotFound from "./NotFound";
 
 export default function PieceDetail() {
@@ -186,6 +187,18 @@ export default function PieceDetail() {
               reader who wants the stills can scroll. Renders nothing for the
               46 pieces that have no live component. */}
           <LivePiece id={project.id} accent={project.accent} />
+
+          {/* Then the recording, where there is one — for the same reason the
+              live component leads: a piece caught working outranks a still of
+              it working. Above the macros, below anything that actually runs. */}
+          {project.video && (
+            <PieceVideo
+              src={project.video}
+              poster={project.image}
+              title={project.title}
+              accent={project.accent}
+            />
+          )}
 
           {/* Every macro, full width, in order. */}
           <div
