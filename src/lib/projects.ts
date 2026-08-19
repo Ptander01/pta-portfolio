@@ -1722,6 +1722,52 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     tags: ["Solar", "Seasonality", "Agriculture", "Photogrammetry", "GIS"],
     hero: true,
   },
+  /* Built 2026-08 to close a named gap: ten years of Python/ArcGIS geospatial
+     work and no modern JS mapping. The analysis stays in Python; the
+     JavaScript renders it. Live demo is frontend-only by design — the backend
+     is ~400 MB of native geospatial dependencies with a CPU-bound scoring
+     loop, which is a container's job rather than a free serverless tier's, and
+     the app says so in the panel rather than failing at you. */
+  {
+    id: "solar-siting-explorer",
+    index: "48",
+    year: 2026,
+    title: "Solar Siting Explorer",
+    editorialTitle: ["Scoring the ground", "for solar."],
+    subtitle: "Multi-Criteria Suitability Analysis · MapLibre GL + deck.gl · 2026",
+    category: "Renewable Energy GIS",
+    domain: "environmental",
+    subtype: "Site Selection",
+    description:
+      "Draw a study area anywhere in the US, set your own criterion weights, and a Python pipeline scores every cell 0–100 for utility-scale solar. Slope from SRTM elevation, land cover from ESA WorldCover, distance to transmission from HIFLD, with PAD-US protected land knocked down to 5% of its score afterwards rather than scored as a fourth criterion. Each criterion is also its own layer with its own colour ramp, so a cell's score can be taken apart into the slope, land-cover class and distance it came from.",
+    insight:
+      "The interesting part of a project usually isn't the thing that worked. My write-up described a four-criterion model; the code computed two. The scoring logic existed in three places, and three copies is how an implementation and its documentation drift apart without anyone lying. The fix wasn't to add the criterion — it was to collapse three copies into one function the batch pipeline and the live API both import, so they can't disagree by construction rather than by discipline.",
+    method:
+      "Three weighted criteria — slope, land cover and transmission proximity at 45/30/25 — normalized server-side so the output is always a real 0–100 scale. Protected land is not a fourth criterion: PAD-US is applied after the weighted sum as a multiplier, leaving an overlapping cell 5% of the score it would otherwise have earned. Distances measured in a projected CRS via estimate_utm_crs() rather than degrees — a degree is ~111 km north–south but ~88 km east–west at 38°N, so scoring degrees against a kilometre cutoff gives a wrong map that looks right. Infrastructure queries use a padded bounding box, or a line 500 m outside the study area is invisible to the scoring. Criterion layers are derived in the browser from sub-score columns rather than downloaded, taking first paint from ~30 MB to 7.6 MB.",
+    image: "/images/work/solar-siting-explorer.webp",
+    /* Cover art leads, then three real captures of the app — combined
+       suitability, land cover, transmission. The hover crossfade is therefore
+       the "every criterion is its own layer" claim demonstrating itself.
+       Cover-art-as-hero is the S-11 rule, not a new choice; what is new is
+       that the first render of it had garbled UI text ("SOCRE DISTRIBUTION",
+       "Red -> Gracit") and was rejected for a GIS audience that would read it.
+       This one was checked string by string against the running app. */
+    images: [
+      "/images/work/solar-siting-explorer.webp",
+      "/images/work/solar-siting-explorer-2.webp",
+      "/images/work/solar-siting-explorer-3.webp",
+      "/images/work/solar-siting-explorer-4.webp",
+    ],
+    imageCrop: "center",
+    link: "https://solar-siting-explorer.vercel.app",
+    source:
+      "Data: SRTM 30m · ESA WorldCover 10m · HIFLD transmission · USGS PAD-US — all public, no API key",
+    tags: ["MapLibre GL", "deck.gl", "GeoPandas", "Rasterio", "FastAPI"],
+    tech: ["gis", "dataviz", "fullstack"],
+    hasStatic: true,
+    hasInteractive: true,
+    hero: true,
+  },
 ];
 
 /** Domain order: broadly newest-first, with the tie among 2026 broken

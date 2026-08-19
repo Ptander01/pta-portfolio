@@ -387,6 +387,43 @@ export const narratives: Record<string, Narrative> = {
      requested more than 2,000 — different counts of different things (the
      request against the full recovered study), so the prose keeps his number
      and the data keeps its own rather than silently reconciling them. */
+  /* Patrick's own LinkedIn drafts for the piece, 2026-08. He wrote two — a
+     story about finding the bug, and a technical build post — and noted they
+     overlap too much to publish both to a feed. A detail page is not a feed:
+     it can carry the story first and the build detail after, which is what a
+     case study is for, so both are here in his words with the platform
+     scaffolding ("repo and live demo in the comments") and his own editorial
+     notes to himself dropped. Nothing was added that he didn't say. */
+  "solar-siting-explorer": {
+    tone: "field-notes",
+    standfirst:
+      "I found my own project claiming a feature it didn't have.",
+    paragraphs: [
+      "I've been building a solar siting explorer to close a specific gap in my toolkit — ten years of Python and ArcGIS geospatial work, but no MapLibre or deck.gl. It scores land for utility-scale solar: slope from SRTM elevation, land cover from ESA WorldCover, distance to transmission from HIFLD, with protected land excluded via PAD-US.",
+      "Except it didn't score transmission. My write-up described a four-criterion model. The code computed two. The transmission lines were fetched, drawn on the map, and never used in the maths.",
+      "Nobody lied. The cause was structural: the scoring logic existed in three places — a batch script, a second script layering exclusions on its output, and later an API. Three copies is how an implementation and its documentation drift apart without anyone noticing.",
+      "So the fix wasn't to add the criterion. It was to collapse three copies into one function that both the batch pipeline and the live API import. Now they can't disagree — not by discipline, by construction. Then I implemented transmission proximity for real.",
+      "Two details that would have produced a wrong map that still looked right: distances have to be measured in a projected CRS, not degrees (a degree is ~111 km north–south but ~88 km east–west at that latitude), and the infrastructure query needs a padded bounding box, or a line 500 m outside your study area is invisible to the scoring.",
+      "The interesting part of a project usually isn't the thing that worked.",
+      "As for what it does: draw a study area anywhere in the US, set your own criterion weights, and a Python pipeline scores it. MapLibre GL JS and deck.gl rendering; GeoPandas and Rasterio doing the actual analysis. Every source is public and needs no API key.",
+      "The histogram is the filter. Click a bar and the map filters to that score range — out-of-range cells fade rather than disappear, so the study area keeps its shape. Standard in ArcGIS Pro, rare on the web. Infrastructure follows the viewport: transmission lines and protected areas re-query as you pan, debounced, so whatever your score is measured against is actually on screen wherever you decide to draw.",
+      "Every criterion is its own layer, each with its own colour ramp, and the tooltip shows the raw inputs behind a cell — 67.7 out of 100, from a 1.2° slope, tree cover, and 1.49 km to the nearest line. Those layers are derived in the browser from sub-score columns rather than downloaded, which took first paint from ~30 MB to 7.6 MB. The layer controls are a real ARIA radiogroup, and the URL carries the study area and every parameter, so a run is a link you can send someone.",
+      "One deliberate boundary worth naming: the live demo is frontend-only. The analysis backend is in the repo and runs with one `docker compose up` — it just isn't hosted. It's ~400 MB of geospatial native dependencies with a CPU-bound scoring loop, which is a container's job, not a free serverless tier's. I tried the serverless route anyway and it died importing Rasterio over a missing system library the wheel expects the OS to supply. So the deployed page ships the pre-computed layers, the symbology, the filtering and the shareable URLs — all real — and says plainly where the line is instead of failing at you.",
+    ],
+    credits: [
+      {
+        label: "Build",
+        lines: [
+          "Frontend — React, Vite, MapLibre GL JS, deck.gl, Recharts",
+          "Analysis — Python, GeoPandas, Rasterio, FastAPI",
+          "Weights 45 / 30 / 25 — slope, land cover, transmission proximity",
+          "PAD-US applied after the weighted sum as a 0.05 multiplier — an exclusion, not a fourth term",
+          "Tests — browser tests against real MapLibre and deck.gl; scoring maths verified offline against synthetic data with hand-computable answers",
+        ],
+      },
+    ],
+  },
+
   "brain-mri-explorer": {
     tone: "field-notes",
     standfirst:
