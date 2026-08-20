@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { AnimatePresence } from "framer-motion";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Redirect, Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import Footer from "./components/layout/Footer";
@@ -30,8 +30,30 @@ function RouteFallback() {
   return <div style={{ minHeight: "70vh" }} aria-busy="true" />;
 }
 
+/** Canonical URL, set per route rather than baked into index.html.
+ *  This is an SPA with no SSR: one static <link rel="canonical"> in the HTML
+ *  is served for EVERY route, which would tell a crawler that all 48 piece
+ *  pages are duplicates of the homepage. That is materially worse than having
+ *  no canonical at all, so it is written from the current location instead.
+ *  Query strings are dropped deliberately — /projects?industry=environmental
+ *  is a filtered view of /projects, not its own document. */
+function useCanonical() {
+  const [location] = useLocation();
+  useEffect(() => {
+    const href = `https://pta-portfolio.vercel.app${location === "/404" ? "/" : location}`;
+    let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link) {
+      link = document.createElement("link");
+      link.rel = "canonical";
+      document.head.appendChild(link);
+    }
+    link.href = href;
+  }, [location]);
+}
+
 function Router() {
   const [location] = useLocation();
+  useCanonical();
 
   return (
     <Suspense fallback={<RouteFallback />}>
@@ -75,8 +97,15 @@ function App() {
             }}
           />
           <div className="min-h-screen flex flex-col">
+            {/* Keyboard users otherwise tab the whole nav on every page before
+                reaching anything. Visually hidden until focused — see
+                .skip-link in index.css; it must not be `display: none`, which
+                would take it out of the tab order and defeat the point. */}
+            <a href="#main" className="skip-link">
+              Skip to content
+            </a>
             {!isHomepage && <Navbar />}
-            <main className="flex-1">
+            <main id="main" className="flex-1">
               <Router />
             </main>
             {!isHomepage && <Footer />}

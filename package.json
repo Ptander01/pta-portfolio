@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "build": "tsc && vite build",
+    "build": "node scripts/build-sitemap.mjs && tsc && vite build",
     "preview": "vite preview --host",
     "check": "tsc --noEmit",
     "format": "prettier --write ."

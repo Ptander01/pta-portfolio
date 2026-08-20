@@ -1,0 +1,5 @@
+# https://pta-portfolio.vercel.app
+User-agent: *
+Allow: /
+
+Sitemap: https://pta-portfolio.vercel.app/sitemap.xml
