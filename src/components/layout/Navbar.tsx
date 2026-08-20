@@ -63,7 +63,7 @@ export default function Navbar() {
               className="label-mono hidden sm:inline"
               style={{ color: "var(--cyan)", fontSize: "0.65rem" }}
             >
-              GEOSPATIAL DATA SCIENCE
+              SPATIAL DATA SCIENCE
             </span>
           </Link>
 

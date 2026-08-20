@@ -23,7 +23,7 @@ export default function Footer() {
             className="label-mono"
             style={{ color: "var(--text-muted)", fontSize: "0.6rem" }}
           >
-            GEOSPATIAL DATA SCIENCE
+            SPATIAL DATA SCIENCE
           </span>
         </div>
         <span

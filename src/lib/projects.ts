@@ -833,7 +833,11 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     domain: "environmental",
     tech: ["gis", "dataviz"],
     hasStatic: true,
-    hasInteractive: true,
+    /* Was `true` with no `link`, the only piece of 48 promising a live
+       version it could not open. The Format facet is a claim to a reader
+       filtering for "Interactive · Live"; leaving it set made that filter
+       lie about exactly one card. Set back to true the moment a URL exists. */
+    hasInteractive: false,
     subtype: "Natural Hazards",
     description:
       "Historical storm tracks across the Atlantic basin and Gulf of Mexico, each system rendered as a distinct colored thread against a dark basemap — the paths cross, tangle, and fan out from the Caribbean toward the U.S. coastline.",
@@ -1754,7 +1758,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     domain: "environmental",
     subtype: "Site Selection",
     description:
-      "Draw a study area anywhere in the US, set your own criterion weights, and a Python pipeline scores every cell 0–100 for utility-scale solar. Slope from SRTM elevation, land cover from ESA WorldCover, distance to transmission from HIFLD, with PAD-US protected land knocked down to 5% of its score afterwards rather than scored as a fourth criterion. Each criterion is also its own layer with its own colour ramp, so a cell's score can be taken apart into the slope, land-cover class and distance it came from.",
+      "Draw a study area anywhere in the US, set your own criterion weights, and a Python pipeline scores it. Slope from SRTM elevation, land cover from ESA WorldCover, distance to transmission from HIFLD, protected land excluded via PAD-US. MapLibre GL JS and deck.gl rendering; GeoPandas and Rasterio doing the actual analysis. Every source is public and needs no API key.",
     insight:
       "The interesting part of a project usually isn't the thing that worked. My write-up described a four-criterion model; the code computed two. The scoring logic existed in three places, and three copies is how an implementation and its documentation drift apart without anyone lying. The fix wasn't to add the criterion — it was to collapse three copies into one function the batch pipeline and the live API both import, so they can't disagree by construction rather than by discipline.",
     method:
