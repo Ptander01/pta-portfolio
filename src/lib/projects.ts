@@ -1480,6 +1480,18 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hero: true,
   },
   {
+  /* RUCA came back, but only the half of it that is sourced.
+     Two different claims were cut together as "unverifiable": the rurality
+     METHOD, and a finding that rurality rather than raw headcount was what
+     turned a population change into a capacity problem. Patrick has since
+     supplied the provenance for the first — Rural-Urban Commuting Areas,
+     USDA and DHHS, ZIP-level, built from population density and inter-community
+     commuting ties, and the classification the VA itself uses. That is a
+     method fact and it is restored here and in `source`, which also settles
+     the standing inconsistency of RUCA and Rurality sitting in `tags` while
+     the prose never mentioned them.
+     The FINDING stays out. Nothing supplied speaks to it, and it is the kind
+     of claim a reader would reasonably ask to see the numbers for. */
     id: "scid-population",
     index: "39",
     year: 2024,
@@ -1498,7 +1510,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     insight:
       "Net growth across the whole system was 240 Veterans in five years. That figure conceals a 784-Veteran drop in FY22 and an 836-Veteran rebound in FY23 — a system that looks static in summary moved sharply and came back. Of twenty-five hubs, only one cleared two standard deviations from the mean.",
     method:
-      "Veteran population summarized by territory and fiscal year, FY2019–FY2023, for two cohorts (all diagnoses, and SCI diagnosis only) across two facility tiers — four parallel analyses. Change measured five ways and normalized to standard deviations, with ±1 and ±2 SD as significance thresholds, so facilities were ranked against the distribution rather than against each other.",
+      "Veteran population summarized by territory and fiscal year, FY2019–FY2023, for two cohorts (all diagnoses, and SCI diagnosis only) across two facility tiers — four parallel analyses. Change measured five ways and normalized to standard deviations, with ±1 and ±2 SD as significance thresholds, so facilities were ranked against the distribution rather than against each other. Populations were also segmented urban / rural / highly rural on the VA's rurality classification: Rural-Urban Commuting Areas, the USDA and DHHS system that assigns each ZIP code a class from population density and the commuting ties between communities — so rurality follows where people actually travel rather than a line on a map.",
     image: "/images/work/scid-population.webp",
     images: [
       "/images/work/scid-population.webp",
@@ -1511,7 +1523,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     ],
     imageCrop: "center",
     source:
-      "Client: VHA SCI/D National Program Office · 25,157 Veterans · 25 hubs · 122 spokes · FY2019–FY2023",
+      "Client: VHA SCI/D National Program Office · 25,157 Veterans · 25 hubs · 122 spokes · FY2019–FY2023 · RUCA rurality (USDA / DHHS)",
     tags: ["Population Analysis", "RUCA", "Rurality", "Change Detection", "VHA"],
     hero: true,
   },
