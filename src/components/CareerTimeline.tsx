@@ -10,7 +10,7 @@
  * Positions are inline `left: %` styles, so this has to branch in the
  * component; a media query cannot reach them.
  */
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { useIsMobile } from "@/hooks/useMobile";
 
@@ -324,6 +324,7 @@ function packLanes(roles: TimelineEntry[]): Map<string, number> {
 }
 
 export default function CareerTimeline() {
+  const reducedMotion = useReducedMotion();
   const [active, setActive] = useState<string | null>(null);
   const [scheme, setScheme] = useState<Scheme>("minimal");
   const isMobile = useIsMobile();
@@ -689,10 +690,10 @@ export default function CareerTimeline() {
         {activeEntry && (
           <motion.div
             key={activeEntry.id}
-            initial={{ opacity: 0, y: 8 }}
+            initial={reducedMotion ? false : { opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.18 }}
+            exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 8 }}
+            transition={{ duration: reducedMotion ? 0 : 0.18 }}
             className="neu-raised rounded-xl p-5 mt-4"
           >
             <div className="flex flex-wrap items-center gap-3 mb-2">

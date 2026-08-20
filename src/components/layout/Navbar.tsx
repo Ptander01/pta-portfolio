@@ -5,7 +5,7 @@
  */
 import ThemeToggle from "@/components/ThemeToggle";
 import { useTheme } from "@/contexts/ThemeContext";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -28,11 +28,17 @@ export default function Navbar() {
     return location.startsWith(href);
   };
 
+  /* `initial={false}` is framer-motion's own way of saying "mount already at
+     the animate state" — the chrome is simply there, rather than arriving
+     faster. The mobile menu keeps its enter/exit so AnimatePresence still
+     unmounts it correctly; only the duration goes to zero. */
+  const reduced = useReducedMotion();
+
   return (
     <motion.header
-      initial={{ opacity: 0, y: -20 }}
+      initial={reduced ? false : { opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: reduced ? 0 : 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
     >
       <nav
@@ -101,9 +107,10 @@ export default function Navbar() {
         {/* Mobile Menu */}
         {mobileOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
+            initial={reduced ? false : { opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, y: -10 }}
+            transition={{ duration: reduced ? 0 : undefined }}
             className="glass-sm mt-2 p-4 md:hidden"
             style={{ background: "var(--nav-bg)" }}
           >

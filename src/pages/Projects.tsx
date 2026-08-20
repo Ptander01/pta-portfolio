@@ -17,7 +17,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import PageTransition from "@/components/animations/PageTransition";
 import { useIsMobile } from "@/hooks/useMobile";
 import { Link, useSearchParams } from "wouter";
@@ -1169,6 +1169,7 @@ type SortOrder = "newest" | "oldest";
  * are dropped instead of throwing: a hand-edited or stale link degrades to the
  * default view rather than an empty gallery. */
 export default function Projects() {
+  const reducedMotion = useReducedMotion();
   const [params, setParams] = useSearchParams();
 
   const readSet = <T extends string>(
@@ -1517,10 +1518,13 @@ export default function Projects() {
             <AnimatePresence mode="wait">
               <motion.div
                 key={layout}
-                initial={{ opacity: 0, y: 12 }}
+                /* This wraps the ENTIRE gallery, so it is the one animation on
+                   the site where a missed reduced-motion branch would leave a
+                   reader with a blank page rather than a static one. */
+                initial={reducedMotion ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
+                exit={reducedMotion ? { opacity: 0 } : { opacity: 0, y: -8 }}
+                transition={{ duration: reducedMotion ? 0 : 0.3, ease: "easeInOut" }}
               >
                 {layout === "cinematic" && (
                   <LayoutCinematic projects={filtered} />

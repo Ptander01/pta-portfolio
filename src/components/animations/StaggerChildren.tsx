@@ -2,7 +2,7 @@
  * StaggerChildren — Container that staggers child entrance animations
  * Design: "Forged Monolith" — sequential reveal with deliberate pacing
  */
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface StaggerChildrenProps {
@@ -43,6 +43,14 @@ export default function StaggerChildren({
   className = "",
   once = true,
 }: StaggerChildrenProps) {
+  /* Same reasoning as FadeIn. Note this container is what drives StaggerItem
+     below — the items carry `variants` but no initial/animate of their own and
+     inherit from here, so dropping the container leaves them rendered rather
+     than stuck hidden. That is the failure worth naming: a reduced-motion
+     branch that hides content is worse than the animation it replaced. */
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div
       initial="hidden"
@@ -64,6 +72,9 @@ export function StaggerItem({
   children: ReactNode;
   className?: string;
 }) {
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   return (
     <motion.div variants={staggerItemVariants} className={className}>
       {children}

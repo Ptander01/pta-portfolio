@@ -3,7 +3,7 @@
  * Design: "Forged Monolith" — slow upward drift with opacity fade
  * Uses ease-out-quint curve for weighty, deliberate motion
  */
-import { motion, type Variants } from "framer-motion";
+import { motion, useReducedMotion, type Variants } from "framer-motion";
 import type { ReactNode } from "react";
 
 interface FadeInProps {
@@ -40,6 +40,14 @@ export default function FadeIn({
   className = "",
   once = true,
 }: FadeInProps) {
+  /* A media query cannot reach this: framer-motion writes the transform as an
+     inline style, and inline styles outrank any stylesheet rule. Honouring the
+     setting has to happen in the component, so it happens here — and the
+     honest answer to "reduce motion" on an entrance animation is to have no
+     entrance at all rather than a faster one. Content is simply present. */
+  const reduced = useReducedMotion();
+  if (reduced) return <div className={className}>{children}</div>;
+
   const variants: Variants = {
     hidden: getInitial(direction, distance),
     visible: {
