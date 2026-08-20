@@ -27,6 +27,12 @@ export interface TimelineEntry {
   skills: string[];
   /** Hash anchor to scroll to, e.g. "#soil-to-server" */
   anchor: string;
+  /** Résumé bullets, rendered on /resume only — the timeline popup keeps the
+   *  single `description` sentence, because a hover card is not a CV. Merged
+   *  from Patrick's four targeted résumés (software engineering, data science
+   *  research, remote sensing, general), deduped where they overlap. Kept
+   *  here rather than in Resume.tsx so career facts stay in one file. */
+  highlights?: string[];
 }
 
 /** Single source of truth for career history — also consumed by /resume. */
@@ -60,6 +66,10 @@ export const entries: TimelineEntry[] = [
       "Environmental Science",
       "Field Research",
     ],
+    highlights: [
+      "Led execution of a $3.4M federal energy grant, completing 150+ agricultural engineering assessments.",
+      "Authored 300+ technical reports translating engineering and energy analysis for project managers, engineers and agribusiness clients.",
+    ],
     anchor: "#soil-to-server",
   },
   {
@@ -78,6 +88,11 @@ export const entries: TimelineEntry[] = [
       "LiDAR (HTC)",
       "Hydrology",
       "Python",
+    ],
+    highlights: [
+      "Built LiDAR (LAS/LAZ) processing pipelines and hydrology models (NHD, NHD+, USGS 3DHP) for a 90,000 km² landscape-scale stream-sinuosity and hydrography analysis for the South Carolina Department of Natural Resources.",
+      "Sourced, aligned and processed orthoimagery, elevation and terrain rasters (DEM/DTM/CHM) and point-cloud data across disparate public and commercial sources.",
+      "Conducted MS thesis research on distributed solar siting using UAV photogrammetry and GIS; published PV suitability modelling in Drones (MDPI, 2020).",
     ],
     anchor: "#spatial-awakening",
   },
@@ -141,6 +156,12 @@ export const entries: TimelineEntry[] = [
       "Tableau",
       "Healthcare Analytics",
     ],
+    highlights: [
+      "Built ML-driven spatial forecasting models for national VA healthcare programs, integrating geographic, demographic and service-utilisation data into a single analytical framework.",
+      "Applied geographically weighted regression and spatial autocorrelation across 147 facility catchment areas — including designing and reporting a null result when an expected relationship did not hold.",
+      "Held Public Trust clearance for handling federal HIPAA/PHI and PII data, with data-governance and coverage responsibility on nationally deployed systems.",
+      "Presented research findings to federal executive leadership, national clinical staff and GIS professionals.",
+    ],
     anchor: "#spatial-awakening",
   },
   {
@@ -171,6 +192,12 @@ export const entries: TimelineEntry[] = [
       "MapLibre GL",
       "Satellite Imagery",
       "Data Engineering",
+    ],
+    highlights: [
+      "Designed and built a 233,000-line production geospatial data pipeline and consensus system, from first commit to enterprise deployment in two months.",
+      "Processed weekly custom satellite imagery at scale — colour correction, georectification, mosaicing, feature extraction and change detection — delivered to an executive audience.",
+      "Built automated tooling to source, align and prepare multi-modal geospatial data (imagery, vector, raster) for downstream AI/ML consumption, including REST API design and deterministic validation logic.",
+      "Owned the full pipeline lifecycle: ingestion, processing, quality control, and delivery into production systems used across the organisation.",
     ],
     anchor: "#ai-infrastructure",
   },

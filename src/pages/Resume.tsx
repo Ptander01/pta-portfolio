@@ -80,6 +80,14 @@ const technicalWriting = [
  *  and it is what backs the remote-pilot capability described on /about. */
 const credentials = [
   {
+    year: "2021–2025",
+    title: "Public Trust Clearance — U.S. Federal Government",
+    authors: "Held while supporting the Veterans Health Administration",
+    venue: "Handling HIPAA/PHI and PII on nationally deployed systems",
+    href: null,
+    kind: "Clearance",
+  },
+  {
     year: "Current",
     title: "FAA Part 107 — Remote Pilot Certificate (sUAS)",
     authors: "Federal Aviation Administration",
@@ -119,6 +127,64 @@ const credentials = [
       "Semester-long interdisciplinary course · database management, spatial analysis, remote sensing, LiDAR",
     href: null,
     kind: "Certificate",
+  },
+];
+
+/** Technical skills, merged from Patrick's four targeted résumés (software
+ *  engineering, data science research, remote sensing, general) and deduped.
+ *
+ *  Deliberately a different register from /about's "What I work with", which
+ *  is plain English by design and stays that way — this list is the tool-dense
+ *  version a résumé reader and an ATS both expect. Two lists, two audiences;
+ *  the risk is drift, so anything factual (roles, dates, publications) stays
+ *  in one place and only the vocabulary differs.
+ *
+ *  Not carried over from the source résumés: the "500K+ lines of production
+ *  Python/React" line that appears in two of their skills blocks. The site
+ *  publishes 233,000 for the named Meta system and 170,900 counted across 13
+ *  public repos, both with their method stated; an unmethodful larger number
+ *  next to them invites exactly the arithmetic question the piece pages exist
+ *  to survive. */
+const skillGroups = [
+  {
+    label: "Remote Sensing & Imagery",
+    items:
+      "Satellite and UAV imagery processing · georectification · orthorectification · image mosaicking · radiometric and colour correction · change detection · feature extraction · LiDAR · multispectral analysis",
+  },
+  {
+    label: "GIS Platforms",
+    items:
+      "ArcGIS Pro · ArcGIS Online / Portal / Enterprise · ArcGIS API for Python · QGIS · Google Earth Engine · enterprise geodatabases",
+  },
+  {
+    label: "Python & Geospatial Tooling",
+    items:
+      "GeoPandas · Rasterio · GDAL · Shapely · ArcPy · xarray · boto3 · NumPy · Pandas · SciPy",
+  },
+  {
+    label: "Data Formats",
+    items:
+      "GeoTIFF including Cloud Optimized GeoTIFF · LiDAR (LAS/LAZ) · Shapefile · GeoJSON · NetCDF · raster and vector formats · coordinate reference systems and projection management",
+  },
+  {
+    label: "Statistics & Machine Learning",
+    items:
+      "Geographically weighted regression · spatial statistics · spatial autocorrelation · hypothesis testing · experimental design · supervised and unsupervised ML · feature engineering · predictive modelling",
+  },
+  {
+    label: "Front-End & Visualisation",
+    items:
+      "React · TypeScript · Three.js · D3.js · MapLibre GL · deck.gl · Recharts · Framer Motion · ArcGIS Dashboards · executive briefing design",
+  },
+  {
+    label: "Cloud & Engineering",
+    items:
+      "AWS (S3, EC2, Lambda, IAM, Batch) · Docker · Git/GitHub · CI/CD-aware practices · REST API design · system architecture · PostgreSQL · developing PostGIS proficiency",
+  },
+  {
+    label: "AI-Assisted Development",
+    items:
+      "Agentic LLM coding tools in production workflows · prompt engineering · agentic pipeline design",
   },
 ];
 
@@ -399,6 +465,50 @@ export default function Resume() {
                   >
                     {e.description}
                   </p>
+                  {/* Résumé bullets, from the same entries array the timeline
+                      uses — see TimelineEntry.highlights. Only /resume renders
+                      them; the timeline popup keeps the one-sentence version. */}
+                  {e.highlights && (
+                    <ul
+                      style={{
+                        listStyle: "none",
+                        margin: "0 0 1rem",
+                        padding: 0,
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "0.55rem",
+                      }}
+                    >
+                      {e.highlights.map((h) => (
+                        <li
+                          key={h}
+                          style={{
+                            fontFamily: "'Lora', Georgia, serif",
+                            fontSize: "0.875rem",
+                            lineHeight: 1.65,
+                            color: "var(--text-secondary)",
+                            paddingLeft: "1rem",
+                            position: "relative",
+                          }}
+                        >
+                          <span
+                            aria-hidden="true"
+                            style={{
+                              position: "absolute",
+                              left: 0,
+                              top: "0.55em",
+                              width: 4,
+                              height: 4,
+                              borderRadius: "50%",
+                              background: e.color,
+                              opacity: 0.75,
+                            }}
+                          />
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                   <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
                     {e.skills.map((s) => (
                       <span
@@ -515,6 +625,46 @@ export default function Resume() {
         style={{ background: "var(--page-bg)" }}
       >
         <div className="container relative z-10" style={{ maxWidth: 860 }}>
+          <div id="skills" style={{ scrollMarginTop: "6rem", marginBottom: "4rem" }}>
+            <FadeIn duration={0.6}>
+              <h2 className="heading-md" style={{ marginBottom: "2rem" }}>
+                Technical Skills
+              </h2>
+            </FadeIn>
+            <dl style={{ margin: 0 }}>
+              {skillGroups.map((g) => (
+                <div
+                  key={g.label}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "minmax(9rem, 12rem) 1fr",
+                    gap: "1.5rem",
+                    padding: "1rem 0",
+                    borderTop: "1px solid var(--border-subtle)",
+                  }}
+                >
+                  <dt
+                    className="label-mono"
+                    style={{ fontSize: "0.6rem", color: "var(--cyan)", paddingTop: "0.15rem" }}
+                  >
+                    {g.label}
+                  </dt>
+                  <dd
+                    style={{
+                      margin: 0,
+                      fontFamily: "'Lora', Georgia, serif",
+                      fontSize: "0.875rem",
+                      lineHeight: 1.65,
+                      color: "var(--text-secondary)",
+                    }}
+                  >
+                    {g.items}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
           <div id="credentials" style={{ scrollMarginTop: "6rem" }}>
             <CitationList
               heading="Licenses &amp; Certificates"
