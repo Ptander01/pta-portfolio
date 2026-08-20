@@ -198,11 +198,27 @@ const speaking = [
     href: "https://www.linkedin.com/pulse/spatial-data-science-display-spinal-cord-injury-medical-anderson-kadke/",
     kind: "Conference talk",
   },
+  /* Two annual series, not one. The site had only the EDW talks and Patrick's
+     résumés had only the Chief's Summits, so each document was describing half
+     the record and the two looked like they disagreed about which event ran
+     three years running. Both did, to different rooms — which is the reason
+     they are listed separately rather than merged: the audience is the
+     difference between them. */
+  {
+    year: "2021–2023",
+    title: "VHA Executive Chief's Summit — invited annual speaker, three consecutive years",
+    authors: "Veterans Health Administration",
+    venue:
+      "Executive leadership, PhD scientists, SCI/D medical directors and head clinicians across VA hospitals",
+    href: null,
+    kind: "Invited talk",
+  },
   {
     year: "2021–2023",
     title: "VHA Enterprise Data Warehouse — invited annual speaker, three consecutive years",
     authors: "Veterans Health Administration",
-    venue: "VHA-wide audience · spatial data products for the SCI/D National Program Office",
+    venue:
+      "50–200 data scientists, analysts and researchers · analytical, statistical and GIS methods behind the SCI/D spatial products",
     href: null,
     kind: "Invited talk",
   },
