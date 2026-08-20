@@ -198,7 +198,13 @@ const speaking = [
     href: "https://www.linkedin.com/pulse/spatial-data-science-display-spinal-cord-injury-medical-anderson-kadke/",
     kind: "Conference talk",
   },
-  /* Two annual series, not one. The site had only the EDW talks and Patrick's
+  /* The warehouse is the CORPORATE Data Warehouse. The site carried
+     "Enterprise" for months, and the source of the error is worth recording so
+     it is not reintroduced: Patrick's centralised GIS unit was the Enterprise
+     Geospatial Team, and the two names bled together. His original résumé PDF
+     had "Annual Corporate Data Warehouse Insights Day" right all along.
+
+     Two annual series, not one. The site had only the CDW talks and Patrick's
      résumés had only the Chief's Summits, so each document was describing half
      the record and the two looked like they disagreed about which event ran
      three years running. Both did, to different rooms — which is the reason
@@ -215,10 +221,11 @@ const speaking = [
   },
   {
     year: "2021–2023",
-    title: "VHA Enterprise Data Warehouse — invited annual speaker, three consecutive years",
+    title:
+      "VHA Corporate Data Warehouse (CDW) Insights Day — invited annual speaker, three consecutive years",
     authors: "Veterans Health Administration",
     venue:
-      "50–200 data scientists, analysts and researchers · analytical, statistical and GIS methods behind the SCI/D spatial products",
+      "Open to technical analysts serving the VA at large · 50–200 data scientists, analysts and researchers · analytical, statistical and GIS methods behind the SCI/D spatial products",
     href: null,
     kind: "Invited talk",
   },
