@@ -1057,19 +1057,19 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     year: 2026,
     title: "AI Data Center Consensus Tracker",
     editorialTitle: ["Nine sources,", "one map."],
-    subtitle: "Geospatial Intelligence Platform · 120 Campuses · 280 Buildings",
+    subtitle: "Multi-Source Data Pipeline · 22,376 Records · 15,904 Campuses",
     category: "AI Infrastructure · Geospatial Intelligence",
     domain: "infrastructure",
-    tech: ["gis", "fullstack", "analytics"],
+    tech: ["gis", "fullstack", "analytics", "statistics"],
     hasStatic: true,
     hasInteractive: true,
     subtype: "Site Selection",
     description:
-      "An interactive geospatial dashboard that harmonizes data from 9 vendor sources into a unified consensus view of AI data center construction — 120 campuses and 280 buildings, each cross-referenced across conflicting reports to a single reconciled record.",
+      "An eight-stage pipeline that harmonizes nine disagreeing sources on global AI data center buildout into one reconciled layer — 22,376 vendor building records resolved to 15,904 campuses, every value stamped with the source it came from and every source graded on measured accuracy.",
     insight:
-      "No two data center trackers agree with each other. The interesting problem isn't collecting the data — it's building the harmonization logic that decides which source to trust when they conflict.",
+      "No two data center trackers agree with each other. The interesting problem isn't collecting the data — it's justifying, field by field, which source to trust when they conflict, and being able to show your work when someone asks why.",
     method:
-      "Ingestion and reconciliation of 9 vendor data sources into a unified schema. MapLibre GL for the campus/building map layer, Apache ECharts for trend visualization, TanStack Table for the harmonization table.",
+      "Python and arcpy pipeline: nine idempotent ingestion scripts into a gold schema, transitive spatial clustering at 250 m into Universal Campus IDs, then a field-level authority matrix resolving each attribute independently. Sources graded by MAPE, bias, coefficient of variation, Pearson r and bootstrap CIs against internal ground truth. The public demo runs MapLibre GL, Apache ECharts and TanStack Table over synthetic data.",
     image: "/images/work/dc-consensus-model.webp",
     images: [
       "/images/work/dc-consensus-model.webp",
@@ -1080,7 +1080,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     imageCrop: "center",
     link: "https://aidatacentertracker.vercel.app/",
     source: "Stack: MapLibre GL · Apache ECharts · TanStack Table · TypeScript",
-    tags: ["MapLibre GL", "AI Infrastructure", "Data Reconciliation", "TypeScript"],
+    tags: ["Python", "arcpy", "AI Infrastructure", "Data Reconciliation", "Spatial Clustering", "MapLibre GL"],
     hero: true,
   },
   {

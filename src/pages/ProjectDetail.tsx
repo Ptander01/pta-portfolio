@@ -160,79 +160,100 @@ const projectData: Record<string, ProjectData> = {
   "consensus-viewer": {
     slug: "consensus-viewer",
     title: "AI Data Center Consensus Tracker",
-    subtitle: "GEOSPATIAL INTELLIGENCE PLATFORM",
+    subtitle: "MULTI-SOURCE GEOSPATIAL DATA PIPELINE",
     color: "var(--emerald)",
     problem:
-      "When multiple data sources disagree on the location, capacity, and status of data center campuses worldwide, how do you establish a single source of truth?",
+      "Nine sources publish data on where the world's AI data centers are being built, and no two of them agree. They disagree on coordinates, on how many buildings a site has, on whether a sprawling campus is one facility or twelve — and, worst of all, on what \"capacity\" even means, because some report IT load and others report facility power. Picking a favourite vendor is a guess dressed as a decision. The real question is which source to believe field by field, and how you would ever know you were right.",
     outcome:
-      "An interactive geospatial dashboard that harmonizes data from 9 vendor sources into a unified consensus view across 120 campuses and 280 buildings, providing the definitive reference for AI infrastructure intelligence.",
+      "An eight-stage pipeline that ingests, harmonizes, deduplicates, validates and grades those sources into one reconciled layer, and re-runs end to end on a single command. The first full run resolved 22,376 vendor building records into 15,904 campuses. Every consensus value carries the source it came from, every source carries a measured accuracy grade, and every run emits an automated quality report. The interactive map linked here is the public rebuild of the dashboard that layer feeds — same interface, synthetic data.",
     approach:
-      "I developed a custom Universal Consensus ID (UCID) spatial clustering algorithm to reconcile conflicting geospatial records from disparate vendors. The system scores each data point for consensus confidence, then visualizes the harmonized results through an interactive map with statistical dashboards for regional analysis.",
+      "Three ideas carry the whole thing. A Universal Campus ID clusters records by company and proximity so that five rows from three vendors collapse into one physical place. A field-level authority matrix then resolves each attribute independently, so a campus can take its geometry from one source, its commissioned capacity from another and its building count from a third — each stamped with where it came from. And an accuracy suite grades the sources against an internal ground-truth set with real statistics, so the authority matrix is an argument from evidence rather than a ranking someone asserted. The pipeline is idempotent at every stage: each script clears its own output before writing, which is what makes a 100-script system safe to re-run rather than something you are afraid to touch.",
     techStack: [
-      { label: "FRONTEND", items: "React 18 · TypeScript · Vite" },
-      { label: "MAPPING", items: "MapLibre GL JS · Custom Tile Layers" },
-      { label: "CHARTS", items: "Apache ECharts · Statistical Dashboards" },
-      { label: "DATA", items: "TanStack Table · CSV Export · Multi-Source Harmonization" },
+      { label: "PIPELINE", items: "Python · arcpy · ArcGIS Pro · File Geodatabases" },
+      { label: "STATISTICS", items: "pandas · NumPy · MAPE · Bias · CV · Pearson r · Bootstrap CI" },
+      { label: "CONSENSUS", items: "Haversine clustering · Field authority matrix · Best-available-value resolver" },
+      { label: "WAREHOUSE", items: "Hive · Presto · SQL" },
+      { label: "DELIVERY", items: "React · TypeScript · FastAPI · MapLibre GL JS · Chart.js · Excel export" },
+      { label: "PUBLIC DEMO", items: "React 18 · MapLibre GL JS · Apache ECharts · TanStack Table" },
     ],
     features: [
       {
-        title: "Multi-Source Data Harmonization",
+        title: "Universal Campus ID — Clustering Chosen by Bake-Off",
         description:
-          "A custom UCID algorithm that reconciles conflicting records from 9 vendor sources, scoring each data point for consensus confidence and reliability.",
+          "Transitive spatial clustering, scoped by company, producing human-readable source-agnostic identifiers like META-ALTOONA-01. The 250 m tolerance was not assumed: both a 250 m and a 1,000 m version were built in full and scored against ground truth for false merges in dense markets against orphan splits on sprawling rural sites, and the tighter one won.",
       },
       {
-        title: "Interactive Campus/Building Drill-Down",
+        title: "Field-Level Consensus, Not Source-Level",
         description:
-          "Map-based exploration from regional overview to individual building detail, with synchronized data panels showing capacity, status, and vendor attribution.",
+          "A best-available-value resolver walks a per-field authority matrix rather than declaring one winning vendor per record. Each resolved attribute carries its own source stamp, alongside a JSON payload of what every source reported — so a disagreement is inspectable rather than silently averaged away.",
       },
       {
-        title: "Statistical Regional Dashboards",
+        title: "Vendor Accuracy, Measured",
         description:
-          "Apache ECharts-powered analytics showing capacity distribution, growth trends, and vendor coverage across geographic regions.",
+          "MAPE on an A–F scale, systematic bias, coefficient of variation, Pearson correlation and bootstrap 95% confidence intervals — computed only on same-granularity pairs, and weighted so hyperscaler sites carry 60% of the composite, because that is where a capacity error is worth the most.",
       },
       {
-        title: "Filterable Data Tables with Export",
+        title: "Spatial Recall and the Whole Error Distribution",
         description:
-          "TanStack Table integration with advanced filtering, sorting, and CSV export for downstream analysis and reporting.",
+          "Each source is scored first on how many known campuses it finds at all, then on the full distribution of its distance error — p10 through p90, median, MAD and IQR — broken out by region and build status. A mean distance hides the tail, and the tail is where the bad records are.",
+      },
+      {
+        title: "Validation That Runs Before and After",
+        description:
+          "34 validation scripts covering schema integrity, granularity enforcement (campus rows must never land in the building table), orphaned records after rollup, cross-source duplicates and company-name audits — plus the automated fixes for what they catch.",
+      },
+      {
+        title: "An Automated Quality Report on Every Run",
+        description:
+          "Each pipeline run emits an HTML report grading every source across six weighted quality categories, with per-source scorecards, charts and plain-English interpretation of each statistic. It turned a multi-source comparison into something a non-technical stakeholder could read in a sitting, and became one of the most valued deliverables of the project.",
       },
     ],
     methodology: [
       {
         phase: "PROBLEM FRAMING",
-        title: "The Consensus Challenge",
+        title: "Which Source Do You Believe?",
         description:
-          "Meta's infrastructure intelligence team needed a single source of truth for global data center locations, but 9 different vendor sources provided conflicting coordinates, capacity figures, and operational statuses. The business question: which sources are reliable, and how do we reconcile disagreements?",
+          "The team needed one authoritative view of global data center buildout, and had nine partial ones — eight external vendor datasets plus an internal ground-truth reference. The sources disagreed on location, capacity, status and even on what counts as a building. The question I framed the work around was not \"how do we merge these\" but \"how do we justify every value we publish\", because a merged number nobody can defend is worse than two numbers you can.",
       },
       {
         phase: "DATA COLLECTION & PREP",
-        title: "9-Source Geospatial Harmonization",
+        title: "Nine Sources, One Gold Schema",
         description:
-          "I ingested geospatial records from 9 commercial data vendors, each with different schemas, coordinate systems, and naming conventions. A custom ETL pipeline normalized all records into a unified spatial schema, preserving source attribution for downstream confidence scoring.",
+          "Nine ingestion scripts, one per source, each handling that vendor's own schema, coordinate handling, unit conventions and quirks, and each idempotent by design. Twelve processing scripts then normalize geography, collapse hundreds of raw company names into a clean taxonomy with tier groupings, and roll buildings up to campuses. Two sources were deliberately kept out of the gold layer rather than forced into it: one had no coordinates, and the other tracks development phases rather than physical buildings, with campus figures that double-count their own components. Both were retained as validation references. Deciding what not to ingest was as load-bearing as the ingestion.",
       },
       {
         phase: "ANALYSIS & ARCHITECTURE",
-        title: "UCID Spatial Clustering Algorithm",
+        title: "UCID and the Authority Matrix",
         description:
-          "I designed and implemented a Universal Consensus ID (UCID) algorithm that clusters nearby records from different sources, scores agreement levels, and generates confidence-weighted consensus positions. The algorithm handles edge cases like overlapping campuses, renamed facilities, and decommissioned sites.",
+          "The Universal Campus ID does the deduplication: transitive clustering by company and great-circle proximity, so a chain of nearby buildings resolves to one campus without any vendor sharing an ID system. Two tolerances were built and compared head to head against ground truth — 250 m and 1,000 m — and scored on false merges in dense markets against orphan splits on sprawling rural sites. The consensus layer sits on top, resolving each field independently through an authority matrix derived from the measured accuracy results rather than from opinion.",
+      },
+      {
+        phase: "VALIDATION",
+        title: "The Assumption That Was Making It Worse",
+        description:
+          "The comparison logic assumed one vendor was reporting facility power against an internal ground truth reporting IT load, and divided its figures by a PUE of 1.3 to make them comparable. I tested the assumption instead of trusting it. Unadjusted, the error was 17.6% MAPE; applying the divisor pushed it to 23.5%. The vendor had been reporting IT capacity all along, and the correction that was supposed to align the two datasets had been biasing every capacity comparison in the model downward. The adjustment was removed everywhere. This is the case for measuring rather than reasoning: the assumption was plausible, industry-standard, and wrong.",
       },
       {
         phase: "INTERPRETATION & COMMUNICATION",
-        title: "Interactive Consensus Dashboard",
+        title: "From Feature Class to Something Somebody Reads",
         description:
-          "Results were delivered through an interactive MapLibre GL dashboard where stakeholders can explore consensus confidence at the campus and building level, drill into vendor disagreements, and export filtered datasets for strategic planning and land acquisition decisions.",
+          "Output went out three ways. An automated HTML diagnostic report after every run, grading each source across six weighted categories in language a non-specialist could act on. Styled multi-tab Excel workbooks for the analysts who live in spreadsheets. And a custom React, MapLibre GL and FastAPI dashboard built when the off-the-shelf ESRI tooling stopped coping with the point count — zoom-tiered layers, multi-dimensional filtering, per-facility ten-year capacity trends, and CSV and GeoJSON export.",
       },
     ],
     demoUrl: "https://aidatacentertracker.vercel.app/",
-    githubUrl: "https://github.com/Ptander01/consensus-viewer",
+    githubUrl: "https://github.com/Ptander01/Updated-Data-Pipeline-and-Analysis",
     heroImage: "/assets/projects/consensus-viewer/hero.webp",
     gallery: [
       { src: "/assets/projects/consensus-viewer/map-view.webp", alt: "Main Map View", caption: "CONSENSUS MAP — CAMPUS-LEVEL CONFIDENCE SCORING" },
-      { src: "/assets/projects/consensus-viewer/harmonization-table.webp", alt: "Source Harmonization Table", caption: "SOURCE HARMONIZATION — 9-VENDOR RECONCILIATION TABLE" },
+      { src: "/assets/projects/consensus-viewer/harmonization-table.webp", alt: "Source Harmonization Table", caption: "SOURCE HARMONIZATION — MULTI-VENDOR RECONCILIATION TABLE" },
     ],
     impactMetrics: [
-      { value: "9", label: "Vendor Sources Harmonized" },
-      { value: "120", label: "Campuses Mapped" },
-      { value: "280", label: "Buildings Tracked" },
+      { value: "22,376", label: "Building Records Harmonized" },
+      { value: "15,904", label: "Campuses Resolved by UCID" },
+      { value: "9", label: "Sources Evaluated" },
+      { value: "8", label: "Pipeline Stages, One Command" },
+      { value: "100", label: "Python Scripts Published" },
+      { value: "233,007", label: "Lines of Code" },
     ],
   },
   "dc-graveyard": {
