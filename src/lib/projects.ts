@@ -356,12 +356,20 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
       "A table of county health rankings communicates nothing. A 3D map where you can literally see the height of the gap between the Mississippi Delta and coastal Massachusetts changes what the data means.",
     method:
       "County Health Rankings composite index. 3D extrusion by health score. Teal to yellow color scale. Shallow DOF macro render on dark surface.",
-    image: "/images/work/societal-health-01.webp",
+    /* Hero is the elevated-metallic Northeast macro (Patrick's pick). It was
+       already in this set at position 4 rather than being a new asset, so it
+       is PROMOTED here, not added — a second copy under a sixth filename
+       would be the same picture twice, which is the failure that put the
+       identical shot on mls-dashboard and mls-shotmap and is invisible to any
+       path-level duplicate check. Re-encoded from the 2528px source to 2400
+       for the hero slot; it had been downscaled to 1600, which is short of
+       the 2234 a 1117px hero wants at 2x. */
+    image: "/images/work/societal-health-04.webp",
     images: [
+      "/images/work/societal-health-04.webp",
       "/images/work/societal-health-01.webp",
       "/images/work/societal-health-02.webp",
       "/images/work/societal-health-03.webp",
-      "/images/work/societal-health-04.webp",
       "/images/work/societal-health-05.webp",
     ],
     imageCrop: "center",
