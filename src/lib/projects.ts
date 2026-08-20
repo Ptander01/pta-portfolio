@@ -1084,6 +1084,14 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hero: true,
   },
   {
+  /* "Seven subcortical STRUCTURES", not nuclei. Seven ship, and the count is
+     right — the seventh, absent from Patrick's own list, is ventral
+     diencephalon. But "nuclei" mislabels two of them: hippocampus is
+     archicortex, and ventral DC is not a discrete structure at all but the
+     atlas's bucket for hypothalamus, subthalamic nucleus, substantia nigra and
+     neighbours. Patrick's narrative names six and claims no total, so it is
+     correct as written and is left alone; this is the site's prose, so it is
+     the site's error to fix. */
     id: "brain-mri-explorer",
     index: "26",
     year: 2026,
@@ -1097,11 +1105,11 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: true,
     subtype: "Volumetric Imaging",
     description:
-      "Built from my own MRI — 192 sagittal T1 slices carried from raw DICOM through skull-stripping, deep-learning segmentation, and mesh generation into a WebGL app you can rotate, slice, and pull apart. Fourteen structure layers, seven subcortical nuclei meshed bilaterally, and a 31-region cortical map traced from my own sulci rather than an atlas average.",
+      "Built from my own MRI — 192 sagittal T1 slices carried from raw DICOM through skull-stripping, deep-learning segmentation, and mesh generation into a WebGL app you can rotate, slice, and pull apart. Fourteen structure layers, seven subcortical structures meshed bilaterally, and a 31-region cortical map traced from my own sulci rather than an atlas average.",
     insight:
       "Spatial analysis was never really about geography. A brain is a volume with coordinate frames, boundaries, and structures to segment — the same reasoning I point at terrain and satellite rasters, turned inward.",
     method:
-      "6,212 DICOM instances recovered from truncated exports. Skull-stripped, then segmented with ANTsPyNet Desikan-Killiany-Tourville labeling for 31 cortical regions plus deep nuclei. Marching-cubes meshing with baked ambient occlusion; rendered in Three.js with image-based lighting and a live cross-section plane.",
+      "6,212 DICOM instances recovered from truncated exports. Skull-stripped, then segmented with ANTsPyNet Desikan-Killiany-Tourville labeling for 31 cortical regions plus seven deep structures. Marching-cubes meshing with baked ambient occlusion; rendered in Three.js with image-based lighting and a live cross-section plane.",
     image: "/images/work/brain-mri-explorer.webp",
     imageCrop: "center",
     link: "https://brain-mri-explorer.vercel.app",
