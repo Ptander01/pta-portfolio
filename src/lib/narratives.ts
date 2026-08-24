@@ -452,6 +452,47 @@ export const narratives: Record<string, Narrative> = {
     ],
   },
 
+  /* From Patrick's three write-ups of the app, posted as he shipped it. His
+     sentences, compressed, with the platform scaffolding dropped. Two numbers
+     were reconciled against the app's own data rather than carried across:
+     sixteen landmark events, not fifteen (`books` in gospels-data.json), and
+     3,754 verses, not 3,779 — see the note in the text, which is the more
+     interesting fact anyway. */
+  "jesus-world": {
+    tone: "field-notes",
+    standfirst:
+      "Every event in the Gospels has a where and a when, and it is told by up to four narrators who overlap heavily and agree only loosely on order. That is a data problem before it is a religious one.",
+    paragraphs: [
+      "I built this the way I would build any interactive dashboard for work, and following the same method: take messy data and a story, do the exploratory analysis, then craft an interactive visual aid that helps someone else understand both. The content here happens to be historical and religious, and the data happens to be the four Gospel narratives, archaeology and Josephus.",
+      "The design problem is the two axes and the four sources. So I modelled everything as a place-and-time coordinate and bound three surfaces to the same state — a map, a timeline and a reader. Move in any one of them and the other two follow. A fractional-year scrubber is the single clock all three observe, and one JSON file drives the whole thing.",
+      "The map holds 26 places across AD 29 to 33, with seven historical regions drawn along real coastline and river geometry, and routes rendered differently over land than over sea. The timeline holds six periods on a progressive-disclosure model: periods first, then the sixteen landmark events, then full detail. Scrub the timeline and the routes draw progressively across the map. Hover a stop and its city lights up. Press play and the whole four-year arc narrates itself — routes extend, the map pans to follow the protagonist, and a glass caption card tracks wherever you are. Drill into a period and you get its stops, its events, and a separate thread per place, so three years of activity at Capernaum accumulates in a single row.",
+      "A source filter sits above all of it, called the Gospel Lens. Switch to John on the map and everything else filters with it — it is global state, so the charts pane follows.",
+      "Charted, there are 55 located events — 34 miracles, 9 encounters, 7 teachings and 5 turning points — alongside 34 parables, each classified and placed. You can see where they cluster by period and place, which Gospels attest which events, and what each Gospel disproportionately emphasises. The attestation overlaps are more interesting than I expected: the Synoptics agree in ways that make John's independence obvious at a glance, rather than a claim you are asked to take on faith.",
+      "The reader is the part I would show first. All four accounts are sequenced into a single chronological read — 39 days, every one of the 89 chapters — and made scroll-driven. As you read, the map pans to the place being described and the timeline advances to the year. The resolution is finer than a day: the final day moves through Emmaus, Thomas, the shore, the commission and the ascension, and the map travels all five as you scroll past them. For scenes inside Jerusalem it crossfades from the regional map to a schematic city view, because a single Jerusalem pin tells you nothing about whether you are in the temple, the upper room or the garden.",
+      "It deliberately does not merge the accounts. Where Matthew, Mark and Luke describe the same moment they sit adjacent — one event seen three ways, rather than three chapters in three different books — and where they differ, they stay distinct.",
+      "The sequence is not mine. It is days 286 to 324 of the printed Daily Reading Index in Crossway's ESV Chronological Bible, the same volume transcribed for the Sankey elsewhere in this gallery. That fidelity is why the reader carries 3,754 verses rather than the 3,779 in the four Gospels. Twenty-five are absent, and they are the famous ones: the printed plan brackets Mark 16:9–20 and John 7:53–8:11 as additional reading, and skips Mark 11:26 in silence. All three are passages the critical texts omit. I followed the plan rather than quietly correcting it.",
+      "The terrain generator reconstructs ancient shorelines from elevation data and then validates its own output against a measurement. Two attempts failed. The Dead Sea's antique −395 m shoreline came back as scattered two-point scraps rather than one ring, because at 150 m per pixel the band is only a few pixels wide against a cliff. Lake Huleh could not be separated from its own valley floor by an elevation threshold alone; the check there was Josephus, War 3.515 — sixty furlongs by thirty, about 11 by 5.5 km — and the best candidate ring missed it badly. Neither shipped. The script emits the reason instead of a plausible-looking wrong shape. The town plans follow the same rule: measured dimensions and named landmarks are sourced and cited, or they are not drawn.",
+    ],
+    credits: [
+      {
+        label: "Data",
+        lines: [
+          "26 places · 7 regions · 6 periods · 16 landmark events",
+          "55 located events · 34 parables · 4 Gospels, 89 chapters, 3,754 verses",
+          "Sequence: ESV Chronological Bible Daily Reading Index, days 286–324",
+          "Shorelines: Terrarium DEM (z10) · Dead Sea levels after Bookman et al. 2004",
+        ],
+      },
+      {
+        label: "Built with",
+        lines: [
+          "React · Vite · D3 · TopoJSON",
+          "One JSON data file · fractional-year scrubber as the shared clock",
+        ],
+      },
+    ],
+  },
+
   "chrono-sankey": {
     tone: "field-notes",
     standfirst:

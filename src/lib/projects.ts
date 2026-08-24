@@ -1176,7 +1176,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     year: 2026,
     title: "Jesus's World",
     editorialTitle: ["An atlas of", "the Gospels."],
-    subtitle: "Interactive Atlas · Ministry Map & Timeline · AD 29–33",
+    subtitle: "Interactive Atlas · Map, Timeline & Reader · AD 29–33",
     category: "Interactive Atlas · History & Religion",
     domain: "history",
     tech: ["gis", "dataviz", "fullstack"],
@@ -1184,11 +1184,11 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hasInteractive: true,
     subtype: "Historical Atlas",
     description:
-      "A single-page atlas of the Gospels: a D3 map of the ministry years AD 29–33, a timeline whose events open through four progressive levels of detail, a Play mode that narrates the whole arc, a data-visualization page, and a scroll-driven Passion Week reader. The narrative geography of the Gospels, made navigable.",
+      "A single-page atlas of the Gospels: a D3 map of 26 places across AD 29–33, a timeline whose six periods open through progressive levels of detail, a Play mode that narrates the whole arc, a charts pane over 55 located events and 34 parables, and a scroll-driven reader carrying all four Gospels in chronological sequence. Map, timeline and text are bound to one clock — move in any of them and the other two follow.",
     insight:
       "The Gospels are dense with places most readers skim past. Put every named site on a map, tie it to a timeline, and the geography stops being scenery — it becomes the interface to the text.",
     method:
-      "React 19 + Vite. D3 geographic projection for the ministry map, a four-state progressive-disclosure event system, a CSS-animated depth-glide parallax hero, and a scroll-driven Passion Week reader with a Jerusalem diagram.",
+      "React 19 + Vite, one JSON file, and a fractional-year scrubber as the shared clock. D3 geographic projection for the ministry map, a four-state progressive-disclosure event system, a global Gospel Lens source filter, and a scroll-driven reader that pans the map and advances the timeline as you read, crossfading to a schematic Jerusalem for scenes inside the city.",
     image: "/images/work/jesus-world.webp",
     images: [
       "/images/work/jesus-world.webp",
