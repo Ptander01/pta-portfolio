@@ -493,79 +493,83 @@ const projectData: Record<string, ProjectData> = {
   "agent-flow-visualizer": {
     slug: "agent-flow-visualizer",
     title: "Agent Flow Visualizer",
-    subtitle: "AI WORKFLOW INTELLIGENCE",
+    subtitle: "AI-ASSISTED DEVELOPMENT, INSTRUMENTED",
     color: "var(--emerald)",
     problem:
-      "When multiple AI agents collaborate on complex geospatial analysis tasks, how do you observe, debug, and understand the reasoning chains that produce the final output?",
+      "I built eight projects in twenty-five days with heavy AI assistance, and had no idea where the effort actually went. Which projects absorbed the most? Where did I iterate, and where did it come out right the first time? The session record held the answer and was unreadable â a hundred tasks in reverse-chronological order with no structure above the individual conversation.",
     outcome:
-      "A real-time visualization of multi-agent AI orchestration workflows, showing how autonomous agents collaborate through structured reasoning chains to solve complex geospatial analysis tasks — with chronological replay and node-graph exploration.",
+      "An interactive graph and timeline over my own development record: 101 tasks across 8 projects, 3,972 messages and 1,971 files between 10 March and 3 April 2026. Project nodes expand into their tasks, a Gantt view lays the period out by wall-clock time, a replay mode plays the twenty-five days back in order, and any task opens to its full conversation.",
     approach:
-      "I built a dual-view visualization system that captures and replays multi-agent workflows in real time. The chronological timeline view shows the temporal sequence of agent actions, while the node-graph view reveals the dependency structure and data flow between agents. Both views are synchronized and support interactive exploration.",
+      "The record was restructured before it was drawn. Tasks carry no project field, so 101 of them were resolved into 8 projects by a mapping built from their content, then laid out as a two-tier React Flow graph. Effort is measured in credits consumed rather than task count, because a 51,570-credit task and a 200-credit task are not the same unit of work. The graph and both timelines read one selection state, so drilling in any of them moves the others.",
     techStack: [
       { label: "FRONTEND", items: "React 18 · TypeScript · Vite" },
-      { label: "VISUALIZATION", items: "D3.js · Custom Node Graph · Timeline Engine" },
-      { label: "DATA", items: "WebSocket · Real-Time Event Stream · JSON Replay" },
-      { label: "DESIGN", items: "Neumorphic UI · Animated Transitions · Framer Motion" },
+      { label: "GRAPH", items: "React Flow (@xyflow/react) · custom project and task nodes · animated edges" },
+      { label: "TIMELINE", items: "Gantt and execution views · playback controls for chronological replay" },
+      { label: "CHARTS", items: "Recharts · Radix UI primitives · Tailwind" },
+      { label: "DATA", items: "Exported session record — static JSON, no live connection" },
     ],
     features: [
       {
-        title: "Chronological Replay Timeline",
+        title: "Two-Tier Project → Task Graph",
         description:
-          "A scrubable timeline that replays multi-agent workflows step by step, showing the exact sequence of reasoning, tool calls, and data transformations.",
+          "React Flow with custom node types. Eight project nodes expand into their tasks, weighted by credit consumption, with animated edges showing the expansion. The hierarchy is derived rather than exported — the source record has no project field at all.",
       },
       {
-        title: "Interactive Node Graph",
+        title: "Chronological Replay",
         description:
-          "A D3.js-powered directed graph showing agent dependencies, data flow paths, and reasoning chain connections with animated edge traversal.",
+          "Playback controls step the whole twenty-five-day period forward in wall-clock order, so bursts of activity and the gaps between them read as rhythm rather than as a sorted list.",
       },
       {
-        title: "Agent Action Detail Panels",
+        title: "Gantt and Execution Timelines",
         description:
-          "Expandable detail panels for each agent action showing input/output data, reasoning context, tool invocations, and execution timing.",
+          "Two temporal views over the same data — a Gantt laying tasks out by duration and overlap, and an execution view ordered by sequence. Tasks that ran across several days show as spans rather than points.",
       },
       {
-        title: "Real-Time Event Streaming",
+        title: "Task Inspector",
         description:
-          "WebSocket-based live event capture that streams agent actions as they occur, enabling real-time monitoring of active orchestration workflows.",
+          "Any task opens to its full record: the first prompt, the model, credits, message and file counts, and the complete conversation. This is where the graph stops being a summary and becomes evidence.",
       },
     ],
     methodology: [
       {
         phase: "PROBLEM FRAMING",
-        title: "Making AI Reasoning Visible",
+        title: "Where Did Twenty-Five Days Go?",
         description:
-          "Multi-agent AI systems produce complex, branching reasoning chains that are nearly impossible to debug from log files alone. The challenge: create an intuitive visual interface that makes agent collaboration patterns, decision points, and data transformations immediately comprehensible.",
+          "The question was about my own working process rather than a client dataset. Eight projects had been built in under a month with heavy AI assistance, and the only record was a flat reverse-chronological task list. I wanted the shape of it: which projects absorbed effort, where iteration clustered, and what a month of AI-assisted development looks like when you actually plot it.",
       },
       {
         phase: "DATA COLLECTION & PREP",
-        title: "Agent Event Schema Design",
+        title: "Resolving Tasks Into Projects",
         description:
-          "I designed a structured event schema that captures every agent action — tool calls, reasoning steps, data transformations, and inter-agent messages — with precise timestamps and dependency metadata. This schema enables both real-time streaming and historical replay.",
+          "The export has no project field — 101 tasks, each standing alone. I built a mapping from task content back to the eight projects they belonged to, which is the step that makes every other view possible. Credits, message counts, file counts and timestamps came through the export; the hierarchy did not.",
       },
       {
         phase: "ANALYSIS & ARCHITECTURE",
-        title: "Dual-View Visualization Engine",
+        title: "One Selection, Several Views",
         description:
-          "I architected a synchronized dual-view system: a chronological timeline for temporal analysis and a node graph for structural analysis. Both views share a common data model and respond to the same interaction events, enabling seamless switching between temporal and structural perspectives.",
+          "A two-tier React Flow graph for structure, two timeline views for time, all reading the same selection state. Effort is counted in credits rather than tasks throughout, because task count treats a five-minute fix and a multi-day build as equivalent.",
       },
       {
         phase: "INTERPRETATION & COMMUNICATION",
-        title: "Interactive Workflow Explorer",
+        title: "What the Record Showed",
         description:
-          "The visualizer delivers insights through interactive replay controls, expandable detail panels, and animated graph traversal — enabling developers and stakeholders to understand exactly how AI agents collaborate, where bottlenecks occur, and how reasoning chains produce final outputs.",
+          "Effort was far more concentrated than it felt at the time — two projects account for three quarters of the 101 tasks, and the credit distribution is more skewed still. The replay makes the working pattern legible: long single-project stretches rather than the parallel progress I would have described from memory.",
       },
     ],
     demoUrl: "https://agentflow-eaqzkikc.manus.space",
     githubUrl: "https://github.com/Ptander01/agent-flow-visualizer",
     heroImage: "/assets/projects/agent-flow-visualizer/hero.webp",
     gallery: [
-      { src: "/assets/projects/agent-flow-visualizer/timeline.webp", alt: "Chronological Replay Timeline", caption: "CHRONOLOGICAL REPLAY — STEP-BY-STEP AGENT ACTIONS" },
-      { src: "/assets/projects/agent-flow-visualizer/node-graph.webp", alt: "Interactive Node Graph", caption: "NODE GRAPH — AGENT DEPENDENCY & DATA FLOW" },
+      { src: "/assets/projects/agent-flow-visualizer/timeline.webp", alt: "Chronological Replay Timeline", caption: "REPLAY — TWENTY-FIVE DAYS IN WALL-CLOCK ORDER" },
+      { src: "/assets/projects/agent-flow-visualizer/node-graph.webp", alt: "Interactive Node Graph", caption: "PROJECT → TASK GRAPH — WEIGHTED BY CREDITS CONSUMED" },
     ],
     impactMetrics: [
-      { value: "5", label: "Agent Types Visualized" },
-      { value: "Real-Time", label: "Event Streaming" },
-      { value: "2", label: "Synchronized Views" },
+      { value: "101", label: "Tasks Visualized" },
+      { value: "8", label: "Projects Resolved" },
+      { value: "3,972", label: "Messages Recorded" },
+      { value: "1,971", label: "Files Generated" },
+      { value: "617k", label: "Credits Consumed" },
+      { value: "25", label: "Days, Replayable" },
     ],
   },
 };
