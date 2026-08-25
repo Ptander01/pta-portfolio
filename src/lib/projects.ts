@@ -1069,7 +1069,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     insight:
       "No two data center trackers agree with each other. The interesting problem isn't collecting the data — it's justifying, field by field, which source to trust when they conflict, and being able to show your work when someone asks why.",
     method:
-      "Python and arcpy pipeline: nine idempotent ingestion scripts into a gold schema, transitive spatial clustering at 250 m into Universal Campus IDs, then a field-level authority matrix resolving each attribute independently. Sources graded by MAPE, bias, coefficient of variation, Pearson r and bootstrap CIs against internal ground truth. The public demo runs MapLibre GL, Apache ECharts and TanStack Table over synthetic data.",
+      "Python and arcpy pipeline: nine idempotent ingestion scripts into a gold schema, transitive spatial clustering at 250 m into Universal Campus IDs, then a field-level authority matrix resolving each attribute independently. Sources graded by MAPE, bias, coefficient of variation, Pearson r and bootstrap CIs against internal ground truth. The public demo runs the same clustering over open data — 5,599 PeeringDB and OpenStreetMap facilities — with MapLibre GL, Apache ECharts and TanStack Table.",
     image: "/images/work/dc-consensus-model.webp",
     images: [
       "/images/work/dc-consensus-model.webp",
