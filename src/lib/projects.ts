@@ -1015,7 +1015,7 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     ],
     caseStudy: "agent-flow-visualizer",
     imageCrop: "top",
-    link: "https://agentflow-eaqzkikc.manus.space",
+    link: "https://agent-flow-visualizer.vercel.app",
     source:
       "Data: exported session record · 101 tasks · 3,972 messages · 1,971 files · Mar 10 – Apr 3, 2026",
     tags: ["AI-Assisted Development", "React Flow", "Process Analytics", "TypeScript"],

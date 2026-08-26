@@ -556,7 +556,7 @@ const projectData: Record<string, ProjectData> = {
           "Effort was far more concentrated than it felt at the time — two projects account for three quarters of the 101 tasks, and the credit distribution is more skewed still. The replay makes the working pattern legible: long single-project stretches rather than the parallel progress I would have described from memory.",
       },
     ],
-    demoUrl: "https://agentflow-eaqzkikc.manus.space",
+    demoUrl: "https://agent-flow-visualizer.vercel.app",
     githubUrl: "https://github.com/Ptander01/agent-flow-visualizer",
     heroImage: "/assets/projects/agent-flow-visualizer/hero.webp",
     gallery: [
