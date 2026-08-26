@@ -1768,6 +1768,44 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
      loop, which is a container's job rather than a free serverless tier's, and
      the app says so in the panel rather than failing at you. */
   {
+    /* Piece 49. The Personal Finance piece was ON HOLD from S-12 to 2026-08-25
+       because the only build carried the family's real figures — 4,193 real
+       transactions, named employers, net worth. The hold lifts here because the
+       app was rebuilt data-agnostic in a *fresh* repo, so what is linked is a
+       tool with a synthetic dataset rather than a household's records.
+       All three images are real captures of that build. */
+    id: "personal-finance-dashboard",
+    index: "49",
+    year: 2026,
+    title: "Personal Finance Dashboard",
+    editorialTitle: ["Your spending,", "against everyone else's."],
+    subtitle: "Household Analytics · BLS & Census Benchmarks · Bring Your Own Data",
+    category: "Civic & Public Data · Household Analytics",
+    domain: "civic",
+    tech: ["dataviz", "analytics", "statistics", "fullstack"],
+    hasStatic: true,
+    hasInteractive: true,
+    subtype: "Analytics Platform",
+    description:
+      "A six-tab household finance dashboard that reads one JSON file you supply. Spending broken to subcategory, a cash-flow Sankey from income sources through to spend, multi-year trends — and a peer-comparison tab that scores every category against BLS Consumer Expenditure and Census ACS benchmarks, so you can see which lines you are actually above and below the national average on.",
+    insight:
+      "Every budgeting app tells you what you spent. Almost none tell you whether that is a lot. The interesting question is not the total, it is the deviation — and the public benchmark data to answer it has been free the whole time.",
+    method:
+      "Vanilla JavaScript, Chart.js and d3-sankey on Vite. One fetch of `data.json` and every view derives from it: the year selector comes from the keys of `by_year_total`, the benchmark year is the latest with twelve full months, and the Sankey colours categories from the palette in the data and hashes every other node name. A Python generator ships a synthetic dataset and asserts four consistency properties before writing — monthly to yearly, subcategory to parent, transactions to month, income minus expenses to net savings — because charts do not validate their inputs and an inconsistent file renders confidently and wrongly.",
+    image: "/images/work/personal-finance-dashboard.webp",
+    images: [
+      "/images/work/personal-finance-dashboard.webp",
+      "/images/work/personal-finance-dashboard-2.webp",
+      "/images/work/personal-finance-dashboard-3.webp",
+    ],
+    imageCrop: "top",
+    link: "https://github.com/Ptander01/Personal-Finance-Dashboard",
+    source:
+      "Benchmarks: BLS Consumer Expenditure Survey 2024 · Census ACS 2024 · CPS ASEC 2024. Demo data synthetic.",
+    tags: ["Chart.js", "d3-sankey", "Vite", "Benchmarking", "Open Data"],
+    hero: false,
+  },
+  {
     id: "solar-siting-explorer",
     index: "48",
     year: 2026,
