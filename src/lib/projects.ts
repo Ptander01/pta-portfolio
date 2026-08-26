@@ -1792,13 +1792,17 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
       "Every budgeting app tells you what you spent. Almost none tell you whether that is a lot. The interesting question is not the total, it is the deviation — and the public benchmark data to answer it has been free the whole time.",
     method:
       "Vanilla JavaScript, Chart.js and d3-sankey on Vite. One fetch of `data.json` and every view derives from it: the year selector comes from the keys of `by_year_total`, the benchmark year is the latest with twelve full months, and the Sankey colours categories from the palette in the data and hashes every other node name. A Python generator ships a synthetic dataset and asserts four consistency properties before writing — monthly to yearly, subcategory to parent, transactions to month, income minus expenses to net savings — because charts do not validate their inputs and an inconsistent file renders confidently and wrongly.",
+    /* Cover art leads and three real captures follow — the S-11 rule. The
+       captures are of the synthetic-data build, so every merchant visible in
+       them is invented. */
     image: "/images/work/personal-finance-dashboard.webp",
     images: [
       "/images/work/personal-finance-dashboard.webp",
+      "/images/work/personal-finance-dashboard-app.webp",
       "/images/work/personal-finance-dashboard-2.webp",
       "/images/work/personal-finance-dashboard-3.webp",
     ],
-    imageCrop: "top",
+    imageCrop: "center",
     link: "https://github.com/Ptander01/Personal-Finance-Dashboard",
     source:
       "Benchmarks: BLS Consumer Expenditure Survey 2024 · Census ACS 2024 · CPS ASEC 2024. Demo data synthetic.",
