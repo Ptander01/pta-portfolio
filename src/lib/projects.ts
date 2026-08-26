@@ -1803,9 +1803,9 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
       "/images/work/personal-finance-dashboard-3.webp",
     ],
     imageCrop: "center",
-    link: "https://github.com/Ptander01/Personal-Finance-Dashboard",
+    link: "https://personal-finance-dashboard-one-theta.vercel.app",
     source:
-      "Benchmarks: BLS Consumer Expenditure Survey 2024 · Census ACS 2024 · CPS ASEC 2024. Demo data synthetic.",
+      "Benchmarks: BLS Consumer Expenditure Survey 2024 · Census ACS 2024 · CPS ASEC 2024. Live demo runs generated data — every figure and merchant in it is synthetic.",
     tags: ["Chart.js", "d3-sankey", "Vite", "Benchmarking", "Open Data"],
     hero: false,
   },
