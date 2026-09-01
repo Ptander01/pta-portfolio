@@ -514,12 +514,21 @@ export const narratives: Record<string, Narrative> = {
     ],
     credits: [
       {
-        label: "Method",
+        label: "Measured",
         lines: [
-          "DJI Mavic Pro · 69 m AGL · −80° camera · 70–80% overlap · double grid",
-          "Agisoft Photoscan Professional · Structure from Motion · DSM + orthomosaic",
-          "31 broiler houses measured against hand-collected control; no GCPs, no survey-grade GNSS",
-          "88 farms modelled for rooftop supply against seasonal peak, shoulder, base and energy",
+          "31 broiler houses · 10.8–184.0 m · against hand-collected control",
+          "Planar error 0.69% · length 1.66 ± 0.48 m · width 0.047 ± 0.13 m",
+          "Height error 0.06 ± 0.04 m (1.2%) — not measurable from satellite at all",
+          "5.4 min/ha · 4.84 cm ground sample distance",
+        ],
+      },
+      {
+        label: "Modelled",
+        lines: [
+          "88 farms · typical site 4 houses at 15.2 × 152.4 m · 22.6° slope · 1,254 m² usable roof",
+          "59.2 MW/h at summer peak · 127.3 GWh/yr total energy",
+          "Net peak reduction 51.6 MW/h (83%) · net annual supply 109.4 GWh (86%)",
+          "27 farms beyond 3.28 km of transmission — the most valuable of the set",
         ],
       },
       {
