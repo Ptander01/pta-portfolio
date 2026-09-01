@@ -1576,6 +1576,64 @@
 .facet-options > *:nth-child(7) { transition-delay: 0.22s; }
 .facet-options > *:nth-child(8) { transition-delay: 0.25s; }
 
+/* ── Open cascade is a popover on desktop, not an inline flex child ──────
+   Measured bug: the options used to grow inline on hover from max-width 0 to
+   64rem. A wide cascade — Technique's is ~929px — could not fit the space
+   left on its line, so `flex-wrap` bumped the whole facet, trigger included,
+   onto the next row. That slid the trigger out from under the pointer
+   (measured dx −603px, dy +44px), which dropped :hover, which collapsed the
+   cascade, which slid the trigger back under the pointer, which reopened it:
+   a flicker loop. Taking the cascade out of flow means opening it moves
+   nothing. Scoped to a real pointer at ≥768px; touch and phone keep the
+   in-flow, tap-to-open behaviour untouched. */
+@media (hover: hover) and (min-width: 768px) {
+  .facet-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 40;
+    flex-wrap: wrap;
+    /* `max-content` lays the pills in a horizontal row (the unfurl); max-width
+       then clamps that row to the viewport, so a wide cascade wraps into two
+       rows rather than running off-screen or, without an intrinsic width,
+       collapsing to a one-pill-per-line column. */
+    width: max-content;
+    max-width: min(32rem, var(--space-right, 50vw));
+    row-gap: 6px;
+    /* The gap between trigger and menu lives inside the popover box, so the
+       pointer never crosses a dead zone that would drop `.facet:hover`. */
+    padding-top: 8px;
+    /* Reveal is opacity + visibility now, never width — no layout, no reflow,
+       nothing for the row to wrap. */
+    max-height: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.22s ease,
+      transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      visibility 0s linear 0.22s;
+  }
+  .facet:hover .facet-options,
+  .facet:focus-within .facet-options,
+  .facet--open .facet-options {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    max-width: min(32rem, var(--space-right, 50vw));
+    transition-delay: 0s;
+  }
+  /* The per-child stagger stays, so the row still unfurls rather than snapping
+     in all at once. */
+  .facet:hover .facet-options > *,
+  .facet:focus-within .facet-options > *,
+  .facet--open .facet-options > * {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+
 .facet-pill {
   font-family: "Space Mono", monospace;
   font-size: 0.5625rem;

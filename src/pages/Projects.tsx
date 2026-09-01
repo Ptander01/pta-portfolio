@@ -1078,6 +1078,28 @@ function Facet({
 }) {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  /* The open cascade is an absolute popover anchored to the trigger's left
+     (see `.facet-options` in index.css). Left-anchored, a facet sitting near
+     the right edge would open past it — and because the menu opens on CSS
+     `:hover` with no React event to hook, the clamp cannot be computed at open
+     time. But the space to the viewport edge depends only on where the trigger
+     sits, which changes on resize, not on hover. So publish it as a CSS var
+     here and let `max-width: min(32rem, var(--space-right))` keep every menu on
+     screen from any position. Desktop only; the mobile menu is in-flow. */
+  useEffect(() => {
+    if (isMobile) return;
+    const set = () => {
+      const el = ref.current;
+      if (!el) return;
+      const space = window.innerWidth - el.getBoundingClientRect().left - 16;
+      el.style.setProperty("--space-right", `${Math.max(0, space)}px`);
+    };
+    set();
+    window.addEventListener("resize", set);
+    return () => window.removeEventListener("resize", set);
+  }, [isMobile]);
 
   const label = (
     <>
@@ -1109,15 +1131,16 @@ function Facet({
     ? open
       ? OPEN
       : { maxWidth: 0, maxHeight: 0, opacity: 0, transform: "none" as const }
-    : /* Desktop closed is deliberately `undefined`, not an explicit closed
-         style: an inline style would outrank the `:hover` / `:focus-within`
-         rules and kill hover entirely. Only the pinned-open state is inline. */
-      open
-      ? OPEN
-      : undefined;
+    : /* Desktop is now entirely CSS-driven: the cascade is an absolute popover
+         (see .facet-options under `@media (hover: hover)`), opened by
+         `.facet:hover`, `:focus-within` and the `.facet--open` class. No inline
+         style here — an inline `max-width` would override the popover's viewport
+         cap and let a wide cascade run off the right edge. */
+      undefined;
 
   return (
     <div
+      ref={ref}
       className={`facet${activeCount > 0 ? " facet--active" : ""}${
         open ? " facet--open" : ""
       }`}
