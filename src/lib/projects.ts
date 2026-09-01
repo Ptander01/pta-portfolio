@@ -1810,6 +1810,42 @@ const RAW_PROJECTS: Omit<Project, "accent">[] = [
     hero: false,
   },
   {
+    /* The M.S. thesis. Until 2026-08-26 it existed on the site as a single
+       link in the /resume publications list and nowhere else. Figures are
+       extracted from the thesis PDF itself, so they are the real ones. */
+    id: "pv-peak-shaving-thesis",
+    index: "50",
+    year: 2020,
+    title: "Photovoltaics as Peak-Shaving Supply",
+    editorialTitle: ["Poultry roofs as", "a rural power plant."],
+    subtitle: "M.S. Thesis · UAV Photogrammetry & GIS · 88 Farms · Clemson 2020",
+    category: "Renewable Energy GIS · Research",
+    domain: "environmental",
+    tech: ["remote-sensing", "gis", "analytics", "statistics"],
+    hasStatic: true,
+    hasInteractive: false,
+    subtype: "Solar Resource",
+    description:
+      "My master's thesis, in two halves. First: can a consumer drone measure a building accurately enough to plan on, with no ground control points and no survey-grade GPS? Then: if you can measure 88 poultry farms that way, can their roofs work as a distributed peak-shaving power plant for a rural grid?",
+    insight:
+      "The farms worth the most were the ones furthest from the grid. Twenty-seven sat more than 3.28 km from a transmission line — the expensive ones to reach, and therefore the ones where generating on-site displaced the most distribution cost.",
+    method:
+      "DJI Mavic Pro at 69 m, −80° camera, 70–80% overlap on a double grid; Agisoft Photoscan Structure-from-Motion to orthophotos and DSMs; ArcGIS solar radiation modelling over the derived surfaces. Rooftop supply grouped into seasonal peak, shoulder, base and energy categories, then differenced against facility demand and distance to transmission.",
+    image: "/images/work/pv-thesis.webp",
+    images: [
+      "/images/work/pv-thesis.webp",
+      "/images/work/pv-thesis-2.webp",
+      "/images/work/pv-thesis-3.webp",
+      "/images/work/pv-thesis-4.webp",
+    ],
+    imageCrop: "center",
+    link: "https://open.clemson.edu/all_theses/3380/",
+    source:
+      "Anderson, P. (2020). M.S. Thesis, Clemson University. Full text: open.clemson.edu/all_theses/3380 · Rooftop-measurement half published in Drones (MDPI) 4(4):76",
+    tags: ["UAV", "Photogrammetry", "Structure from Motion", "Solar", "Research"],
+    hero: false,
+  },
+  {
     id: "solar-siting-explorer",
     index: "48",
     year: 2026,

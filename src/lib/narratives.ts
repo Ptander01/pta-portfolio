@@ -493,6 +493,45 @@ export const narratives: Record<string, Narrative> = {
     ],
   },
 
+  /* Built from Patrick's own two abstracts in the thesis itself — the same
+     editorial move as `scid-access`, where the source was his executive
+     summary. Sentences are his, compressed; the register is formal because
+     the source is. Every figure quoted is from the document. */
+  "pv-peak-shaving-thesis": {
+    tone: "formal",
+    standfirst:
+      "Two questions, in order. Can a consumer drone measure a building well enough to plan on? And if it can, what are 88 poultry farm roofs worth to a rural grid?",
+    paragraphs: [
+      "Little literature existed on measuring agricultural buildings with imagery from a UAV-mounted camera. Survey-grade tools produce highly accurate results at high financial and temporal cost. Satellite imagery is readily available and relatively cheap, but low in spatial and temporal resolution. Unmanned aerial vehicles were emerging as a balance between the two, and the first half of this work was a test of whether that balance actually held — measured against hand-collected control, with no ground control points and no on-board survey-grade georeferencing.",
+      "Thirty-one broiler houses across Oconee and Anderson Counties, South Carolina. A DJI Mavic Pro flew a traditional double-grid path at 69 metres, camera at −80° from the horizon, 70–80% overlap, 4K. Images were processed in Agisoft Photoscan and orthophotos generated from the 3D sequences by Structure from Motion.",
+      "One correction mattered more than any parameter. Rooftop overhang obscures the building footprint from the air, so measuring the roof measures the wrong thing: 0.91 m had to come off the roof width and 0.61 m off the length, based on observed overhangs on poultry buildings.",
+      "Buildings ranged from 10.8 to 184.0 m. Mean measurement error across all planar dimensions was 0.69% — average length error 1.66 ± 0.48 m, average width error 0.047 ± 0.13 m. Heights ran 1.9 to 5.6 m with mean error 0.06 ± 0.04 m, or 1.2%. At 5.4 minutes per hectare and a ground sample distance of 4.84 cm, a consumer drone and SfM produced accurate DSMs and orthomosaics without survey equipment or GCPs.",
+      "Compared against the same measurements from readily available satellite imagery, the results were mixed, and the mixture is the finding. Mean error in the satellite images was −0.36%: length −0.46 ± 0.49 m, width −0.44 ± 0.14 m. The satellite orthomosaics were more accurate for length; the UAV orthomosaics were more accurate for width. The disparity was likely down to flight altitude, camera field of view and building shape. Heights could not be measured from satellite at all. Satellite was cheap and convenient for orientation and planimetric dimensions; the UAV gave dependably current data, vertical dimensions, and the absolute accuracy needed to combine with GIS layers from other sources.",
+      "The second half asked what that measurement was for. The primary challenge facing an energy supplier is forecasting and supplying hourly peak demand, and distributing that supply efficiently to remote customers. The question here was whether poultry farms could function as rurally distributed, peak-demand photovoltaic plants for sparsely populated areas.",
+      "Eighty-eight farms were examined by UAV and satellite. The typical farm held four houses, each 15.2 by 152.4 metres, oriented east–west, roof slope 22.6°, with 1,254 m² of suitable rooftop. Average supply from a farm of that size came to 496 kW/hr at peak, 279 kW/hr in the summer shoulder, and a 425 kW/hr contribution to summer base load. Across all 88: 59.2 MW/h at summer peak, 47.0 MW/hr to summer base, 127.3 GWh/yr of total energy.",
+      "Facility demand and energy use ran to 10–20% of gross hourly rooftop supply across the time categories, leaving a net peak demand reduction potential of 51.6 MW/h — 83% — and an annual net supply to the grid of 109.4 GWh, or 86%.",
+      "The distribution cost is what sorts them. Twenty-seven of the farms sat further than 3.28 km from an existing transmission line, and those proved the most valuable, both for reducing peak demand and for getting energy into rural areas. The results suggest a promising potential for distributed PV adoption in a peak-shaving role.",
+    ],
+    credits: [
+      {
+        label: "Method",
+        lines: [
+          "DJI Mavic Pro · 69 m AGL · −80° camera · 70–80% overlap · double grid",
+          "Agisoft Photoscan Professional · Structure from Motion · DSM + orthomosaic",
+          "31 broiler houses measured against hand-collected control; no GCPs, no survey-grade GNSS",
+          "88 farms modelled for rooftop supply against seasonal peak, shoulder, base and energy",
+        ],
+      },
+      {
+        label: "Published",
+        lines: [
+          "M.S. Thesis, Clemson University (2020) — open.clemson.edu/all_theses/3380",
+          "Rooftop-measurement half: Drones (MDPI) 4(4):76, with Koc, Chastain and Post",
+        ],
+      },
+    ],
+  },
+
   "chrono-sankey": {
     tone: "field-notes",
     standfirst:
