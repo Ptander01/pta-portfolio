@@ -92,7 +92,7 @@ export const entries: TimelineEntry[] = [
     highlights: [
       "Built LiDAR (LAS/LAZ) processing pipelines and hydrology models (NHD, NHD+, USGS 3DHP) for a 90,000 km² landscape-scale stream-sinuosity and hydrography analysis for the South Carolina Department of Natural Resources.",
       "Sourced, aligned and processed orthoimagery, elevation and terrain rasters (DEM/DTM/CHM) and point-cloud data across disparate public and commercial sources.",
-      "Conducted MS thesis research on distributed solar siting using UAV photogrammetry and GIS; published PV suitability modelling in Drones (MDPI, 2020).",
+      "MS thesis — “Evaluating Photovoltaics in a Peak-Shaving Supply Management Role in Rural Communities” — using UAV photogrammetry and GIS across 88 poultry farms; published the rooftop-measurement half in Drones (MDPI, 2020).",
     ],
     anchor: "#spatial-awakening",
   },
